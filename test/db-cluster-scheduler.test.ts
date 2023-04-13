@@ -57,7 +57,7 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
                     'rds:StopDBCluster',
                     'rds:StartDBCluster',
                   ],
-                  Resource: 'arn:aws:rds:*:123456789012:db:*',
+                  Resource: 'arn:aws:rds:*:123456789012:cluster:*',
                 }),
               ],
             }),
