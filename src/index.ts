@@ -74,7 +74,14 @@ export class RdsDatabaseRunningScheduler extends Construct {
                 }
               })(),
               resources: [
-                `arn:aws:rds:*:${account}:db:*`,
+                (() => {
+                  switch (props.type) {
+                    case Type.CLUSTER:
+                      return `arn:aws:rds:*:${account}:cluster:*`;
+                    case Type.INSTANCE:
+                      return `arn:aws:rds:*:${account}:db:*`;
+                  }
+                })(),
               ],
             }),
           ],
