@@ -23,5 +23,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['yicr'],
   },
+  publishToPypi: {
+    distName: 'aws-rds-database-running-scheduler',
+    module: 'aws_rds_database_running_scheduler',
+  },
 });
 project.synth();
