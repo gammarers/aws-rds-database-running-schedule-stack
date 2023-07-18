@@ -19,27 +19,25 @@ This construct creating resource list.
 ### TypeScript
 
 ```shell
-npm install aws-rds-database-running-scheduler
-```
-or
-```shell
-yarn add aws-rds-database-running-scheduler
+npm install @gammarer/aws-rds-database-running-scheduler
+# or
+yarn add @gammarer/aws-rds-database-running-scheduler
 ```
 
 ### Python
 
 ```shell
-pip install aws-rds-database-running-scheduler
+pip install gammarer.aws-rds-database-running-scheduler
 ```
 
 ## Example
 
 ```shell
-npm install aws-rds-database-running-scheduler
+npm install @gammarer/aws-rds-database-running-scheduler
 ```
 
 ```typescript
-import { RdsDatabaseRunningScheduler, Type } from 'aws-rds-database-running-scheduler';
+import { RdsDatabaseRunningScheduler, Type } from '@gammarer/aws-rds-database-running-scheduler';
 
 new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
   type: Type.CLUSTER, // TYPE.CLUSTER or TYPE.INSTANCE

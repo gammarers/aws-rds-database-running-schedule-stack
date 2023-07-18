@@ -4,7 +4,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorAddress: 'yicr@users.noreply.github.com',
   cdkVersion: '2.60.0',
   defaultReleaseBranch: 'main',
-  name: 'aws-rds-database-running-scheduler',
+  name: '@gammarer/aws-rds-database-running-scheduler',
   description: 'AWS RDS Database Running Scheduler',
   keywords: ['aws', 'cdk', 'aws-cdk', 'rds', 'scheduler', 'cost', 'saving'],
   projenrcTs: true,
@@ -24,8 +24,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
     allowedUsernames: ['yicr'],
   },
   publishToPypi: {
-    distName: 'aws-rds-database-running-scheduler',
-    module: 'aws_rds_database_running_scheduler',
+    distName: 'gammarer.aws-rds-database-running-scheduler',
+    module: 'gammarer.aws_rds_database_running_scheduler',
   },
 });
 project.synth();
