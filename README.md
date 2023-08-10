@@ -30,11 +30,18 @@ yarn add @gammarer/aws-rds-database-running-scheduler
 pip install gammarer.aws-rds-database-running-scheduler
 ```
 
-## Example
+### Java
 
-```shell
-npm install @gammarer/aws-rds-database-running-scheduler
+Add the following to pom.xml:
+
+```xml
+<dependency>
+  <groupId>com.gammarer</groupId>
+  <artifactId>aws-rds-database-running-scheduler</artifactId>
+</dependency>
 ```
+
+## Example
 
 ```typescript
 import { RdsDatabaseRunningScheduler, Type } from '@gammarer/aws-rds-database-running-scheduler';
