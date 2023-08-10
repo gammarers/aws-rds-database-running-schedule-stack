@@ -27,5 +27,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
     distName: 'gammarer.aws-rds-database-running-scheduler',
     module: 'gammarer.aws_rds_database_running_scheduler',
   },
+  publishToMaven: {
+    mavenGroupId: 'com.gammarer',
+    javaPackage: 'com.gammarer.cdk.aws.rds-database-running-scheduler',
+    mavenArtifactId: 'aws-rds-database-running-scheduler',
+    mavenEndpoint: 'https://s01.oss.sonatype.org',
+  },
 });
 project.synth();

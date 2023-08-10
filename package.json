@@ -17,6 +17,7 @@
     "eslint": "npx projen eslint",
     "package": "npx projen package",
     "package-all": "npx projen package-all",
+    "package:java": "npx projen package:java",
     "package:js": "npx projen package:js",
     "package:python": "npx projen package:python",
     "post-compile": "npx projen post-compile",
@@ -131,6 +132,13 @@
   "jsii": {
     "outdir": "dist",
     "targets": {
+      "java": {
+        "package": "com.gammarer.cdk.aws.rds-database-running-scheduler",
+        "maven": {
+          "groupId": "com.gammarer",
+          "artifactId": "aws-rds-database-running-scheduler"
+        }
+      },
       "python": {
         "distName": "gammarer.aws-rds-database-running-scheduler",
         "module": "gammarer.aws_rds_database_running_scheduler"
