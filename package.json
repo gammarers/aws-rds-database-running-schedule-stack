@@ -133,7 +133,7 @@
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "com.gammarer.cdk.aws.rds-database-running-scheduler",
+        "package": "com.gammarer.cdk.aws.rds_database_running_scheduler",
         "maven": {
           "groupId": "com.gammarer",
           "artifactId": "aws-rds-database-running-scheduler"
