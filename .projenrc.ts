@@ -2,7 +2,7 @@ import { awscdk, javascript } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'yicr',
   authorAddress: 'yicr@users.noreply.github.com',
-  cdkVersion: '2.60.0',
+  cdkVersion: '2.80.0',
   defaultReleaseBranch: 'main',
   name: '@gammarer/aws-rds-database-running-scheduler',
   description: 'AWS RDS Database Running Scheduler',
