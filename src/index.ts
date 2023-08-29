@@ -4,18 +4,9 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as scheduler from 'aws-cdk-lib/aws-scheduler';
 import { Construct } from 'constructs';
 
-export enum Type {
+export enum DatabaseType {
   CLUSTER = 'Cluster',
   INSTANCE = 'Instance',
-}
-
-export interface IdentifiersProperty {
-  readonly [name: string]: StatusProperty;
-}
-
-export interface StatusProperty {
-  readonly stopSchedule: ScheduleProperty;
-  readonly startSchedule: ScheduleProperty;
 }
 
 export interface ScheduleProperty {
@@ -25,9 +16,15 @@ export interface ScheduleProperty {
   readonly week?: string;
 }
 
+export interface TargetProperty {
+  readonly type: DatabaseType;
+  readonly identifiers: string[];
+  readonly stopSchedule: ScheduleProperty;
+  readonly startSchedule: ScheduleProperty;
+}
+
 export interface RdsDatabaseRunningSchedulerProps {
-  readonly type: Type;
-  readonly identifiers: IdentifiersProperty;
+  readonly targets: TargetProperty[];
 }
 
 export class RdsDatabaseRunningScheduler extends Construct {
@@ -43,45 +40,34 @@ export class RdsDatabaseRunningScheduler extends Construct {
       .digest('hex');
 
     // 👇EventBridge Scheduler IAM Role
-    const type: string = (() => {
-      switch (props.type) {
-        case Type.CLUSTER:
-          return 'cluster';
-        case Type.INSTANCE:
-          return 'instance';
-      }
-    })();
     const schedulerExecutionRole = new iam.Role(this, 'SchedulerExecutionRole', {
-      roleName: `stop-db-${type}-schedule-${randomNameKey}-exec-role`,
+      roleName: `stop-db-schedule-${randomNameKey}-exec-role`,
       assumedBy: new iam.ServicePrincipal('scheduler.amazonaws.com'),
       inlinePolicies: {
-        [`rds-${type}-stop-policy`]: new iam.PolicyDocument({
+        ['rds-instance-stop-policy']: new iam.PolicyDocument({
           statements: [
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,
-              actions: (() => {
-                switch (props.type) {
-                  case Type.CLUSTER:
-                    return [
-                      'rds:StopDBCluster',
-                      'rds:StartDBCluster',
-                    ];
-                  case Type.INSTANCE:
-                    return [
-                      'rds:StopDBInstance',
-                      'rds:StartDBInstance',
-                    ];
-                }
-              })(),
+              actions: [
+                'rds:StopDBInstance',
+                'rds:StartDBInstance',
+              ],
               resources: [
-                (() => {
-                  switch (props.type) {
-                    case Type.CLUSTER:
-                      return `arn:aws:rds:*:${account}:cluster:*`;
-                    case Type.INSTANCE:
-                      return `arn:aws:rds:*:${account}:db:*`;
-                  }
-                })(),
+                `arn:aws:rds:*:${account}:db:*`,
+              ],
+            }),
+          ],
+        }),
+        ['rds-cluster-stop-policy']: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: [
+                'rds:StopDBCluster',
+                'rds:StartDBCluster',
+              ],
+              resources: [
+                `arn:aws:rds:*:${account}:cluster:*`,
               ],
             }),
           ],
@@ -89,95 +75,99 @@ export class RdsDatabaseRunningScheduler extends Construct {
       },
     });
 
-    for (const [identifier, status] of Object.entries(props.identifiers)) {
-      // 👇Create random string
-      const scheduleNameKey = crypto.createHash('shake256', { outputLength: 4 })
-        .update(identifier)
-        .digest('hex');
+    for (const target of props.targets) {
 
-      // 👇EventBridge Scheduler for DB Instance Stop
-      new scheduler.CfnSchedule(this, `StopSchedule${scheduleNameKey.toUpperCase()}`, {
-        name: `auto-stop-db-${type}-${scheduleNameKey}-schedule`,
-        description: `auto stop db ${type}(${identifier}) schedule.`,
-        state: 'ENABLED',
-        //groupName: scheduleGroup.name, // default
-        flexibleTimeWindow: {
-          mode: 'OFF',
-        },
-        scheduleExpressionTimezone: status.stopSchedule.timezone,
-        scheduleExpression: (() => {
-          // default: weekday 21:10
-          const minute: string = status.stopSchedule.minute ?? '10';
-          const hour: string = status.stopSchedule.hour ?? '21';
-          const week: string = status.stopSchedule.week ?? 'MON-FRI';
-          return `cron(${minute} ${hour} ? * ${week} *)`;
-        })(),
-        target: {
-          arn: (() => {
-            switch (props.type) {
-              case Type.CLUSTER:
-                return 'arn:aws:scheduler:::aws-sdk:rds:stopDBCluster';
-              case Type.INSTANCE:
-                return 'arn:aws:scheduler:::aws-sdk:rds:stopDBInstance';
-            }
-          })(),
-          roleArn: schedulerExecutionRole.roleArn,
-          input: (() => {
-            switch (props.type) {
-              case Type.CLUSTER:
-                return JSON.stringify({ DbClusterIdentifier: identifier });
-              case Type.INSTANCE:
-                return JSON.stringify({ DbInstanceIdentifier: identifier });
-            }
-          })(),
-          retryPolicy: {
-            maximumEventAgeInSeconds: 60,
-            maximumRetryAttempts: 0,
-          },
-        },
-      });
+      for (const identify of target.identifiers) {
+        // 👇Create random string
+        const scheduleNameKey = crypto.createHash('shake256', { outputLength: 4 })
+          .update(identify)
+          .digest('hex');
 
-      // 👇EventBridge Scheduler for DB Instance Start
-      new scheduler.CfnSchedule(this, `StartSchedule${scheduleNameKey.toUpperCase()}`, {
-        name: `auto-start-db-${type}-${scheduleNameKey}-schedule`,
-        description: `auto start db ${type}(${identifier}) schedule.`,
-        state: 'ENABLED',
-        //groupName: scheduleGroup.name, // default
-        flexibleTimeWindow: {
-          mode: 'OFF',
-        },
-        scheduleExpressionTimezone: status.startSchedule.timezone,
-        scheduleExpression: (() => {
-          // default: weekday 07:50
-          const minute: string = status.startSchedule.minute ?? '50';
-          const hour: string = status.startSchedule.hour ?? '7';
-          const week: string = status.startSchedule.week ?? 'MON-FRI';
-          return `cron(${minute} ${hour} ? * ${week} *)`;
-        })(),
-        target: {
-          arn: (() => {
-            switch (props.type) {
-              case Type.CLUSTER:
-                return 'arn:aws:scheduler:::aws-sdk:rds:startDBCluster';
-              case Type.INSTANCE:
-                return 'arn:aws:scheduler:::aws-sdk:rds:startDBInstance';
-            }
-          })(),
-          roleArn: schedulerExecutionRole.roleArn,
-          input: (() => {
-            switch (props.type) {
-              case Type.CLUSTER:
-                return JSON.stringify({ DbClusterIdentifier: identifier });
-              case Type.INSTANCE:
-                return JSON.stringify({ DbInstanceIdentifier: identifier });
-            }
-          })(),
-          retryPolicy: {
-            maximumEventAgeInSeconds: 60,
-            maximumRetryAttempts: 0,
+        // 👇EventBridge Scheduler for DB Instance Stop
+        new scheduler.CfnSchedule(this, `StopSchedule${scheduleNameKey.toUpperCase()}`, {
+          name: `auto-stop-db-${target.type.toLowerCase()}-${scheduleNameKey}-schedule`,
+          description: `auto stop db ${target.type.toLowerCase()}(${identify}) schedule.`,
+          state: 'ENABLED',
+          //groupName: scheduleGroup.name, // default
+          flexibleTimeWindow: {
+            mode: 'OFF',
           },
-        },
-      });
+          scheduleExpressionTimezone: target.stopSchedule.timezone,
+          scheduleExpression: (() => {
+            // default: weekday 21:10
+            const minute: string = target.stopSchedule.minute ?? '10';
+            const hour: string = target.stopSchedule.hour ?? '21';
+            const week: string = target.stopSchedule.week ?? 'MON-FRI';
+            return `cron(${minute} ${hour} ? * ${week} *)`;
+          })(),
+          target: {
+            arn: (() => {
+              switch (target.type) {
+                case DatabaseType.CLUSTER:
+                  return 'arn:aws:scheduler:::aws-sdk:rds:stopDBCluster';
+                case DatabaseType.INSTANCE:
+                  return 'arn:aws:scheduler:::aws-sdk:rds:stopDBInstance';
+              }
+            })(),
+            roleArn: schedulerExecutionRole.roleArn,
+            input: (() => {
+              switch (target.type) {
+                case DatabaseType.CLUSTER:
+                  return JSON.stringify({ DbClusterIdentifier: identify });
+                case DatabaseType.INSTANCE:
+                  return JSON.stringify({ DbInstanceIdentifier: identify });
+              }
+            })(),
+            retryPolicy: {
+              maximumEventAgeInSeconds: 60,
+              maximumRetryAttempts: 0,
+            },
+          },
+        });
+
+        // 👇EventBridge Scheduler for DB Instance Start
+        new scheduler.CfnSchedule(this, `StartSchedule${scheduleNameKey.toUpperCase()}`, {
+          name: `auto-start-db-${target.type.toLowerCase()}-${scheduleNameKey}-schedule`,
+          description: `auto start db ${target.type.toLowerCase()}(${identify}) schedule.`,
+          state: 'ENABLED',
+          //groupName: scheduleGroup.name, // default
+          flexibleTimeWindow: {
+            mode: 'OFF',
+          },
+          scheduleExpressionTimezone: target.startSchedule.timezone,
+          scheduleExpression: (() => {
+            // default: weekday 07:50
+            const minute: string = target.startSchedule.minute ?? '50';
+            const hour: string = target.startSchedule.hour ?? '7';
+            const week: string = target.startSchedule.week ?? 'MON-FRI';
+            return `cron(${minute} ${hour} ? * ${week} *)`;
+          })(),
+          target: {
+            arn: (() => {
+              switch (target.type) {
+                case DatabaseType.CLUSTER:
+                  return 'arn:aws:scheduler:::aws-sdk:rds:startDBCluster';
+                case DatabaseType.INSTANCE:
+                  return 'arn:aws:scheduler:::aws-sdk:rds:startDBInstance';
+              }
+            })(),
+            roleArn: schedulerExecutionRole.roleArn,
+            input: (() => {
+              switch (target.type) {
+                case DatabaseType.CLUSTER:
+                  return JSON.stringify({ DbClusterIdentifier: identify });
+                case DatabaseType.INSTANCE:
+                  return JSON.stringify({ DbInstanceIdentifier: identify });
+              }
+            })(),
+            retryPolicy: {
+              maximumEventAgeInSeconds: 60,
+              maximumRetryAttempts: 0,
+            },
+          },
+        });
+      }
+
     }
   }
 }
