@@ -52,27 +52,32 @@ Add the following to pom.xml:
 ## Example
 
 ```typescript
-import { RdsDatabaseRunningScheduler, Type } from '@gammarer/aws-rds-database-running-scheduler';
+import { RdsDatabaseRunningScheduler, DatabaseType } from '@gammarer/aws-rds-database-running-scheduler';
 
 new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
-  type: Type.CLUSTER, // TYPE.CLUSTER or TYPE.INSTANCE
-  identifiers: {
-    ['db-cluster-1a']: { // cluster identirier
+  targets: [
+    {
+      type: DatabaseType.CLUSTER,
+      identifiers: ['db-cluster-1a'],
       startSchedule: {
-        timezone: 'Asia/Tokyo',
-        minute: '55',
-        hour: '8',
-        week: 'MON-FRI',
+        timezone: 'UTC',
       },
       stopSchedule: {
-        timezone: 'Asia/Tokyo',
-        minute: '5',
-        hour: '19',
-        week: 'MON-FRI',
+        timezone: 'UTC',
       },
     },
-  },
-})
+    {
+      type: DatabaseType.INSTANCE,
+      identifiers: ['db-instance-1a'],
+      startSchedule: {
+        timezone: 'UTC',
+      },
+      stopSchedule: {
+        timezone: 'UTC',
+      },
+    },
+  ],
+});)
 
 ```
 
@@ -188,17 +193,6 @@ The tree node.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### IdentifiersProperty <a name="IdentifiersProperty" id="@gammarer/aws-rds-database-running-scheduler.IdentifiersProperty"></a>
-
-#### Initializer <a name="Initializer" id="@gammarer/aws-rds-database-running-scheduler.IdentifiersProperty.Initializer"></a>
-
-```typescript
-import { IdentifiersProperty } from '@gammarer/aws-rds-database-running-scheduler'
-
-const identifiersProperty: IdentifiersProperty = { ... }
-```
-
-
 ### RdsDatabaseRunningSchedulerProps <a name="RdsDatabaseRunningSchedulerProps" id="@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps"></a>
 
 #### Initializer <a name="Initializer" id="@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.Initializer"></a>
@@ -213,28 +207,17 @@ const rdsDatabaseRunningSchedulerProps: RdsDatabaseRunningSchedulerProps = { ...
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.property.identifiers">identifiers</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.IdentifiersProperty">IdentifiersProperty</a></code> | *No description.* |
-| <code><a href="#@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.property.type">type</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.Type">Type</a></code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.property.targets">targets</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.TargetProperty">TargetProperty</a>[]</code> | *No description.* |
 
 ---
 
-##### `identifiers`<sup>Required</sup> <a name="identifiers" id="@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.property.identifiers"></a>
+##### `targets`<sup>Required</sup> <a name="targets" id="@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.property.targets"></a>
 
 ```typescript
-public readonly identifiers: IdentifiersProperty;
+public readonly targets: TargetProperty[];
 ```
 
-- *Type:* <a href="#@gammarer/aws-rds-database-running-scheduler.IdentifiersProperty">IdentifiersProperty</a>
-
----
-
-##### `type`<sup>Required</sup> <a name="type" id="@gammarer/aws-rds-database-running-scheduler.RdsDatabaseRunningSchedulerProps.property.type"></a>
-
-```typescript
-public readonly type: Type;
-```
-
-- *Type:* <a href="#@gammarer/aws-rds-database-running-scheduler.Type">Type</a>
+- *Type:* <a href="#@gammarer/aws-rds-database-running-scheduler.TargetProperty">TargetProperty</a>[]
 
 ---
 
@@ -299,26 +282,38 @@ public readonly week: string;
 
 ---
 
-### StatusProperty <a name="StatusProperty" id="@gammarer/aws-rds-database-running-scheduler.StatusProperty"></a>
+### TargetProperty <a name="TargetProperty" id="@gammarer/aws-rds-database-running-scheduler.TargetProperty"></a>
 
-#### Initializer <a name="Initializer" id="@gammarer/aws-rds-database-running-scheduler.StatusProperty.Initializer"></a>
+#### Initializer <a name="Initializer" id="@gammarer/aws-rds-database-running-scheduler.TargetProperty.Initializer"></a>
 
 ```typescript
-import { StatusProperty } from '@gammarer/aws-rds-database-running-scheduler'
+import { TargetProperty } from '@gammarer/aws-rds-database-running-scheduler'
 
-const statusProperty: StatusProperty = { ... }
+const targetProperty: TargetProperty = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@gammarer/aws-rds-database-running-scheduler.StatusProperty.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
-| <code><a href="#@gammarer/aws-rds-database-running-scheduler.StatusProperty.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.identifiers">identifiers</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.type">type</a></code> | <code><a href="#@gammarer/aws-rds-database-running-scheduler.DatabaseType">DatabaseType</a></code> | *No description.* |
 
 ---
 
-##### `startSchedule`<sup>Required</sup> <a name="startSchedule" id="@gammarer/aws-rds-database-running-scheduler.StatusProperty.property.startSchedule"></a>
+##### `identifiers`<sup>Required</sup> <a name="identifiers" id="@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.identifiers"></a>
+
+```typescript
+public readonly identifiers: string[];
+```
+
+- *Type:* string[]
+
+---
+
+##### `startSchedule`<sup>Required</sup> <a name="startSchedule" id="@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.startSchedule"></a>
 
 ```typescript
 public readonly startSchedule: ScheduleProperty;
@@ -328,7 +323,7 @@ public readonly startSchedule: ScheduleProperty;
 
 ---
 
-##### `stopSchedule`<sup>Required</sup> <a name="stopSchedule" id="@gammarer/aws-rds-database-running-scheduler.StatusProperty.property.stopSchedule"></a>
+##### `stopSchedule`<sup>Required</sup> <a name="stopSchedule" id="@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.stopSchedule"></a>
 
 ```typescript
 public readonly stopSchedule: ScheduleProperty;
@@ -338,27 +333,37 @@ public readonly stopSchedule: ScheduleProperty;
 
 ---
 
+##### `type`<sup>Required</sup> <a name="type" id="@gammarer/aws-rds-database-running-scheduler.TargetProperty.property.type"></a>
+
+```typescript
+public readonly type: DatabaseType;
+```
+
+- *Type:* <a href="#@gammarer/aws-rds-database-running-scheduler.DatabaseType">DatabaseType</a>
+
+---
+
 
 
 ## Enums <a name="Enums" id="Enums"></a>
 
-### Type <a name="Type" id="@gammarer/aws-rds-database-running-scheduler.Type"></a>
+### DatabaseType <a name="DatabaseType" id="@gammarer/aws-rds-database-running-scheduler.DatabaseType"></a>
 
 #### Members <a name="Members" id="Members"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@gammarer/aws-rds-database-running-scheduler.Type.CLUSTER">CLUSTER</a></code> | *No description.* |
-| <code><a href="#@gammarer/aws-rds-database-running-scheduler.Type.INSTANCE">INSTANCE</a></code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.DatabaseType.CLUSTER">CLUSTER</a></code> | *No description.* |
+| <code><a href="#@gammarer/aws-rds-database-running-scheduler.DatabaseType.INSTANCE">INSTANCE</a></code> | *No description.* |
 
 ---
 
-##### `CLUSTER` <a name="CLUSTER" id="@gammarer/aws-rds-database-running-scheduler.Type.CLUSTER"></a>
+##### `CLUSTER` <a name="CLUSTER" id="@gammarer/aws-rds-database-running-scheduler.DatabaseType.CLUSTER"></a>
 
 ---
 
 
-##### `INSTANCE` <a name="INSTANCE" id="@gammarer/aws-rds-database-running-scheduler.Type.INSTANCE"></a>
+##### `INSTANCE` <a name="INSTANCE" id="@gammarer/aws-rds-database-running-scheduler.DatabaseType.INSTANCE"></a>
 
 ---
 
