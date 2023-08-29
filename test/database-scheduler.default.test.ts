@@ -1,8 +1,8 @@
 import { App, Stack } from 'aws-cdk-lib';
-import { Template, Match } from 'aws-cdk-lib/assertions';
-import { RdsDatabaseRunningScheduler, Type } from '../src';
+import { Match, Template } from 'aws-cdk-lib/assertions';
+import { DatabaseType, RdsDatabaseRunningScheduler } from '../src';
 
-describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
+describe('RdsDatabaseRunningScheduler Default Testing', () => {
 
   describe('default schedule', () => {
     const app = new App();
@@ -14,9 +14,10 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
     });
 
     new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
-      type: Type.CLUSTER,
-      identifiers: {
-        ['db-cluster-1a']: {
+      targets: [
+        {
+          type: DatabaseType.CLUSTER,
+          identifiers: ['db-cluster-1a'],
           startSchedule: {
             timezone: 'UTC',
           },
@@ -24,7 +25,17 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
             timezone: 'UTC',
           },
         },
-      },
+        {
+          type: DatabaseType.INSTANCE,
+          identifiers: ['db-instance-1a'],
+          startSchedule: {
+            timezone: 'UTC',
+          },
+          stopSchedule: {
+            timezone: 'UTC',
+          },
+        },
+      ],
     });
 
     const template = Template.fromStack(stack);
@@ -32,7 +43,7 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
     // Schedule execution role
     it('Should have schedule execution role', async () => {
       template.hasResourceProperties('AWS::IAM::Role', Match.objectEquals({
-        RoleName: Match.stringLikeRegexp('stop-db-cluster-schedule-.*-exec-role'),
+        RoleName: Match.stringLikeRegexp('stop-db-schedule-.*-exec-role'),
         AssumeRolePolicyDocument: Match.objectEquals({
           Version: '2012-10-17',
           Statement: Match.arrayWith([
@@ -47,16 +58,32 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
         }),
         Policies: Match.arrayEquals([
           {
+            PolicyName: 'rds-instance-stop-policy',
+            PolicyDocument: Match.objectEquals({
+              Version: '2012-10-17',
+              Statement: [
+                Match.objectEquals({
+                  Effect: 'Allow',
+                  Action: Match.arrayEquals([
+                    'rds:StopDBInstance',
+                    'rds:StartDBInstance',
+                  ]),
+                  Resource: 'arn:aws:rds:*:123456789012:db:*',
+                }),
+              ],
+            }),
+          },
+          {
             PolicyName: 'rds-cluster-stop-policy',
             PolicyDocument: Match.objectEquals({
               Version: '2012-10-17',
               Statement: [
                 Match.objectEquals({
                   Effect: 'Allow',
-                  Action: [
+                  Action: Match.arrayEquals([
                     'rds:StopDBCluster',
                     'rds:StartDBCluster',
-                  ],
+                  ]),
                   Resource: 'arn:aws:rds:*:123456789012:cluster:*',
                 }),
               ],
@@ -66,8 +93,8 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
       }));
     });
 
-    // Start Schedule testing
-    it('Should have Start Schedule', async () => {
+    // Start Cluster Schedule testing
+    it('Should have Cluster Start Schedule', async () => {
       template.hasResourceProperties('AWS::Scheduler::Schedule', Match.objectEquals({
         Name: Match.stringLikeRegexp('auto-start-db-cluster-.*-schedule'),
         Description: Match.anyValue(),
@@ -94,8 +121,8 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
       }));
     });
 
-    // Stop Schedule testing
-    it('Should have Stop Schedule', async () => {
+    // Stop Cluster Schedule testing
+    it('Should have Cluster Stop Schedule', async () => {
       template.hasResourceProperties('AWS::Scheduler::Schedule', Match.objectEquals({
         Name: Match.stringLikeRegexp('auto-stop-db-cluster-.*-schedule'),
         Description: Match.anyValue(),
@@ -122,102 +149,66 @@ describe('RdsDatabaseRunningScheduler Type=Cluster Testing', () => {
       }));
     });
 
+    // Start Instance Schedule testing
+    it('Should have Instance Start Schedule', async () => {
+      template.hasResourceProperties('AWS::Scheduler::Schedule', Match.objectEquals({
+        Name: Match.stringLikeRegexp('auto-start-db-instance-.*-schedule'),
+        Description: Match.anyValue(),
+        State: 'ENABLED',
+        FlexibleTimeWindow: {
+          Mode: 'OFF',
+        },
+        ScheduleExpressionTimezone: 'UTC',
+        ScheduleExpression: 'cron(50 7 ? * MON-FRI *)',
+        Target: Match.objectEquals({
+          Arn: 'arn:aws:scheduler:::aws-sdk:rds:startDBInstance',
+          RoleArn: {
+            'Fn::GetAtt': [
+              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
+              'Arn',
+            ],
+          },
+          Input: Match.stringLikeRegexp('{"DbInstanceIdentifier":"db-instance-1a"}'),
+          RetryPolicy: {
+            MaximumEventAgeInSeconds: 60,
+            MaximumRetryAttempts: 0,
+          },
+        }),
+      }));
+    });
+
+    // Stop Instance Schedule testing
+    it('Should have Instance Stop Schedule', async () => {
+      template.hasResourceProperties('AWS::Scheduler::Schedule', Match.objectEquals({
+        Name: Match.stringLikeRegexp('auto-stop-db-instance-.*-schedule'),
+        Description: Match.anyValue(),
+        State: 'ENABLED',
+        FlexibleTimeWindow: {
+          Mode: 'OFF',
+        },
+        ScheduleExpressionTimezone: 'UTC',
+        ScheduleExpression: 'cron(10 21 ? * MON-FRI *)',
+        Target: Match.objectEquals({
+          Arn: 'arn:aws:scheduler:::aws-sdk:rds:stopDBInstance',
+          RoleArn: {
+            'Fn::GetAtt': [
+              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
+              'Arn',
+            ],
+          },
+          Input: Match.stringLikeRegexp('{"DbInstanceIdentifier":"db-instance-1a"}'),
+          RetryPolicy: {
+            MaximumEventAgeInSeconds: 60,
+            MaximumRetryAttempts: 0,
+          },
+        }),
+      }));
+    });
+
     it('Should match snapshot', async () => {
       expect(template.toJSON()).toMatchSnapshot('default');
     });
 
   });
 
-  describe('specify schedule', () => {
-    const app = new App();
-    const stack = new Stack(app, 'TestingStack', {
-      env: {
-        account: '123456789012',
-        region: 'us-east-1',
-      },
-    });
-
-    new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
-      type: Type.CLUSTER,
-      identifiers: {
-        ['db-cluster-1a']: {
-          startSchedule: {
-            timezone: 'Asia/Tokyo',
-            minute: '55',
-            hour: '8',
-            week: 'MON-FRI',
-          },
-          stopSchedule: {
-            timezone: 'Asia/Tokyo',
-            minute: '5',
-            hour: '19',
-            week: 'MON-FRI',
-          },
-        },
-      },
-    });
-
-    const template = Template.fromStack(stack);
-
-    // Start Schedule testing
-    it('Should have Start Schedule', async () => {
-      template.hasResourceProperties('AWS::Scheduler::Schedule', Match.objectEquals({
-        Name: Match.stringLikeRegexp('auto-start-db-cluster-.*-schedule'),
-        Description: Match.anyValue(),
-        State: 'ENABLED',
-        FlexibleTimeWindow: {
-          Mode: 'OFF',
-        },
-        ScheduleExpressionTimezone: 'Asia/Tokyo',
-        ScheduleExpression: 'cron(55 8 ? * MON-FRI *)',
-        Target: Match.objectEquals({
-          Arn: 'arn:aws:scheduler:::aws-sdk:rds:startDBCluster',
-          RoleArn: {
-            'Fn::GetAtt': [
-              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
-              'Arn',
-            ],
-          },
-          Input: Match.stringLikeRegexp('{"DbClusterIdentifier":"db-cluster-1a"}'),
-          RetryPolicy: {
-            MaximumEventAgeInSeconds: 60,
-            MaximumRetryAttempts: 0,
-          },
-        }),
-      }));
-    });
-
-    // Stop Schedule testing
-    it('Should have Stop Schedule', async () => {
-      template.hasResourceProperties('AWS::Scheduler::Schedule', Match.objectEquals({
-        Name: Match.stringLikeRegexp('auto-stop-db-cluster-.*-schedule'),
-        Description: Match.anyValue(),
-        State: 'ENABLED',
-        FlexibleTimeWindow: {
-          Mode: 'OFF',
-        },
-        ScheduleExpressionTimezone: 'Asia/Tokyo',
-        ScheduleExpression: 'cron(5 19 ? * MON-FRI *)',
-        Target: Match.objectEquals({
-          Arn: 'arn:aws:scheduler:::aws-sdk:rds:stopDBCluster',
-          RoleArn: {
-            'Fn::GetAtt': [
-              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
-              'Arn',
-            ],
-          },
-          Input: Match.stringLikeRegexp('{"DbClusterIdentifier":"db-cluster-1a"}'),
-          RetryPolicy: {
-            MaximumEventAgeInSeconds: 60,
-            MaximumRetryAttempts: 0,
-          },
-        }),
-      }));
-    });
-
-    it('Should match snapshot', async () => {
-      expect(template.toJSON()).toMatchSnapshot('specify');
-    });
-
-  });
 });

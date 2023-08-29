@@ -52,27 +52,32 @@ Add the following to pom.xml:
 ## Example
 
 ```typescript
-import { RdsDatabaseRunningScheduler, Type } from '@gammarer/aws-rds-database-running-scheduler';
+import { RdsDatabaseRunningScheduler, DatabaseType } from '@gammarer/aws-rds-database-running-scheduler';
 
 new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
-  type: Type.CLUSTER, // TYPE.CLUSTER or TYPE.INSTANCE
-  identifiers: {
-    ['db-cluster-1a']: { // cluster identirier
+  targets: [
+    {
+      type: DatabaseType.CLUSTER,
+      identifiers: ['db-cluster-1a'],
       startSchedule: {
-        timezone: 'Asia/Tokyo',
-        minute: '55',
-        hour: '8',
-        week: 'MON-FRI',
+        timezone: 'UTC',
       },
       stopSchedule: {
-        timezone: 'Asia/Tokyo',
-        minute: '5',
-        hour: '19',
-        week: 'MON-FRI',
+        timezone: 'UTC',
       },
     },
-  },
-})
+    {
+      type: DatabaseType.INSTANCE,
+      identifiers: ['db-instance-1a'],
+      startSchedule: {
+        timezone: 'UTC',
+      },
+      stopSchedule: {
+        timezone: 'UTC',
+      },
+    },
+  ],
+});)
 
 ```
 
