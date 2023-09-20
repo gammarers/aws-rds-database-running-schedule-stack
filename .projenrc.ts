@@ -10,7 +10,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   description: 'AWS RDS Database Running Scheduler',
   keywords: ['aws', 'cdk', 'aws-cdk', 'rds', 'scheduler', 'cost', 'saving'],
   projenrcTs: true,
-  repositoryUrl: 'https://github.com/yicr/aws-rds-database-running-scheduler.git',
+  repositoryUrl: 'https://github.com/gammarer/aws-rds-database-running-scheduler.git',
   releaseToNpm: true,
   npmAccess: javascript.NpmAccess.PUBLIC,
   minNodeVersion: '18.0.0',

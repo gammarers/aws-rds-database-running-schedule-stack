@@ -3,7 +3,7 @@
   "description": "AWS RDS Database Running Scheduler",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yicr/aws-rds-database-running-scheduler.git"
+    "url": "https://github.com/gammarer/aws-rds-database-running-scheduler.git"
   },
   "scripts": {
     "build": "npx projen build",
