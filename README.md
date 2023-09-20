@@ -38,6 +38,12 @@ yarn add @gammarer/aws-rds-database-running-scheduler
 pip install gammarer.aws-rds-database-running-scheduler
 ```
 
+### C# / .NET
+
+```shell
+dotnet add package Gammarer.CDK.AWS.RdsDatabaseRunningScheduler
+```
+
 ### Java
 
 Add the following to pom.xml:
