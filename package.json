@@ -17,6 +17,7 @@
     "eslint": "npx projen eslint",
     "package": "npx projen package",
     "package-all": "npx projen package-all",
+    "package:dotnet": "npx projen package:dotnet",
     "package:java": "npx projen package:java",
     "package:js": "npx projen package:js",
     "package:python": "npx projen package:python",
@@ -138,6 +139,10 @@
       "python": {
         "distName": "gammarer.aws-rds-database-running-scheduler",
         "module": "gammarer.aws_rds_database_running_scheduler"
+      },
+      "dotnet": {
+        "namespace": "Gammarer.CDK.AWS",
+        "packageId": "Gammarer.CDK.AWS.RdsDatabaseRunningScheduler"
       }
     },
     "tsc": {
