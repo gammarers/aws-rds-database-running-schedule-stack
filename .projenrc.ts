@@ -14,6 +14,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/gammarer/aws-rds-database-running-scheduler.git',
   releaseToNpm: true,
   npmAccess: javascript.NpmAccess.PUBLIC,
+  majorVersion: 1,
   minNodeVersion: '16.0.0',
   workflowNodeVersion: '18.17.1',
   depsUpgradeOptions: {
