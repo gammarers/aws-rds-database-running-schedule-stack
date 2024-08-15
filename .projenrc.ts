@@ -8,11 +8,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
   typescriptVersion: '5.4.x',
   jsiiVersion: '5.4.x',
   defaultReleaseBranch: 'main',
-  name: '@gammarers/aws-rds-database-running-scheduler',
+  name: '@gammarers/aws-rds-database-running-schedule-stack',
   description: 'AWS RDS Database Running Scheduler',
   keywords: ['aws', 'cdk', 'aws-cdk', 'rds', 'scheduler', 'cost', 'saving'],
   projenrcTs: true,
-  repositoryUrl: 'https://github.com/gammarers/aws-rds-database-running-scheduler.git',
+  repositoryUrl: 'https://github.com/gammarers/aws-rds-database-running-schedule-stack.git',
   releaseToNpm: true,
   npmAccess: javascript.NpmAccess.PUBLIC,
   majorVersion: 1,
@@ -29,18 +29,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
     allowedUsernames: ['yicr'],
   },
   publishToPypi: {
-    distName: 'gammarer.aws-rds-database-running-scheduler',
-    module: 'gammarer.aws_rds_database_running_scheduler',
-  },
-  publishToMaven: {
-    mavenGroupId: 'com.gammarer',
-    javaPackage: 'com.gammarer.cdk.aws.rds_database_running_scheduler',
-    mavenArtifactId: 'aws-rds-database-running-scheduler',
-    mavenEndpoint: 'https://s01.oss.sonatype.org',
+    distName: 'gammarers.aws-rds-database-running-schedule-stack',
+    module: 'gammarers.aws_rds_database_running_scheduler',
   },
   publishToNuget: {
-    dotNetNamespace: 'Gammarer.CDK.AWS',
-    packageId: 'Gammarer.CDK.AWS.RdsDatabaseRunningScheduler',
+    dotNetNamespace: 'Gammarers.CDK.AWS',
+    packageId: 'Gammarers.CDK.AWS.RdsDatabaseRunningScheduleStack',
   },
 });
 project.synth();
