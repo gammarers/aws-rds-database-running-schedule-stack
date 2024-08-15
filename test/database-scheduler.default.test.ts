@@ -1,19 +1,13 @@
-import { App, Stack } from 'aws-cdk-lib';
+import { App } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { DatabaseType, RdsDatabaseRunningScheduler } from '../src';
+import { DatabaseType, RdsDatabaseRunningScheduleStack } from '../src';
 
 describe('RdsDatabaseRunningScheduler Default Testing', () => {
 
   describe('default schedule', () => {
     const app = new App();
-    const stack = new Stack(app, 'TestingStack', {
-      env: {
-        account: '123456789012',
-        region: 'us-east-1',
-      },
-    });
 
-    new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
+    const stack = new RdsDatabaseRunningScheduleStack(app, 'RdsDatabaseRunningScheduleStack', {
       targets: [
         {
           type: DatabaseType.CLUSTER,
@@ -68,7 +62,18 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
                     'rds:StopDBInstance',
                     'rds:StartDBInstance',
                   ]),
-                  Resource: 'arn:aws:rds:*:123456789012:db:*',
+                  Resource: {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:aws:rds:*:',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        ':db:*',
+                      ],
+                    ],
+                  },
                 }),
               ],
             }),
@@ -84,7 +89,18 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
                     'rds:StopDBCluster',
                     'rds:StartDBCluster',
                   ]),
-                  Resource: 'arn:aws:rds:*:123456789012:cluster:*',
+                  Resource: {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:aws:rds:*:',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        ':cluster:*',
+                      ],
+                    ],
+                  },
                 }),
               ],
             }),
@@ -108,7 +124,7 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
           Arn: 'arn:aws:scheduler:::aws-sdk:rds:startDBCluster',
           RoleArn: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
+              Match.stringLikeRegexp('SchedulerExecutionRole.*'),
               'Arn',
             ],
           },
@@ -136,7 +152,7 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
           Arn: 'arn:aws:scheduler:::aws-sdk:rds:stopDBCluster',
           RoleArn: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
+              Match.stringLikeRegexp('SchedulerExecutionRole.*'),
               'Arn',
             ],
           },
@@ -164,7 +180,7 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
           Arn: 'arn:aws:scheduler:::aws-sdk:rds:startDBInstance',
           RoleArn: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
+              Match.stringLikeRegexp('SchedulerExecutionRole.*'),
               'Arn',
             ],
           },
@@ -192,7 +208,7 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
           Arn: 'arn:aws:scheduler:::aws-sdk:rds:stopDBInstance',
           RoleArn: {
             'Fn::GetAtt': [
-              Match.stringLikeRegexp('RdsDatabaseRunningSchedulerSchedulerExecutionRole.*'),
+              Match.stringLikeRegexp('SchedulerExecutionRole.*'),
               'Arn',
             ],
           },
