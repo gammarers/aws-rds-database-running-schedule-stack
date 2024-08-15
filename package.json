@@ -1,9 +1,9 @@
 {
-  "name": "@gammarer/aws-rds-database-running-scheduler",
+  "name": "@gammarers/aws-rds-database-running-scheduler",
   "description": "AWS RDS Database Running Scheduler",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gammarer/aws-rds-database-running-scheduler.git"
+    "url": "https://github.com/gammarers/aws-rds-database-running-scheduler.git"
   },
   "scripts": {
     "build": "npx projen build",
