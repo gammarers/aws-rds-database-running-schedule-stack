@@ -10,7 +10,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
     },
   },
   "Resources": {
-    "RdsDatabaseRunningSchedulerSchedulerExecutionRoleB7C25A74": {
+    "SchedulerExecutionRole0AF092B7": {
       "Properties": {
         "AssumeRolePolicyDocument": {
           "Statement": [
@@ -34,7 +34,18 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
                     "rds:StartDBInstance",
                   ],
                   "Effect": "Allow",
-                  "Resource": "arn:aws:rds:*:123456789012:db:*",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:rds:*:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":db:*",
+                      ],
+                    ],
+                  },
                 },
               ],
               "Version": "2012-10-17",
@@ -50,7 +61,18 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
                     "rds:StartDBCluster",
                   ],
                   "Effect": "Allow",
-                  "Resource": "arn:aws:rds:*:123456789012:cluster:*",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:rds:*:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":cluster:*",
+                      ],
+                    ],
+                  },
                 },
               ],
               "Version": "2012-10-17",
@@ -58,11 +80,11 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
             "PolicyName": "rds-cluster-stop-policy",
           },
         ],
-        "RoleName": "stop-db-schedule-5f8018a4-exec-role",
+        "RoleName": "stop-db-schedule-f5b3cbde-exec-role",
       },
       "Type": "AWS::IAM::Role",
     },
-    "RdsDatabaseRunningSchedulerStartSchedule675DAB97311E05E4": {
+    "StartSchedule675DAB97": {
       "Properties": {
         "Description": "auto start db instance(db-instance-1a) schedule.",
         "FlexibleTimeWindow": {
@@ -81,7 +103,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "RdsDatabaseRunningSchedulerSchedulerExecutionRoleB7C25A74",
+              "SchedulerExecutionRole0AF092B7",
               "Arn",
             ],
           },
@@ -89,7 +111,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
       },
       "Type": "AWS::Scheduler::Schedule",
     },
-    "RdsDatabaseRunningSchedulerStartSchedule940DBDA110E852E9": {
+    "StartSchedule940DBDA1": {
       "Properties": {
         "Description": "auto start db cluster(db-cluster-1a) schedule.",
         "FlexibleTimeWindow": {
@@ -108,7 +130,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "RdsDatabaseRunningSchedulerSchedulerExecutionRoleB7C25A74",
+              "SchedulerExecutionRole0AF092B7",
               "Arn",
             ],
           },
@@ -116,7 +138,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
       },
       "Type": "AWS::Scheduler::Schedule",
     },
-    "RdsDatabaseRunningSchedulerStopSchedule675DAB978750830A": {
+    "StopSchedule675DAB97": {
       "Properties": {
         "Description": "auto stop db instance(db-instance-1a) schedule.",
         "FlexibleTimeWindow": {
@@ -135,7 +157,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "RdsDatabaseRunningSchedulerSchedulerExecutionRoleB7C25A74",
+              "SchedulerExecutionRole0AF092B7",
               "Arn",
             ],
           },
@@ -143,7 +165,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
       },
       "Type": "AWS::Scheduler::Schedule",
     },
-    "RdsDatabaseRunningSchedulerStopSchedule940DBDA11177CC61": {
+    "StopSchedule940DBDA1": {
       "Properties": {
         "Description": "auto stop db cluster(db-cluster-1a) schedule.",
         "FlexibleTimeWindow": {
@@ -162,7 +184,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           },
           "RoleArn": {
             "Fn::GetAtt": [
-              "RdsDatabaseRunningSchedulerSchedulerExecutionRoleB7C25A74",
+              "SchedulerExecutionRole0AF092B7",
               "Arn",
             ],
           },

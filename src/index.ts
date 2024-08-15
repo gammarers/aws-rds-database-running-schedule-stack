@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
 import * as cdk from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as scheduler from 'aws-cdk-lib/aws-scheduler';
 import { Construct } from 'constructs';
@@ -23,13 +24,13 @@ export interface TargetProperty {
   readonly startSchedule: ScheduleProperty;
 }
 
-export interface RdsDatabaseRunningSchedulerProps {
+export interface RdsDatabaseRunningScheduleStackProps extends StackProps {
   readonly targets: TargetProperty[];
 }
 
-export class RdsDatabaseRunningScheduler extends Construct {
-  constructor(scope: Construct, id: string, props: RdsDatabaseRunningSchedulerProps) {
-    super(scope, id);
+export class RdsDatabaseRunningScheduleStack extends Stack {
+  constructor(scope: Construct, id: string, props: RdsDatabaseRunningScheduleStackProps) {
+    super(scope, id, props);
 
     const account = cdk.Stack.of(this).account;
     //const stackName: string = cdk.Stack.of(this).stackName;

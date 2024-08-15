@@ -1,10 +1,10 @@
-[![GitHub](https://img.shields.io/github/license/yicr/aws-rds-database-running-scheduler?style=flat-square)](https://github.com/yicr/aws-rds-database-running-scheduler/blob/main/LICENSE)
-[![npm (scoped)](https://img.shields.io/npm/v/@gammarer/aws-rds-database-running-scheduler?style=flat-square)](https://www.npmjs.com/package/@gammarer/aws-rds-database-running-scheduler)
-[![PyPI](https://img.shields.io/pypi/v/gammarer.aws-rds-database-running-scheduler?style=flat-square)](https://pypi.org/project/gammarer.aws-rds-database-running-scheduler/)
-[![Nuget](https://img.shields.io/nuget/v/Gammarer.CDK.AWS.RdsDatabaseRunningScheduler?style=flat-square)](https://www.nuget.org/packages/Gammarer.CDK.AWS.RdsDatabaseRunningScheduler/)
-[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/com.gammarer/aws-rds-database-running-scheduler?server=https%3A%2F%2Fs01.oss.sonatype.org%2F&style=flat-square)](https://s01.oss.sonatype.org/content/repositories/releases/com/gammarer/aws-rds-database-running-scheduler/)
-[![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/yicr/aws-rds-database-running-scheduler/release.yml?branch=main&label=release&style=flat-square)](https://github.com/yicr/aws-rds-database-running-scheduler/actions/workflows/release.yml)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/yicr/aws-rds-database-running-scheduler?sort=semver&style=flat-square)](https://github.com/yicr/aws-rds-database-running-scheduler/releases)
+[![GitHub](https://img.shields.io/github/license/gammarers/aws-rds-database-running-schedule-stack?style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/blob/main/LICENSE)
+[![npm (scoped)](https://img.shields.io/npm/v/@gammarer/aws-rds-database-running-schedule-stack?style=flat-square)](https://www.npmjs.com/package/@gammarer/aws-rds-database-running-schedule-stack)
+[![PyPI](https://img.shields.io/pypi/v/gammarer.aws-rds-database-running-schedule-stack?style=flat-square)](https://pypi.org/project/gammarer.aws-rds-database-running-schedule-stack/)
+[![Nuget](https://img.shields.io/nuget/v/Gammarer.CDK.AWS.RdsDatabaseRunningScheduleStack?style=flat-square)](https://www.nuget.org/packages/Gammarers.CDK.AWS.RdsDatabaseRunningScheduler/)
+[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/com.gammarer/aws-rds-database-running-schedule-stack?server=https%3A%2F%2Fs01.oss.sonatype.org%2F&style=flat-square)](https://s01.oss.sonatype.org/content/repositories/releases/com/gammarer/aws-rds-database-running-schedule-stack/)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/gammarers/aws-rds-database-running-schedule-stack/release.yml?branch=main&label=release&style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/actions/workflows/release.yml)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gammarers/aws-rds-database-running-schedule-stack?sort=semver&style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/releases)
 
 # AWS RDS Database Running Scheduler
 
@@ -27,40 +27,29 @@ This construct creating resource list.
 ### TypeScript
 
 ```shell
-npm install @gammarer/aws-rds-database-running-scheduler
+npm install @gammarers/aws-rds-database-running-schedule-stack
 # or
-yarn add @gammarer/aws-rds-database-running-scheduler
+yarn add @gammarers/aws-rds-database-running-schedule-stack
 ```
 
 ### Python
 
 ```shell
-pip install gammarer.aws-rds-database-running-scheduler
+pip install gammarers.aws-rds-database-running-schedule-stack
 ```
 
 ### C# / .NET
 
 ```shell
-dotnet add package Gammarer.CDK.AWS.RdsDatabaseRunningScheduler
-```
-
-### Java
-
-Add the following to pom.xml:
-
-```xml
-<dependency>
-  <groupId>com.gammarer</groupId>
-  <artifactId>aws-rds-database-running-scheduler</artifactId>
-</dependency>
+dotnet add package Gammarers.CDK.AWS.RdsDatabaseRunningScheduleStack
 ```
 
 ## Example
 
 ```typescript
-import { RdsDatabaseRunningScheduler, DatabaseType } from '@gammarer/aws-rds-database-running-scheduler';
+import { RdsDatabaseRunningScheduler, DatabaseType } from '@gammarer/aws-rds-database-running-schedule-stack';
 
-new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
+new RdsDatabaseRunningScheduleStack(stack, 'RdsDatabaseRunningScheduleStack', {
   targets: [
     {
       type: DatabaseType.CLUSTER,
@@ -83,7 +72,7 @@ new RdsDatabaseRunningScheduler(stack, 'RdsDatabaseRunningScheduler', {
       },
     },
   ],
-});)
+});
 
 ```
 
