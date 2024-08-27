@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should match snapshot 1`] = `
+exports[`RdsDatabaseRunningScheduler disabled Testing Should match snapshot 1`] = `
 {
   "Mappings": {
     "ServiceprincipalMap": {
@@ -162,9 +162,9 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           "Mode": "OFF",
         },
         "Name": "rds-db-cluster-start-f5b3cbde-schedule",
-        "ScheduleExpression": "cron(55 8 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "Asia/Tokyo",
-        "State": "ENABLED",
+        "ScheduleExpression": "cron(50 7 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "DISABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
@@ -191,9 +191,9 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           "Mode": "OFF",
         },
         "Name": "rds-db-instance-start-f5b3cbde-schedule",
-        "ScheduleExpression": "cron(55 8 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "Asia/Tokyo",
-        "State": "ENABLED",
+        "ScheduleExpression": "cron(50 7 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "DISABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
@@ -422,9 +422,9 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           "Mode": "OFF",
         },
         "Name": "rds-db-cluster-stop-f5b3cbde-schedule",
-        "ScheduleExpression": "cron(5 19 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "Asia/Tokyo",
-        "State": "ENABLED",
+        "ScheduleExpression": "cron(10 21 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "DISABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
@@ -451,9 +451,9 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           "Mode": "OFF",
         },
         "Name": "rds-db-instance-stop-f5b3cbde-schedule",
-        "ScheduleExpression": "cron(5 19 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "Asia/Tokyo",
-        "State": "ENABLED",
+        "ScheduleExpression": "cron(10 21 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "DISABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
