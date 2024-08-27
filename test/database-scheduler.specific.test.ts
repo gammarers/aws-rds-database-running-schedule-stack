@@ -1,13 +1,13 @@
 import { App } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
-import { RdsDatabaseRunningScheduleStack } from '../src';
+import { RDSDatabaseRunningScheduleStack } from '../src';
 
 describe('RdsDatabaseRunningScheduler Specific Testing', () => {
 
   describe('specify schedule', () => {
     const app = new App();
 
-    const stack = new RdsDatabaseRunningScheduleStack(app, 'RdsDatabaseRunningScheduleStack', {
+    const stack = new RDSDatabaseRunningScheduleStack(app, 'RDSDatabaseRunningScheduleStack', {
       targetResource: {
         tagKey: 'WorkHoursRunning',
         tagValues: ['YES'],

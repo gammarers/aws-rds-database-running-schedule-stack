@@ -68,7 +68,7 @@ dotnet add package Gammarers.CDK.AWS.RdsDatabaseRunningScheduleStack
 ```typescript
 import { RdsDatabaseRunningScheduler, DatabaseType } from '@gammarer/aws-rds-database-running-schedule-stack';
 
-new RdsDatabaseRunningScheduleStack(stack, 'RdsDatabaseRunningScheduleStack', {
+new RDSDatabaseRunningScheduleStack(app, 'RDSDatabaseRunningScheduleStack', {
   targetResource: {
     tagKey: 'WorkHoursRunning', // already tagging to rds instance or cluster
     tagValues: ['YES'], // already tagging to rds instance or cluster
