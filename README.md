@@ -1,9 +1,9 @@
 # AWS RDS Database Running Schedule
 
 [![GitHub](https://img.shields.io/github/license/gammarers/aws-rds-database-running-schedule-stack?style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/blob/main/LICENSE)
-[![npm (scoped)](https://img.shields.io/npm/v/@gammarer/aws-rds-database-running-schedule-stack?style=flat-square)](https://www.npmjs.com/package/@gammarer/aws-rds-database-running-schedule-stack)
-[![PyPI](https://img.shields.io/pypi/v/gammarer.aws-rds-database-running-schedule-stack?style=flat-square)](https://pypi.org/project/gammarer.aws-rds-database-running-schedule-stack/)
-[![Nuget](https://img.shields.io/nuget/v/Gammarer.CDK.AWS.RdsDatabaseRunningScheduleStack?style=flat-square)](https://www.nuget.org/packages/Gammarers.CDK.AWS.RdsDatabaseRunningScheduler/)
+[![npm (scoped)](https://img.shields.io/npm/v/@gammarers/aws-rds-database-running-schedule-stack?style=flat-square)](https://www.npmjs.com/package/@gammarers/aws-rds-database-running-schedule-stack)
+[![PyPI](https://img.shields.io/pypi/v/gammarers.aws-rds-database-running-schedule-stack?style=flat-square)](https://pypi.org/project/gammarers.aws-rds-database-running-schedule-stack/)
+[![Nuget](https://img.shields.io/nuget/v/Gammarers.CDK.AWS.RdsDatabaseRunningScheduleStack?style=flat-square)](https://www.nuget.org/packages/Gammarers.CDK.AWS.RdsDatabaseRunningScheduleStack/)
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/gammarers/aws-rds-database-running-schedule-stack/release.yml?branch=main&label=release&style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/actions/workflows/release.yml)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gammarers/aws-rds-database-running-schedule-stack?sort=semver&style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/releases)
 
