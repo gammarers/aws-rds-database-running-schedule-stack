@@ -30,7 +30,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   publishToPypi: {
     distName: 'gammarers.aws-rds-database-running-schedule-stack',
-    module: 'gammarers.aws_rds_database_running_scheduler',
+    module: 'gammarers.aws_rds_database_running_schedule_stack',
   },
   publishToNuget: {
     dotNetNamespace: 'Gammarers.CDK.AWS',
