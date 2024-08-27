@@ -19,15 +19,15 @@ export interface TargetResourceProperty {
   readonly tagValues: string[];
 }
 
-export interface RdsDatabaseRunningScheduleStackProps extends StackProps {
+export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
   readonly targetResource: TargetResourceProperty;
   readonly enableScheduling?: boolean;
   readonly stopSchedule?: ScheduleProperty;
   readonly startSchedule?: ScheduleProperty;
 }
 
-export class RdsDatabaseRunningScheduleStack extends Stack {
-  constructor(scope: Construct, id: string, props: RdsDatabaseRunningScheduleStackProps) {
+export class RDSDatabaseRunningScheduleStack extends Stack {
+  constructor(scope: Construct, id: string, props: RDSDatabaseRunningScheduleStackProps) {
     super(scope, id, props);
 
     const account = cdk.Stack.of(this).account;
