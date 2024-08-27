@@ -1,4 +1,4 @@
-# AWS RDS Database Running Schedule
+# AWS RDS Database Running Schedule Stack
 
 [![GitHub](https://img.shields.io/github/license/gammarers/aws-rds-database-running-schedule-stack?style=flat-square)](https://github.com/gammarers/aws-rds-database-running-schedule-stack/blob/main/LICENSE)
 [![npm (scoped)](https://img.shields.io/npm/v/@gammarers/aws-rds-database-running-schedule-stack?style=flat-square)](https://www.npmjs.com/package/@gammarers/aws-rds-database-running-schedule-stack)
