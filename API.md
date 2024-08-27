@@ -2,39 +2,39 @@
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
-### RdsDatabaseRunningScheduleStack <a name="RdsDatabaseRunningScheduleStack" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack"></a>
+### RDSDatabaseRunningScheduleStack <a name="RDSDatabaseRunningScheduleStack" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack"></a>
 
-#### Initializers <a name="Initializers" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer"></a>
+#### Initializers <a name="Initializers" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer"></a>
 
 ```typescript
-import { RdsDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
+import { RDSDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
 
-new RdsDatabaseRunningScheduleStack(scope: Construct, id: string, props: RdsDatabaseRunningScheduleStackProps)
+new RDSDatabaseRunningScheduleStack(scope: Construct, id: string, props: RDSDatabaseRunningScheduleStackProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer.parameter.props">props</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps">RdsDatabaseRunningScheduleStackProps</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer.parameter.props">props</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps">RDSDatabaseRunningScheduleStackProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Required</sup> <a name="props" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps">RdsDatabaseRunningScheduleStackProps</a>
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps">RDSDatabaseRunningScheduleStackProps</a>
 
 ---
 
@@ -42,25 +42,25 @@ new RdsDatabaseRunningScheduleStack(scope: Construct, id: string, props: RdsData
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addMetadata">addMetadata</a></code> | Adds an arbitary key-value pair, with information you want to record about the stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportStringListValue">exportStringListValue</a></code> | Create a CloudFormation Export for a string list value. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a string value. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.splitArn">splitArn</a></code> | Splits the provided ARN into its components. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toJsonString">toJsonString</a></code> | Convert an object, potentially containing tokens, to a JSON string. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toYamlString">toYamlString</a></code> | Convert an object, potentially containing tokens, to a YAML string. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addDependency">addDependency</a></code> | Add a dependency between this stack and another stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addMetadata">addMetadata</a></code> | Adds an arbitary key-value pair, with information you want to record about the stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addTransform">addTransform</a></code> | Add a Transform to this stack. A Transform is a macro that AWS CloudFormation uses to process your template. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportStringListValue">exportStringListValue</a></code> | Create a CloudFormation Export for a string list value. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportValue">exportValue</a></code> | Create a CloudFormation Export for a string value. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.formatArn">formatArn</a></code> | Creates an ARN from components. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.getLogicalId">getLogicalId</a></code> | Allocates a stack-unique CloudFormation-compatible logical identity for a specific resource. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.regionalFact">regionalFact</a></code> | Look up a fact value for the given fact for the region of this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.renameLogicalId">renameLogicalId</a></code> | Rename a generated logical identities. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.reportMissingContextKey">reportMissingContextKey</a></code> | Indicate that a context key was expected. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.resolve">resolve</a></code> | Resolve a tokenized value in the context of the current stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.splitArn">splitArn</a></code> | Splits the provided ARN into its components. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toJsonString">toJsonString</a></code> | Convert an object, potentially containing tokens, to a JSON string. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toYamlString">toYamlString</a></code> | Convert an object, potentially containing tokens, to a YAML string. |
 
 ---
 
-##### `toString` <a name="toString" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toString"></a>
+##### `toString` <a name="toString" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toString"></a>
 
 ```typescript
 public toString(): string
@@ -68,7 +68,7 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `addDependency` <a name="addDependency" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addDependency"></a>
+##### `addDependency` <a name="addDependency" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addDependency"></a>
 
 ```typescript
 public addDependency(target: Stack, reason?: string): void
@@ -79,19 +79,19 @@ Add a dependency between this stack and another stack.
 This can be used to define dependencies between any two stacks within an
 app, and also supports nested stacks.
 
-###### `target`<sup>Required</sup> <a name="target" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addDependency.parameter.target"></a>
+###### `target`<sup>Required</sup> <a name="target" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addDependency.parameter.target"></a>
 
 - *Type:* aws-cdk-lib.Stack
 
 ---
 
-###### `reason`<sup>Optional</sup> <a name="reason" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addDependency.parameter.reason"></a>
+###### `reason`<sup>Optional</sup> <a name="reason" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addDependency.parameter.reason"></a>
 
 - *Type:* string
 
 ---
 
-##### `addMetadata` <a name="addMetadata" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addMetadata"></a>
+##### `addMetadata` <a name="addMetadata" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addMetadata"></a>
 
 ```typescript
 public addMetadata(key: string, value: any): void
@@ -103,19 +103,19 @@ These get translated to the Metadata section of the generated template.
 
 > [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/metadata-section-structure.html](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/metadata-section-structure.html)
 
-###### `key`<sup>Required</sup> <a name="key" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addMetadata.parameter.key"></a>
+###### `key`<sup>Required</sup> <a name="key" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addMetadata.parameter.key"></a>
 
 - *Type:* string
 
 ---
 
-###### `value`<sup>Required</sup> <a name="value" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addMetadata.parameter.value"></a>
+###### `value`<sup>Required</sup> <a name="value" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addMetadata.parameter.value"></a>
 
 - *Type:* any
 
 ---
 
-##### `addTransform` <a name="addTransform" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addTransform"></a>
+##### `addTransform` <a name="addTransform" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addTransform"></a>
 
 ```typescript
 public addTransform(transform: string): void
@@ -136,7 +136,7 @@ stack.addTransform('AWS::Serverless-2016-10-31')
 ```
 
 
-###### `transform`<sup>Required</sup> <a name="transform" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.addTransform.parameter.transform"></a>
+###### `transform`<sup>Required</sup> <a name="transform" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.addTransform.parameter.transform"></a>
 
 - *Type:* string
 
@@ -144,7 +144,7 @@ The transform to add.
 
 ---
 
-##### `exportStringListValue` <a name="exportStringListValue" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportStringListValue"></a>
+##### `exportStringListValue` <a name="exportStringListValue" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportStringListValue"></a>
 
 ```typescript
 public exportStringListValue(exportedValue: any, options?: ExportValueOptions): string[]
@@ -170,19 +170,19 @@ the resource and the manual export.
 
 See `exportValue` for an example of this process.
 
-###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportStringListValue.parameter.exportedValue"></a>
+###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportStringListValue.parameter.exportedValue"></a>
 
 - *Type:* any
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportStringListValue.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportStringListValue.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.ExportValueOptions
 
 ---
 
-##### `exportValue` <a name="exportValue" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportValue"></a>
+##### `exportValue` <a name="exportValue" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportValue"></a>
 
 ```typescript
 public exportValue(exportedValue: any, options?: ExportValueOptions): string
@@ -233,19 +233,19 @@ Instead, the process takes two deployments:
 - Don't forget to remove the `exportValue()` call as well.
 - Deploy again (this time only the `producerStack` will be changed -- the bucket will be deleted).
 
-###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportValue.parameter.exportedValue"></a>
+###### `exportedValue`<sup>Required</sup> <a name="exportedValue" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportValue.parameter.exportedValue"></a>
 
 - *Type:* any
 
 ---
 
-###### `options`<sup>Optional</sup> <a name="options" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.exportValue.parameter.options"></a>
+###### `options`<sup>Optional</sup> <a name="options" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.exportValue.parameter.options"></a>
 
 - *Type:* aws-cdk-lib.ExportValueOptions
 
 ---
 
-##### `formatArn` <a name="formatArn" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.formatArn"></a>
+##### `formatArn` <a name="formatArn" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.formatArn"></a>
 
 ```typescript
 public formatArn(components: ArnComponents): string
@@ -267,13 +267,13 @@ The required ARN pieces that are omitted will be taken from the stack that
 the 'scope' is attached to. If all ARN pieces are supplied, the supplied scope
 can be 'undefined'.
 
-###### `components`<sup>Required</sup> <a name="components" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.formatArn.parameter.components"></a>
+###### `components`<sup>Required</sup> <a name="components" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.formatArn.parameter.components"></a>
 
 - *Type:* aws-cdk-lib.ArnComponents
 
 ---
 
-##### `getLogicalId` <a name="getLogicalId" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.getLogicalId"></a>
+##### `getLogicalId` <a name="getLogicalId" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.getLogicalId"></a>
 
 ```typescript
 public getLogicalId(element: CfnElement): string
@@ -289,7 +289,7 @@ This method uses the protected method `allocateLogicalId` to render the
 logical ID for an element. To modify the naming scheme, extend the `Stack`
 class and override this method.
 
-###### `element`<sup>Required</sup> <a name="element" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.getLogicalId.parameter.element"></a>
+###### `element`<sup>Required</sup> <a name="element" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.getLogicalId.parameter.element"></a>
 
 - *Type:* aws-cdk-lib.CfnElement
 
@@ -297,7 +297,7 @@ The CloudFormation element for which a logical identity is needed.
 
 ---
 
-##### `regionalFact` <a name="regionalFact" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.regionalFact"></a>
+##### `regionalFact` <a name="regionalFact" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.regionalFact"></a>
 
 ```typescript
 public regionalFact(factName: string, defaultValue?: string): string
@@ -321,19 +321,19 @@ not have to worry about regional facts.
 If `defaultValue` is not given, it is an error if the fact is unknown for
 the given region.
 
-###### `factName`<sup>Required</sup> <a name="factName" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.regionalFact.parameter.factName"></a>
+###### `factName`<sup>Required</sup> <a name="factName" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.regionalFact.parameter.factName"></a>
 
 - *Type:* string
 
 ---
 
-###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.regionalFact.parameter.defaultValue"></a>
+###### `defaultValue`<sup>Optional</sup> <a name="defaultValue" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.regionalFact.parameter.defaultValue"></a>
 
 - *Type:* string
 
 ---
 
-##### `renameLogicalId` <a name="renameLogicalId" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.renameLogicalId"></a>
+##### `renameLogicalId` <a name="renameLogicalId" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.renameLogicalId"></a>
 
 ```typescript
 public renameLogicalId(oldId: string, newId: string): void
@@ -344,19 +344,19 @@ Rename a generated logical identities.
 To modify the naming scheme strategy, extend the `Stack` class and
 override the `allocateLogicalId` method.
 
-###### `oldId`<sup>Required</sup> <a name="oldId" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.renameLogicalId.parameter.oldId"></a>
+###### `oldId`<sup>Required</sup> <a name="oldId" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.renameLogicalId.parameter.oldId"></a>
 
 - *Type:* string
 
 ---
 
-###### `newId`<sup>Required</sup> <a name="newId" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.renameLogicalId.parameter.newId"></a>
+###### `newId`<sup>Required</sup> <a name="newId" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.renameLogicalId.parameter.newId"></a>
 
 - *Type:* string
 
 ---
 
-##### `reportMissingContextKey` <a name="reportMissingContextKey" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.reportMissingContextKey"></a>
+##### `reportMissingContextKey` <a name="reportMissingContextKey" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.reportMissingContextKey"></a>
 
 ```typescript
 public reportMissingContextKey(report: MissingContext): void
@@ -367,7 +367,7 @@ Indicate that a context key was expected.
 Contains instructions which will be emitted into the cloud assembly on how
 the key should be supplied.
 
-###### `report`<sup>Required</sup> <a name="report" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.reportMissingContextKey.parameter.report"></a>
+###### `report`<sup>Required</sup> <a name="report" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.reportMissingContextKey.parameter.report"></a>
 
 - *Type:* aws-cdk-lib.cloud_assembly_schema.MissingContext
 
@@ -375,7 +375,7 @@ The set of parameters needed to obtain the context.
 
 ---
 
-##### `resolve` <a name="resolve" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.resolve"></a>
+##### `resolve` <a name="resolve" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.resolve"></a>
 
 ```typescript
 public resolve(obj: any): any
@@ -383,13 +383,13 @@ public resolve(obj: any): any
 
 Resolve a tokenized value in the context of the current stack.
 
-###### `obj`<sup>Required</sup> <a name="obj" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.resolve.parameter.obj"></a>
+###### `obj`<sup>Required</sup> <a name="obj" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.resolve.parameter.obj"></a>
 
 - *Type:* any
 
 ---
 
-##### `splitArn` <a name="splitArn" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.splitArn"></a>
+##### `splitArn` <a name="splitArn" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.splitArn"></a>
 
 ```typescript
 public splitArn(arn: string, arnFormat: ArnFormat): ArnComponents
@@ -402,7 +402,7 @@ and a Token representing a dynamic CloudFormation expression
 (in which case the returned components will also be dynamic CloudFormation expressions,
 encoded as Tokens).
 
-###### `arn`<sup>Required</sup> <a name="arn" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.splitArn.parameter.arn"></a>
+###### `arn`<sup>Required</sup> <a name="arn" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.splitArn.parameter.arn"></a>
 
 - *Type:* string
 
@@ -410,7 +410,7 @@ the ARN to split into its components.
 
 ---
 
-###### `arnFormat`<sup>Required</sup> <a name="arnFormat" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.splitArn.parameter.arnFormat"></a>
+###### `arnFormat`<sup>Required</sup> <a name="arnFormat" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.splitArn.parameter.arnFormat"></a>
 
 - *Type:* aws-cdk-lib.ArnFormat
 
@@ -418,7 +418,7 @@ the expected format of 'arn' - depends on what format the service 'arn' represen
 
 ---
 
-##### `toJsonString` <a name="toJsonString" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toJsonString"></a>
+##### `toJsonString` <a name="toJsonString" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toJsonString"></a>
 
 ```typescript
 public toJsonString(obj: any, space?: number): string
@@ -426,19 +426,19 @@ public toJsonString(obj: any, space?: number): string
 
 Convert an object, potentially containing tokens, to a JSON string.
 
-###### `obj`<sup>Required</sup> <a name="obj" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toJsonString.parameter.obj"></a>
+###### `obj`<sup>Required</sup> <a name="obj" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toJsonString.parameter.obj"></a>
 
 - *Type:* any
 
 ---
 
-###### `space`<sup>Optional</sup> <a name="space" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toJsonString.parameter.space"></a>
+###### `space`<sup>Optional</sup> <a name="space" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toJsonString.parameter.space"></a>
 
 - *Type:* number
 
 ---
 
-##### `toYamlString` <a name="toYamlString" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toYamlString"></a>
+##### `toYamlString` <a name="toYamlString" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toYamlString"></a>
 
 ```typescript
 public toYamlString(obj: any): string
@@ -446,7 +446,7 @@ public toYamlString(obj: any): string
 
 Convert an object, potentially containing tokens, to a YAML string.
 
-###### `obj`<sup>Required</sup> <a name="obj" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.toYamlString.parameter.obj"></a>
+###### `obj`<sup>Required</sup> <a name="obj" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.toYamlString.parameter.obj"></a>
 
 - *Type:* any
 
@@ -456,23 +456,23 @@ Convert an object, potentially containing tokens, to a YAML string.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.isStack">isStack</a></code> | Return whether the given object is a Stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.of">of</a></code> | Looks up the first stack scope in which `construct` is defined. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.isStack">isStack</a></code> | Return whether the given object is a Stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.of">of</a></code> | Looks up the first stack scope in which `construct` is defined. |
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.isConstruct"></a>
+##### ~~`isConstruct`~~ <a name="isConstruct" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.isConstruct"></a>
 
 ```typescript
-import { RdsDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
+import { RDSDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
 
-RdsDatabaseRunningScheduleStack.isConstruct(x: any)
+RDSDatabaseRunningScheduleStack.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
 
-###### `x`<sup>Required</sup> <a name="x" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -480,37 +480,37 @@ Any object.
 
 ---
 
-##### `isStack` <a name="isStack" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.isStack"></a>
+##### `isStack` <a name="isStack" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.isStack"></a>
 
 ```typescript
-import { RdsDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
+import { RDSDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
 
-RdsDatabaseRunningScheduleStack.isStack(x: any)
+RDSDatabaseRunningScheduleStack.isStack(x: any)
 ```
 
 Return whether the given object is a Stack.
 
 We do attribute detection since we can't reliably use 'instanceof'.
 
-###### `x`<sup>Required</sup> <a name="x" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.isStack.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.isStack.parameter.x"></a>
 
 - *Type:* any
 
 ---
 
-##### `of` <a name="of" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.of"></a>
+##### `of` <a name="of" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.of"></a>
 
 ```typescript
-import { RdsDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
+import { RDSDatabaseRunningScheduleStack } from '@gammarers/aws-rds-database-running-schedule-stack'
 
-RdsDatabaseRunningScheduleStack.of(construct: IConstruct)
+RDSDatabaseRunningScheduleStack.of(construct: IConstruct)
 ```
 
 Looks up the first stack scope in which `construct` is defined.
 
 Fails if there is no stack up the tree.
 
-###### `construct`<sup>Required</sup> <a name="construct" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.of.parameter.construct"></a>
+###### `construct`<sup>Required</sup> <a name="construct" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.of.parameter.construct"></a>
 
 - *Type:* constructs.IConstruct
 
@@ -522,31 +522,31 @@ The construct to start the search from.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.account">account</a></code> | <code>string</code> | The AWS account into which this stack will be deployed. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.artifactId">artifactId</a></code> | <code>string</code> | The ID of the cloud assembly artifact for this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.availabilityZones">availabilityZones</a></code> | <code>string[]</code> | Returns the list of AZs that are available in the AWS environment (account/region) associated with this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.bundlingRequired">bundlingRequired</a></code> | <code>boolean</code> | Indicates whether the stack requires bundling or not. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.dependencies">dependencies</a></code> | <code>aws-cdk-lib.Stack[]</code> | Return the stacks this stack depends on. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.environment">environment</a></code> | <code>string</code> | The environment coordinates in which this stack is deployed. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.nested">nested</a></code> | <code>boolean</code> | Indicates if this is a nested stack, in which case `parentStack` will include a reference to it's parent. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.notificationArns">notificationArns</a></code> | <code>string[]</code> | Returns the list of notification Amazon Resource Names (ARNs) for the current stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.partition">partition</a></code> | <code>string</code> | The partition in which this stack is defined. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.region">region</a></code> | <code>string</code> | The AWS region into which this stack will be deployed (e.g. `us-west-2`). |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.stackId">stackId</a></code> | <code>string</code> | The ID of the stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.stackName">stackName</a></code> | <code>string</code> | The concrete CloudFormation physical stack name. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method for this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.tags">tags</a></code> | <code>aws-cdk-lib.TagManager</code> | Tags to be applied to the stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.templateFile">templateFile</a></code> | <code>string</code> | The name of the CloudFormation template file emitted to the output directory during synthesis. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.templateOptions">templateOptions</a></code> | <code>aws-cdk-lib.ITemplateOptions</code> | Options for CloudFormation template (like version, transform, description). |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.urlSuffix">urlSuffix</a></code> | <code>string</code> | The Amazon domain suffix for the region in which this stack is defined. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.nestedStackParent">nestedStackParent</a></code> | <code>aws-cdk-lib.Stack</code> | If this is a nested stack, returns it's parent stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.nestedStackResource">nestedStackResource</a></code> | <code>aws-cdk-lib.CfnResource</code> | If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether termination protection is enabled for this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.account">account</a></code> | <code>string</code> | The AWS account into which this stack will be deployed. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.artifactId">artifactId</a></code> | <code>string</code> | The ID of the cloud assembly artifact for this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.availabilityZones">availabilityZones</a></code> | <code>string[]</code> | Returns the list of AZs that are available in the AWS environment (account/region) associated with this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.bundlingRequired">bundlingRequired</a></code> | <code>boolean</code> | Indicates whether the stack requires bundling or not. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.dependencies">dependencies</a></code> | <code>aws-cdk-lib.Stack[]</code> | Return the stacks this stack depends on. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.environment">environment</a></code> | <code>string</code> | The environment coordinates in which this stack is deployed. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.nested">nested</a></code> | <code>boolean</code> | Indicates if this is a nested stack, in which case `parentStack` will include a reference to it's parent. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.notificationArns">notificationArns</a></code> | <code>string[]</code> | Returns the list of notification Amazon Resource Names (ARNs) for the current stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.partition">partition</a></code> | <code>string</code> | The partition in which this stack is defined. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.region">region</a></code> | <code>string</code> | The AWS region into which this stack will be deployed (e.g. `us-west-2`). |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.stackId">stackId</a></code> | <code>string</code> | The ID of the stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.stackName">stackName</a></code> | <code>string</code> | The concrete CloudFormation physical stack name. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method for this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.tags">tags</a></code> | <code>aws-cdk-lib.TagManager</code> | Tags to be applied to the stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.templateFile">templateFile</a></code> | <code>string</code> | The name of the CloudFormation template file emitted to the output directory during synthesis. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.templateOptions">templateOptions</a></code> | <code>aws-cdk-lib.ITemplateOptions</code> | Options for CloudFormation template (like version, transform, description). |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.urlSuffix">urlSuffix</a></code> | <code>string</code> | The Amazon domain suffix for the region in which this stack is defined. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.nestedStackParent">nestedStackParent</a></code> | <code>aws-cdk-lib.Stack</code> | If this is a nested stack, returns it's parent stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.nestedStackResource">nestedStackResource</a></code> | <code>aws-cdk-lib.CfnResource</code> | If this is a nested stack, this represents its `AWS::CloudFormation::Stack` resource. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether termination protection is enabled for this stack. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -558,7 +558,7 @@ The tree node.
 
 ---
 
-##### `account`<sup>Required</sup> <a name="account" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.account"></a>
+##### `account`<sup>Required</sup> <a name="account" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.account"></a>
 
 ```typescript
 public readonly account: string;
@@ -587,7 +587,7 @@ implement some other region-agnostic behavior.
 
 ---
 
-##### `artifactId`<sup>Required</sup> <a name="artifactId" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.artifactId"></a>
+##### `artifactId`<sup>Required</sup> <a name="artifactId" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.artifactId"></a>
 
 ```typescript
 public readonly artifactId: string;
@@ -599,7 +599,7 @@ The ID of the cloud assembly artifact for this stack.
 
 ---
 
-##### `availabilityZones`<sup>Required</sup> <a name="availabilityZones" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.availabilityZones"></a>
+##### `availabilityZones`<sup>Required</sup> <a name="availabilityZones" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.availabilityZones"></a>
 
 ```typescript
 public readonly availabilityZones: string[];
@@ -622,7 +622,7 @@ To specify a different strategy for selecting availability zones override this m
 
 ---
 
-##### `bundlingRequired`<sup>Required</sup> <a name="bundlingRequired" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.bundlingRequired"></a>
+##### `bundlingRequired`<sup>Required</sup> <a name="bundlingRequired" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.bundlingRequired"></a>
 
 ```typescript
 public readonly bundlingRequired: boolean;
@@ -634,7 +634,7 @@ Indicates whether the stack requires bundling or not.
 
 ---
 
-##### `dependencies`<sup>Required</sup> <a name="dependencies" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.dependencies"></a>
+##### `dependencies`<sup>Required</sup> <a name="dependencies" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.dependencies"></a>
 
 ```typescript
 public readonly dependencies: Stack[];
@@ -646,7 +646,7 @@ Return the stacks this stack depends on.
 
 ---
 
-##### `environment`<sup>Required</sup> <a name="environment" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.environment"></a>
+##### `environment`<sup>Required</sup> <a name="environment" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.environment"></a>
 
 ```typescript
 public readonly environment: string;
@@ -670,7 +670,7 @@ region/account-agnostic.
 
 ---
 
-##### `nested`<sup>Required</sup> <a name="nested" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.nested"></a>
+##### `nested`<sup>Required</sup> <a name="nested" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.nested"></a>
 
 ```typescript
 public readonly nested: boolean;
@@ -682,7 +682,7 @@ Indicates if this is a nested stack, in which case `parentStack` will include a 
 
 ---
 
-##### `notificationArns`<sup>Required</sup> <a name="notificationArns" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.notificationArns"></a>
+##### `notificationArns`<sup>Required</sup> <a name="notificationArns" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.notificationArns"></a>
 
 ```typescript
 public readonly notificationArns: string[];
@@ -694,7 +694,7 @@ Returns the list of notification Amazon Resource Names (ARNs) for the current st
 
 ---
 
-##### `partition`<sup>Required</sup> <a name="partition" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.partition"></a>
+##### `partition`<sup>Required</sup> <a name="partition" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.partition"></a>
 
 ```typescript
 public readonly partition: string;
@@ -706,7 +706,7 @@ The partition in which this stack is defined.
 
 ---
 
-##### `region`<sup>Required</sup> <a name="region" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.region"></a>
+##### `region`<sup>Required</sup> <a name="region" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.region"></a>
 
 ```typescript
 public readonly region: string;
@@ -735,7 +735,7 @@ implement some other region-agnostic behavior.
 
 ---
 
-##### `stackId`<sup>Required</sup> <a name="stackId" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.stackId"></a>
+##### `stackId`<sup>Required</sup> <a name="stackId" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.stackId"></a>
 
 ```typescript
 public readonly stackId: string;
@@ -755,7 +755,7 @@ The ID of the stack.
 ```
 
 
-##### `stackName`<sup>Required</sup> <a name="stackName" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.stackName"></a>
+##### `stackName`<sup>Required</sup> <a name="stackName" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.stackName"></a>
 
 ```typescript
 public readonly stackName: string;
@@ -776,7 +776,7 @@ you can use `Aws.STACK_NAME` directly.
 
 ---
 
-##### `synthesizer`<sup>Required</sup> <a name="synthesizer" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.synthesizer"></a>
+##### `synthesizer`<sup>Required</sup> <a name="synthesizer" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.synthesizer"></a>
 
 ```typescript
 public readonly synthesizer: IStackSynthesizer;
@@ -788,7 +788,7 @@ Synthesis method for this stack.
 
 ---
 
-##### `tags`<sup>Required</sup> <a name="tags" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.tags"></a>
+##### `tags`<sup>Required</sup> <a name="tags" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.tags"></a>
 
 ```typescript
 public readonly tags: TagManager;
@@ -800,7 +800,7 @@ Tags to be applied to the stack.
 
 ---
 
-##### `templateFile`<sup>Required</sup> <a name="templateFile" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.templateFile"></a>
+##### `templateFile`<sup>Required</sup> <a name="templateFile" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.templateFile"></a>
 
 ```typescript
 public readonly templateFile: string;
@@ -814,7 +814,7 @@ Example value: `MyStack.template.json`
 
 ---
 
-##### `templateOptions`<sup>Required</sup> <a name="templateOptions" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.templateOptions"></a>
+##### `templateOptions`<sup>Required</sup> <a name="templateOptions" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.templateOptions"></a>
 
 ```typescript
 public readonly templateOptions: ITemplateOptions;
@@ -826,7 +826,7 @@ Options for CloudFormation template (like version, transform, description).
 
 ---
 
-##### `urlSuffix`<sup>Required</sup> <a name="urlSuffix" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.urlSuffix"></a>
+##### `urlSuffix`<sup>Required</sup> <a name="urlSuffix" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.urlSuffix"></a>
 
 ```typescript
 public readonly urlSuffix: string;
@@ -838,7 +838,7 @@ The Amazon domain suffix for the region in which this stack is defined.
 
 ---
 
-##### `nestedStackParent`<sup>Optional</sup> <a name="nestedStackParent" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.nestedStackParent"></a>
+##### `nestedStackParent`<sup>Optional</sup> <a name="nestedStackParent" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.nestedStackParent"></a>
 
 ```typescript
 public readonly nestedStackParent: Stack;
@@ -850,7 +850,7 @@ If this is a nested stack, returns it's parent stack.
 
 ---
 
-##### `nestedStackResource`<sup>Optional</sup> <a name="nestedStackResource" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.nestedStackResource"></a>
+##### `nestedStackResource`<sup>Optional</sup> <a name="nestedStackResource" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.nestedStackResource"></a>
 
 ```typescript
 public readonly nestedStackResource: CfnResource;
@@ -864,7 +864,7 @@ If this is a nested stack, this represents its `AWS::CloudFormation::Stack` reso
 
 ---
 
-##### `terminationProtection`<sup>Required</sup> <a name="terminationProtection" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.terminationProtection"></a>
+##### `terminationProtection`<sup>Required</sup> <a name="terminationProtection" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStack.property.terminationProtection"></a>
 
 ```typescript
 public readonly terminationProtection: boolean;
@@ -879,38 +879,38 @@ Whether termination protection is enabled for this stack.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### RdsDatabaseRunningScheduleStackProps <a name="RdsDatabaseRunningScheduleStackProps" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps"></a>
+### RDSDatabaseRunningScheduleStackProps <a name="RDSDatabaseRunningScheduleStackProps" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps"></a>
 
-#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.Initializer"></a>
 
 ```typescript
-import { RdsDatabaseRunningScheduleStackProps } from '@gammarers/aws-rds-database-running-schedule-stack'
+import { RDSDatabaseRunningScheduleStackProps } from '@gammarers/aws-rds-database-running-schedule-stack'
 
-const rdsDatabaseRunningScheduleStackProps: RdsDatabaseRunningScheduleStackProps = { ... }
+const rDSDatabaseRunningScheduleStackProps: RDSDatabaseRunningScheduleStackProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.analyticsReporting">analyticsReporting</a></code> | <code>boolean</code> | Include runtime versioning information in this Stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.crossRegionReferences">crossRegionReferences</a></code> | <code>boolean</code> | Enable this flag to allow native cross region stack references. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.description">description</a></code> | <code>string</code> | A description of the stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | The AWS environment (account/region) where this stack will be deployed. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stackName">stackName</a></code> | <code>string</code> | Name to deploy the stack with. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.suppressTemplateIndentation">suppressTemplateIndentation</a></code> | <code>boolean</code> | Enable this flag to suppress indentation in generated CloudFormation templates. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method to use while deploying this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | Stack tags that will be applied to all the taggable resources and the stack itself. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.targetResource">targetResource</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty">TargetResourceProperty</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.enableScheduling">enableScheduling</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.analyticsReporting">analyticsReporting</a></code> | <code>boolean</code> | Include runtime versioning information in this Stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.crossRegionReferences">crossRegionReferences</a></code> | <code>boolean</code> | Enable this flag to allow native cross region stack references. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.description">description</a></code> | <code>string</code> | A description of the stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | The AWS environment (account/region) where this stack will be deployed. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stackName">stackName</a></code> | <code>string</code> | Name to deploy the stack with. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.suppressTemplateIndentation">suppressTemplateIndentation</a></code> | <code>boolean</code> | Enable this flag to suppress indentation in generated CloudFormation templates. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method to use while deploying this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | Stack tags that will be applied to all the taggable resources and the stack itself. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.targetResource">targetResource</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty">TargetResourceProperty</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.enableScheduling">enableScheduling</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
 
 ---
 
-##### `analyticsReporting`<sup>Optional</sup> <a name="analyticsReporting" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.analyticsReporting"></a>
+##### `analyticsReporting`<sup>Optional</sup> <a name="analyticsReporting" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.analyticsReporting"></a>
 
 ```typescript
 public readonly analyticsReporting: boolean;
@@ -923,7 +923,7 @@ Include runtime versioning information in this Stack.
 
 ---
 
-##### `crossRegionReferences`<sup>Optional</sup> <a name="crossRegionReferences" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.crossRegionReferences"></a>
+##### `crossRegionReferences`<sup>Optional</sup> <a name="crossRegionReferences" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.crossRegionReferences"></a>
 
 ```typescript
 public readonly crossRegionReferences: boolean;
@@ -941,7 +941,7 @@ This feature is currently experimental
 
 ---
 
-##### `description`<sup>Optional</sup> <a name="description" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.description"></a>
+##### `description`<sup>Optional</sup> <a name="description" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.description"></a>
 
 ```typescript
 public readonly description: string;
@@ -954,7 +954,7 @@ A description of the stack.
 
 ---
 
-##### `env`<sup>Optional</sup> <a name="env" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.env"></a>
+##### `env`<sup>Optional</sup> <a name="env" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.env"></a>
 
 ```typescript
 public readonly env: Environment;
@@ -1028,7 +1028,7 @@ new MyStack(app, 'Stack1');
 ```
 
 
-##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.permissionsBoundary"></a>
+##### `permissionsBoundary`<sup>Optional</sup> <a name="permissionsBoundary" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.permissionsBoundary"></a>
 
 ```typescript
 public readonly permissionsBoundary: PermissionsBoundary;
@@ -1041,7 +1041,7 @@ Options for applying a permissions boundary to all IAM Roles and Users created w
 
 ---
 
-##### `stackName`<sup>Optional</sup> <a name="stackName" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stackName"></a>
+##### `stackName`<sup>Optional</sup> <a name="stackName" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stackName"></a>
 
 ```typescript
 public readonly stackName: string;
@@ -1054,7 +1054,7 @@ Name to deploy the stack with.
 
 ---
 
-##### `suppressTemplateIndentation`<sup>Optional</sup> <a name="suppressTemplateIndentation" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.suppressTemplateIndentation"></a>
+##### `suppressTemplateIndentation`<sup>Optional</sup> <a name="suppressTemplateIndentation" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.suppressTemplateIndentation"></a>
 
 ```typescript
 public readonly suppressTemplateIndentation: boolean;
@@ -1071,7 +1071,7 @@ default value `false` will be used.
 
 ---
 
-##### `synthesizer`<sup>Optional</sup> <a name="synthesizer" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.synthesizer"></a>
+##### `synthesizer`<sup>Optional</sup> <a name="synthesizer" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.synthesizer"></a>
 
 ```typescript
 public readonly synthesizer: IStackSynthesizer;
@@ -1094,7 +1094,7 @@ other synthesizer is specified.
 
 ---
 
-##### `tags`<sup>Optional</sup> <a name="tags" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.tags"></a>
+##### `tags`<sup>Optional</sup> <a name="tags" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.tags"></a>
 
 ```typescript
 public readonly tags: {[ key: string ]: string};
@@ -1107,7 +1107,7 @@ Stack tags that will be applied to all the taggable resources and the stack itse
 
 ---
 
-##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.terminationProtection"></a>
+##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.terminationProtection"></a>
 
 ```typescript
 public readonly terminationProtection: boolean;
@@ -1120,7 +1120,7 @@ Whether to enable termination protection for this stack.
 
 ---
 
-##### `targetResource`<sup>Required</sup> <a name="targetResource" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.targetResource"></a>
+##### `targetResource`<sup>Required</sup> <a name="targetResource" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.targetResource"></a>
 
 ```typescript
 public readonly targetResource: TargetResourceProperty;
@@ -1130,7 +1130,7 @@ public readonly targetResource: TargetResourceProperty;
 
 ---
 
-##### `enableScheduling`<sup>Optional</sup> <a name="enableScheduling" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.enableScheduling"></a>
+##### `enableScheduling`<sup>Optional</sup> <a name="enableScheduling" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.enableScheduling"></a>
 
 ```typescript
 public readonly enableScheduling: boolean;
@@ -1140,7 +1140,7 @@ public readonly enableScheduling: boolean;
 
 ---
 
-##### `startSchedule`<sup>Optional</sup> <a name="startSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.startSchedule"></a>
+##### `startSchedule`<sup>Optional</sup> <a name="startSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.startSchedule"></a>
 
 ```typescript
 public readonly startSchedule: ScheduleProperty;
@@ -1150,7 +1150,7 @@ public readonly startSchedule: ScheduleProperty;
 
 ---
 
-##### `stopSchedule`<sup>Optional</sup> <a name="stopSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stopSchedule"></a>
+##### `stopSchedule`<sup>Optional</sup> <a name="stopSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stopSchedule"></a>
 
 ```typescript
 public readonly stopSchedule: ScheduleProperty;
