@@ -864,7 +864,7 @@ If this is a nested stack, this represents its `AWS::CloudFormation::Stack` reso
 
 ---
 
-##### `terminationProtection`<sup>Optional</sup> <a name="terminationProtection" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.terminationProtection"></a>
+##### `terminationProtection`<sup>Required</sup> <a name="terminationProtection" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStack.property.terminationProtection"></a>
 
 ```typescript
 public readonly terminationProtection: boolean;
@@ -899,10 +899,14 @@ const rdsDatabaseRunningScheduleStackProps: RdsDatabaseRunningScheduleStackProps
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.env">env</a></code> | <code>aws-cdk-lib.Environment</code> | The AWS environment (account/region) where this stack will be deployed. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.permissionsBoundary">permissionsBoundary</a></code> | <code>aws-cdk-lib.PermissionsBoundary</code> | Options for applying a permissions boundary to all IAM Roles and Users created within this Stage. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stackName">stackName</a></code> | <code>string</code> | Name to deploy the stack with. |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.suppressTemplateIndentation">suppressTemplateIndentation</a></code> | <code>boolean</code> | Enable this flag to suppress indentation in generated CloudFormation templates. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.synthesizer">synthesizer</a></code> | <code>aws-cdk-lib.IStackSynthesizer</code> | Synthesis method to use while deploying this stack. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | Stack tags that will be applied to all the taggable resources and the stack itself. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.targets">targets</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetProperty">TargetProperty</a>[]</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.targetResource">targetResource</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty">TargetResourceProperty</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.enableScheduling">enableScheduling</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
 
 ---
 
@@ -1050,6 +1054,23 @@ Name to deploy the stack with.
 
 ---
 
+##### `suppressTemplateIndentation`<sup>Optional</sup> <a name="suppressTemplateIndentation" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.suppressTemplateIndentation"></a>
+
+```typescript
+public readonly suppressTemplateIndentation: boolean;
+```
+
+- *Type:* boolean
+- *Default:* the value of `@aws-cdk/core:suppressTemplateIndentation`, or `false` if that is not set.
+
+Enable this flag to suppress indentation in generated CloudFormation templates.
+
+If not specified, the value of the `@aws-cdk/core:suppressTemplateIndentation`
+context key will be used. If that is not specified, then the
+default value `false` will be used.
+
+---
+
 ##### `synthesizer`<sup>Optional</sup> <a name="synthesizer" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.synthesizer"></a>
 
 ```typescript
@@ -1099,13 +1120,43 @@ Whether to enable termination protection for this stack.
 
 ---
 
-##### `targets`<sup>Required</sup> <a name="targets" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.targets"></a>
+##### `targetResource`<sup>Required</sup> <a name="targetResource" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.targetResource"></a>
 
 ```typescript
-public readonly targets: TargetProperty[];
+public readonly targetResource: TargetResourceProperty;
 ```
 
-- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetProperty">TargetProperty</a>[]
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty">TargetResourceProperty</a>
+
+---
+
+##### `enableScheduling`<sup>Optional</sup> <a name="enableScheduling" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.enableScheduling"></a>
+
+```typescript
+public readonly enableScheduling: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+##### `startSchedule`<sup>Optional</sup> <a name="startSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.startSchedule"></a>
+
+```typescript
+public readonly startSchedule: ScheduleProperty;
+```
+
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a>
+
+---
+
+##### `stopSchedule`<sup>Optional</sup> <a name="stopSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.RdsDatabaseRunningScheduleStackProps.property.stopSchedule"></a>
+
+```typescript
+public readonly stopSchedule: ScheduleProperty;
+```
+
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a>
 
 ---
 
@@ -1170,88 +1221,44 @@ public readonly week: string;
 
 ---
 
-### TargetProperty <a name="TargetProperty" id="@gammarers/aws-rds-database-running-schedule-stack.TargetProperty"></a>
+### TargetResourceProperty <a name="TargetResourceProperty" id="@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty"></a>
 
-#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.Initializer"></a>
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty.Initializer"></a>
 
 ```typescript
-import { TargetProperty } from '@gammarers/aws-rds-database-running-schedule-stack'
+import { TargetResourceProperty } from '@gammarers/aws-rds-database-running-schedule-stack'
 
-const targetProperty: TargetProperty = { ... }
+const targetResourceProperty: TargetResourceProperty = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.identifiers">identifiers</a></code> | <code>string[]</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.type">type</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.DatabaseType">DatabaseType</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty.property.tagKey">tagKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty.property.tagValues">tagValues</a></code> | <code>string[]</code> | *No description.* |
 
 ---
 
-##### `identifiers`<sup>Required</sup> <a name="identifiers" id="@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.identifiers"></a>
+##### `tagKey`<sup>Required</sup> <a name="tagKey" id="@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty.property.tagKey"></a>
 
 ```typescript
-public readonly identifiers: string[];
+public readonly tagKey: string;
+```
+
+- *Type:* string
+
+---
+
+##### `tagValues`<sup>Required</sup> <a name="tagValues" id="@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty.property.tagValues"></a>
+
+```typescript
+public readonly tagValues: string[];
 ```
 
 - *Type:* string[]
 
 ---
 
-##### `startSchedule`<sup>Required</sup> <a name="startSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.startSchedule"></a>
 
-```typescript
-public readonly startSchedule: ScheduleProperty;
-```
-
-- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a>
-
----
-
-##### `stopSchedule`<sup>Required</sup> <a name="stopSchedule" id="@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.stopSchedule"></a>
-
-```typescript
-public readonly stopSchedule: ScheduleProperty;
-```
-
-- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a>
-
----
-
-##### `type`<sup>Required</sup> <a name="type" id="@gammarers/aws-rds-database-running-schedule-stack.TargetProperty.property.type"></a>
-
-```typescript
-public readonly type: DatabaseType;
-```
-
-- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.DatabaseType">DatabaseType</a>
-
----
-
-
-
-## Enums <a name="Enums" id="Enums"></a>
-
-### DatabaseType <a name="DatabaseType" id="@gammarers/aws-rds-database-running-schedule-stack.DatabaseType"></a>
-
-#### Members <a name="Members" id="Members"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.DatabaseType.CLUSTER">CLUSTER</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.DatabaseType.INSTANCE">INSTANCE</a></code> | *No description.* |
-
----
-
-##### `CLUSTER` <a name="CLUSTER" id="@gammarers/aws-rds-database-running-schedule-stack.DatabaseType.CLUSTER"></a>
-
----
-
-
-##### `INSTANCE` <a name="INSTANCE" id="@gammarers/aws-rds-database-running-schedule-stack.DatabaseType.INSTANCE"></a>
-
----
 
