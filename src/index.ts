@@ -34,7 +34,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
     //const stackName: string = cdk.Stack.of(this).stackName;
     //const region = cdk.Stack.of(this).region;
 
-    const key = crypto.createHash('shake256', { outputLength: 4 })
+    const random = crypto.createHash('shake256', { outputLength: 4 })
       .update(`${cdk.Names.uniqueId(scope)}-${cdk.Names.uniqueId(this)}`)
       .digest('hex');
 
@@ -325,14 +325,14 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 StepFunctions State Machine
     const stateMachine = new sfn.StateMachine(this, 'StateMachine', {
-      stateMachineName: `rds-db-running-schedule-${key}-state-machine`,
+      stateMachineName: `rds-db-running-schedule-${random}-state-machine`,
       definitionBody: sfn.DefinitionBody.fromChainable(definition),
     });
 
     // 👇 rename role name & description.
     const role = stateMachine.node.findChild('Role') as iam.Role;
     const cfnRole = role.node.defaultChild as iam.CfnRole;
-    cfnRole.addPropertyOverride('RoleName', `rds-db-running-schedule-${key}-state-machine-role`);
+    cfnRole.addPropertyOverride('RoleName', `rds-db-running-schedule-${random}-state-machine-role`);
     cfnRole.addPropertyOverride('Description', 'RDS DB Running chedule machine role.');
     const policy = role.node.findChild('DefaultPolicy') as iam.Policy;
     const cfnPolicy = policy.node.defaultChild as iam.CfnPolicy;
@@ -340,7 +340,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 StateMachine Exec Role of Scheduler
     const schedulerExecRole = new iam.Role(this, 'SchedulerExecutionRole', {
-      roleName: `rds-db-running-scheduler-${key}-exec-role`,
+      roleName: `rds-db-running-scheduler-${random}-exec-role`,
       description: 'RDS DB Running scheduler execution role',
       assumedBy: new iam.ServicePrincipal('scheduler.amazonaws.com'),
       inlinePolicies: {
@@ -389,7 +389,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 Stop DB Instance schedule
     new DBRuningSchedule(this, 'StopDBInstanceSchedule', {
-      name: `rds-db-instance-stop-${key}-schedule`,
+      name: `rds-db-instance-stop-${random}-schedule`,
       description: 'stop db instance schedule.',
       sheduleState,
       timezone: props.stopSchedule?.timezone ?? 'UTC',
@@ -407,7 +407,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 Start DB Instance schedule
     new DBRuningSchedule(this, 'StartDBInstanceSchedule', {
-      name: `rds-db-instance-start-${key}-schedule`,
+      name: `rds-db-instance-start-${random}-schedule`,
       description: 'start db instance schedule.',
       sheduleState,
       timezone: props.startSchedule?.timezone ?? 'UTC',
@@ -425,7 +425,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 Stop DB Cluster schedule
     new DBRuningSchedule(this, 'StopDBClusterSchedule', {
-      name: `rds-db-cluster-stop-${key}-schedule`,
+      name: `rds-db-cluster-stop-${random}-schedule`,
       description: 'stop db cluster schedule.',
       sheduleState,
       timezone: props.stopSchedule?.timezone ?? 'UTC',
@@ -443,7 +443,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 Start DB Cluster schedule
     new DBRuningSchedule(this, 'StartDBClusterSchedule', {
-      name: `rds-db-cluster-start-${key}-schedule`,
+      name: `rds-db-cluster-start-${random}-schedule`,
       description: 'start db cluster schedule.',
       sheduleState,
       timezone: props.startSchedule?.timezone ?? 'UTC',
