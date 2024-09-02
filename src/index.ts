@@ -3,6 +3,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as scheduler from 'aws-cdk-lib/aws-scheduler';
+import * as sns from 'aws-cdk-lib/aws-sns';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -19,11 +20,16 @@ export interface TargetResourceProperty {
   readonly tagValues: string[];
 }
 
+export interface NotificationsProperty {
+  readonly emails?: string[];
+}
+
 export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
   readonly targetResource: TargetResourceProperty;
   readonly enableScheduling?: boolean;
   readonly stopSchedule?: ScheduleProperty;
   readonly startSchedule?: ScheduleProperty;
+  readonly notifications?: NotificationsProperty;
 }
 
 export class RDSDatabaseRunningScheduleStack extends Stack {
@@ -34,13 +40,66 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
     //const stackName: string = cdk.Stack.of(this).stackName;
     //const region = cdk.Stack.of(this).region;
 
+    // 👇 Create random 8 length string
     const random = crypto.createHash('shake256', { outputLength: 4 })
       .update(`${cdk.Names.uniqueId(scope)}-${cdk.Names.uniqueId(this)}`)
       .digest('hex');
 
+    // 👇 SNS Topic for notifications
+    const topic: sns.Topic = new sns.Topic(this, 'NotificationTopic', {
+      topicName: `rds-db-running-schedule-notification-${random}-topic`,
+      displayName: 'RDS DB Running Schedule Notification Topic',
+    });
+
+    // 👇 Subscribe an email endpoint to the topic
+    const emails = props.notifications?.emails ?? [];
+    for (const [index, value] of emails.entries()) {
+      new sns.Subscription(this, `SubscriptionEmail${index.toString().padStart(3, '0')}`, {
+        topic,
+        protocol: sns.SubscriptionProtocol.EMAIL,
+        endpoint: value,
+      });
+    }
+
+    const initStateListDefinition: sfn.Pass = new sfn.Pass(this, 'InitStateListDefinition', {
+      result: sfn.Result.fromObject([
+        { name: 'AVAILABLE', emoji: '🤩', state: 'available' },
+        { name: 'STOPPED', emoji: '😴', state: 'stopped' },
+      ]),
+      resultPath: '$.definition.stateList',
+    });
+
     // 👇 Succeed
     const dbInstanceStateChangeSucceed = new sfn.Succeed(this, 'DBInstanceStateChangeSucceed');
     const dbClusterStateChangeSucceed = new sfn.Succeed(this, 'DBClusterStateChangeSucceed');
+
+    const generateTopicContent = new sfn.Pass(this, 'GenerateTopicSubject', {
+      resultPath: '$.Generate.Topic.Subject',
+      parameters: {
+        Value: sfn.JsonPath.format('{} [{}] AWS RDS DB {} Running Notification [{}][{}]',
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].emoji'), 0),
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].name'), 0),
+          sfn.JsonPath.stringAt('$.InputParams.Mode'),
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
+        ),
+      },
+    }).next(new sfn.Pass(this, 'GenerateTopicTextMessage', {
+      resultPath: '$.Generate.Topic.Message',
+      parameters: {
+        Value: sfn.JsonPath.format('Account : {}\nRegion : {}\nType : {}\nStatus : {}',
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
+          sfn.JsonPath.stringAt('$.InputParams.Type'),
+          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].name'), 0),
+        ),
+      },
+    }).next(new tasks.SnsPublish(this, 'SendNotification', {
+      topic: topic,
+      subject: sfn.JsonPath.stringAt('$.Generate.Topic.Subject.Value'),
+      message: sfn.TaskInput.fromJsonPathAt('$.Generate.Topic.Message.Value'),
+      resultPath: '$.snsResult',
+    }).next(dbInstanceStateChangeSucceed)));
 
     // 👇 Get DB Instance Resources (Filter by Tag)
     const getDBInstanceResources = new tasks.CallAwsService(this, 'GetDBInstanceResources', {
@@ -184,7 +243,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
     startDBClusterTask.next(dbClusterStatusChangeWait);
     stopDBClusterTask.next(dbClusterStatusChangeWait);
 
-    const definition = new sfn.Choice(this, 'ModeChoice')
+    const modeChoice = new sfn.Choice(this, 'ModeChoice')
       .when(
         sfn.Condition.stringEquals('$.Params.Type', 'Instance'),
         getDBInstanceResources.next(
@@ -193,6 +252,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
             parameters: {
               TargetResource: sfn.JsonPath.stringAt('$$.Map.Item.Value'),
               InputParams: sfn.JsonPath.stringAt('$.Params'),
+              definition: sfn.JsonPath.stringAt('$.definition'),
             },
             maxConcurrency: 10,
           }).itemProcessor(
@@ -219,7 +279,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
                       sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
                       sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
                     ),
-                    dbInstanceStateChangeSucceed,
+                    generateTopicContent,
                   )
                   .when(
                     // start & starting/configuring-enhanced-monitoring/backing-up or stop modifying/stopping
@@ -323,10 +383,12 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
         cause: 'input Params Type is unmatch.',
       }));
 
+    initStateListDefinition.next(modeChoice);
+
     // 👇 StepFunctions State Machine
     const stateMachine = new sfn.StateMachine(this, 'StateMachine', {
       stateMachineName: `rds-db-running-schedule-${random}-state-machine`,
-      definitionBody: sfn.DefinitionBody.fromChainable(definition),
+      definitionBody: sfn.DefinitionBody.fromChainable(initStateListDefinition),
     });
 
     // 👇 rename role name & description.
