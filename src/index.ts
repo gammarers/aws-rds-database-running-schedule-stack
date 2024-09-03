@@ -79,7 +79,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
         Value: sfn.JsonPath.format('{} [{}] AWS RDS DB {} Running Notification [{}][{}]',
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].emoji'), 0),
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].name'), 0),
-          sfn.JsonPath.stringAt('$.InputParams.Mode'),
+          sfn.JsonPath.stringAt('$.params.Mode'),
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
         ),
@@ -90,7 +90,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
         Value: sfn.JsonPath.format('Account : {}\nRegion : {}\nType : {}\nStatus : {}',
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
-          sfn.JsonPath.stringAt('$.InputParams.Type'),
+          sfn.JsonPath.stringAt('$.params.Type'),
           sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].name'), 0),
         ),
       },
@@ -110,6 +110,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       parameters: {
         ResourceTypeFilters: [
           'rds:db',
+          // todo: ここにclusterも含める
         ],
         TagFilters: [
           {
@@ -251,7 +252,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
             itemsPath: sfn.JsonPath.stringAt('$.Result.TargetResources'),
             parameters: {
               TargetResource: sfn.JsonPath.stringAt('$$.Map.Item.Value'),
-              InputParams: sfn.JsonPath.stringAt('$.Params'),
+              params: sfn.JsonPath.stringAt('$.Params'),
               definition: sfn.JsonPath.stringAt('$.definition'),
             },
             maxConcurrency: 10,
@@ -260,24 +261,25 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
               resultPath: '$.Result',
               parameters: {
                 TargetDBInstanceIdentifier: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 6),
+                // todo: ここでclusterかdbかを区別できる5indexを取得したら
               },
             }).next(
               describeDBInstancesTask.next(
                 new sfn.Choice(this, 'DBInstanceStatusChoice')
                   // start on status.stopped
                   .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
+                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
                     startDBInstanceTask,
                   )
                   // stop on status.available
                   .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
+                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
                     stopDBInstanceTask,
                   )
                   .when(
                     sfn.Condition.or(
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
+                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
+                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
                     ),
                     generateTopicContent,
                   )
@@ -286,7 +288,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
                     sfn.Condition.or(
                       sfn.Condition.and(
                         sfn.Condition.and(
-                          sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'),
+                          sfn.Condition.stringEquals('$.params.Mode', 'Start'),
                           sfn.Condition.or(
                             sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'starting'),
                             sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'configuring-enhanced-monitoring'),
@@ -296,7 +298,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
                         ),
                       ),
                       sfn.Condition.and(
-                        sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'),
+                        sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
                           sfn.Condition.or(
                             sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'modifying'),
                             sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopping'),
@@ -319,7 +321,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
             itemsPath: sfn.JsonPath.stringAt('$.Result.TargetResources'),
             parameters: {
               TargetResource: sfn.JsonPath.stringAt('$$.Map.Item.Value'),
-              InputParams: sfn.JsonPath.stringAt('$.Params'),
+              params: sfn.JsonPath.stringAt('$.Params'),
             },
             maxConcurrency: 10,
           }).itemProcessor(
@@ -333,18 +335,18 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
                 new sfn.Choice(this, 'DBClusterStatusChoice')
                   // start on status.stopped
                   .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopped')),
+                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopped')),
                     startDBClusterTask,
                   )
                   // stop on status.available
                   .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'available')),
+                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'available')),
                     stopDBClusterTask,
                   )
                   .when(
                     sfn.Condition.or(
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'available')),
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopped')),
+                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'available')),
+                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopped')),
                     ),
                     dbClusterStateChangeSucceed,
                   )
@@ -353,7 +355,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
                     sfn.Condition.or(
                       sfn.Condition.and(
                         sfn.Condition.and(
-                          sfn.Condition.stringEquals('$.InputParams.Mode', 'Start'),
+                          sfn.Condition.stringEquals('$.params.Mode', 'Start'),
                           sfn.Condition.or(
                             sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'starting'),
                             sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'configuring-enhanced-monitoring'),
@@ -363,7 +365,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
                         ),
                       ),
                       sfn.Condition.and(
-                        sfn.Condition.and(sfn.Condition.stringEquals('$.InputParams.Mode', 'Stop'),
+                        sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
                           sfn.Condition.or(
                             sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'modifying'),
                             sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopping'),
