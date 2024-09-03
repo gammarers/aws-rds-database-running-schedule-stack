@@ -15,8 +15,8 @@ describe('RdsDatabaseRunningScheduler disabled Testing', () => {
 
   const template = Template.fromStack(stack);
 
-  it('Should have Schedule 4 exist', async () => {
-    template.resourceCountIs('AWS::Scheduler::Schedule', 4);
+  it('Should have Schedule 2 exist', async () => {
+    template.resourceCountIs('AWS::Scheduler::Schedule', 2);
   });
 
   it('Should have diabled all Schedule', async () => {

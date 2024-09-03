@@ -70,39 +70,43 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
     });
 
     // 👇 Succeed
-    const dbInstanceStateChangeSucceed = new sfn.Succeed(this, 'DBInstanceStateChangeSucceed');
-    const dbClusterStateChangeSucceed = new sfn.Succeed(this, 'DBClusterStateChangeSucceed');
+    const stateChangeSucceed = new sfn.Succeed(this, 'StateChangeSucceed');
 
-    const generateTopicContent = new sfn.Pass(this, 'GenerateTopicSubject', {
-      resultPath: '$.Generate.Topic.Subject',
+    const prepareTopicValue = new sfn.Pass(this, 'PrepareTopicValue', {
+      resultPath: '$.prepare.topic.values',
       parameters: {
-        Value: sfn.JsonPath.format('{} [{}] AWS RDS DB {} Running Notification [{}][{}]',
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].emoji'), 0),
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].name'), 0),
-          sfn.JsonPath.stringAt('$.params.Mode'),
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
-        ),
+        emoji: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.status.current)].emoji'), 0),
+        status: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.status.current)].name'), 0),
+        account: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
+        region: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
       },
-    }).next(new sfn.Pass(this, 'GenerateTopicTextMessage', {
-      resultPath: '$.Generate.Topic.Message',
+    }).next(new sfn.Pass(this, 'GenerateTopic', {
+      resultPath: '$.Generate.Topic',
       parameters: {
-        Value: sfn.JsonPath.format('Account : {}\nRegion : {}\nType : {}\nStatus : {}',
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 4), // account
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 3), // region
-          sfn.JsonPath.stringAt('$.params.Type'),
-          sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.definition.stateList[?(@.state == $.Result.DBInstance.CurrentStatus)].name'), 0),
+        Subject: sfn.JsonPath.format('{} [{}] AWS RDS DB {} Running Notification [{}][{}]',
+          sfn.JsonPath.stringAt('$.prepare.topic.values.emoji'),
+          sfn.JsonPath.stringAt('$.prepare.topic.values.status'),
+          sfn.JsonPath.stringAt('$.params.Mode'),
+          sfn.JsonPath.stringAt('$.prepare.topic.values.account'),
+          sfn.JsonPath.stringAt('$.prepare.topic.values.region'),
+        ),
+        TextMessage: sfn.JsonPath.format('Account : {}\nRegion : {}\nType : {}\nIdentifier : {}\nStatus : {}',
+          sfn.JsonPath.stringAt('$.prepare.topic.values.account'),
+          sfn.JsonPath.stringAt('$.prepare.topic.values.region'),
+          sfn.JsonPath.stringAt('$.Result.target.type'),
+          sfn.JsonPath.stringAt('$.Result.target.identifier'),
+          sfn.JsonPath.stringAt('$.prepare.topic.values.status'),
         ),
       },
     }).next(new tasks.SnsPublish(this, 'SendNotification', {
       topic: topic,
-      subject: sfn.JsonPath.stringAt('$.Generate.Topic.Subject.Value'),
-      message: sfn.TaskInput.fromJsonPathAt('$.Generate.Topic.Message.Value'),
+      subject: sfn.JsonPath.stringAt('$.Generate.Topic.Subject'),
+      message: sfn.TaskInput.fromJsonPathAt('$.Generate.Topic.TextMessage'),
       resultPath: '$.snsResult',
-    }).next(dbInstanceStateChangeSucceed)));
+    }).next(stateChangeSucceed)));
 
     // 👇 Get DB Instance Resources (Filter by Tag)
-    const getDBInstanceResources = new tasks.CallAwsService(this, 'GetDBInstanceResources', {
+    const getResources = new tasks.CallAwsService(this, 'GetResources', {
       iamResources: ['*'],
       iamAction: 'tag:GetResources',
       service: 'resourcegroupstaggingapi',
@@ -110,29 +114,6 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       parameters: {
         ResourceTypeFilters: [
           'rds:db',
-          // todo: ここにclusterも含める
-        ],
-        TagFilters: [
-          {
-            Key: sfn.JsonPath.stringAt('$.Params.TagKey'),
-            Values: sfn.JsonPath.stringAt('$.Params.TagValues'),
-          },
-        ],
-      },
-      resultPath: '$.Result',
-      resultSelector: {
-        TargetResources: sfn.JsonPath.stringAt('$..ResourceTagMappingList[*].ResourceARN'),
-      },
-    });
-
-    // 👇 Get DB Instance Resources (Filter by Tag)
-    const getDBClusterResources = new tasks.CallAwsService(this, 'GetDBClusterResources', {
-      iamResources: ['*'],
-      iamAction: 'tag:GetResources',
-      service: 'resourcegroupstaggingapi',
-      action: 'getResources',
-      parameters: {
-        ResourceTypeFilters: [
           'rds:cluster',
         ],
         TagFilters: [
@@ -148,17 +129,19 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       },
     });
 
+    initStateListDefinition.next(getResources);
+
     // 👇 Describe DB Instance Task
     const describeDBInstancesTask = new tasks.CallAwsService(this, 'DescribeDBInstances', {
       iamResources: [`arn:aws:rds:*:${account}:db:*`],
       service: 'rds',
       action: 'describeDBInstances',
       parameters: {
-        DbInstanceIdentifier: sfn.JsonPath.stringAt('$.Result.TargetDBInstanceIdentifier'),
+        DbInstanceIdentifier: sfn.JsonPath.stringAt('$.Result.target.identifier'),
       },
-      resultPath: '$.Result.DBInstance',
+      resultPath: '$.Result.status',
       resultSelector: {
-        CurrentStatus: sfn.JsonPath.stringAt('$.DbInstances[0].DbInstanceStatus'),
+        current: sfn.JsonPath.stringAt('$.DbInstances[0].DbInstanceStatus'),
       },
     });
 
@@ -168,7 +151,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       service: 'rds',
       action: 'stopDBInstance',
       parameters: {
-        DbInstanceIdentifier: sfn.JsonPath.stringAt('$.Result.TargetDBInstanceIdentifier'),
+        DbInstanceIdentifier: sfn.JsonPath.stringAt('$.Result.target.identifier'),
       },
       resultPath: '$.Result.StopDBInstance',
     });
@@ -179,7 +162,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       service: 'rds',
       action: 'startDBInstance',
       parameters: {
-        DbInstanceIdentifier: sfn.JsonPath.stringAt('$.Result.TargetDBInstanceIdentifier'),
+        DbInstanceIdentifier: sfn.JsonPath.stringAt('$.Result.target.identifier'),
       },
       resultPath: '$.Result.StartDBInstance',
     });
@@ -190,11 +173,11 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       service: 'rds',
       action: 'describeDBClusters',
       parameters: {
-        DbClusterIdentifier: sfn.JsonPath.stringAt('$.Result.TargetDBClusterIdentifier'),
+        DbClusterIdentifier: sfn.JsonPath.stringAt('$.Result.target.identifier'),
       },
-      resultPath: '$.Result.DBCluster',
+      resultPath: '$.Result.status',
       resultSelector: {
-        CurrentStatus: sfn.JsonPath.stringAt('$.DbClusters[0].Status'),
+        current: sfn.JsonPath.stringAt('$.DbClusters[0].Status'),
       },
     });
 
@@ -214,7 +197,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       service: 'rds',
       action: 'stopDBCluster',
       parameters: {
-        DbClusterIdentifier: sfn.JsonPath.stringAt('$.Result.TargetDBClusterIdentifier'),
+        DbClusterIdentifier: sfn.JsonPath.stringAt('$.Result.target.identifier'),
       },
       resultPath: '$.Result.StopDBCluster',
     });
@@ -225,167 +208,150 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       service: 'rds',
       action: 'startDBCluster',
       parameters: {
-        DbClusterIdentifier: sfn.JsonPath.stringAt('$.Result.TargetDBClusterIdentifier'),
+        DbClusterIdentifier: sfn.JsonPath.stringAt('$.Result.target.identifier'),
       },
       resultPath: '$.Result.StartDBCluster',
     });
 
-    const dbInstanceStatusChangeWait = new sfn.Wait(this, 'DBInstanceStatusChangeWait', {
-      time: sfn.WaitTime.duration(cdk.Duration.minutes(1)),
-    });
-    dbInstanceStatusChangeWait.next(describeDBInstancesTask);
-    startDBInstanceTask.next(dbInstanceStatusChangeWait);
-    stopDBInstanceTask.next(dbInstanceStatusChangeWait);
-
-    const dbClusterStatusChangeWait = new sfn.Wait(this, 'DBClusterStatusChangeWait', {
-      time: sfn.WaitTime.duration(cdk.Duration.minutes(1)),
-    });
-    dbClusterStatusChangeWait.next(describeDBClustersTask);
-    startDBClusterTask.next(dbClusterStatusChangeWait);
-    stopDBClusterTask.next(dbClusterStatusChangeWait);
-
-    const modeChoice = new sfn.Choice(this, 'ModeChoice')
+    const describeTypeChoice = new sfn.Choice(this, 'DescribeTypeChoice')
       .when(
-        sfn.Condition.stringEquals('$.Params.Type', 'Instance'),
-        getDBInstanceResources.next(
-          new sfn.Map(this, 'InstancesMap', {
-            itemsPath: sfn.JsonPath.stringAt('$.Result.TargetResources'),
-            parameters: {
-              TargetResource: sfn.JsonPath.stringAt('$$.Map.Item.Value'),
-              params: sfn.JsonPath.stringAt('$.Params'),
-              definition: sfn.JsonPath.stringAt('$.definition'),
-            },
-            maxConcurrency: 10,
-          }).itemProcessor(
-            new sfn.Pass(this, 'GetDBInstanceIdentifier', {
-              resultPath: '$.Result',
-              parameters: {
-                TargetDBInstanceIdentifier: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 6),
-                // todo: ここでclusterかdbかを区別できる5indexを取得したら
-              },
-            }).next(
-              describeDBInstancesTask.next(
-                new sfn.Choice(this, 'DBInstanceStatusChoice')
-                  // start on status.stopped
-                  .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
-                    startDBInstanceTask,
-                  )
-                  // stop on status.available
-                  .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
-                    stopDBInstanceTask,
-                  )
-                  .when(
-                    sfn.Condition.or(
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'available')),
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopped')),
-                    ),
-                    generateTopicContent,
-                  )
-                  .when(
-                    // start & starting/configuring-enhanced-monitoring/backing-up or stop modifying/stopping
-                    sfn.Condition.or(
-                      sfn.Condition.and(
-                        sfn.Condition.and(
-                          sfn.Condition.stringEquals('$.params.Mode', 'Start'),
-                          sfn.Condition.or(
-                            sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'starting'),
-                            sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'configuring-enhanced-monitoring'),
-                            sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'backing-up'),
-                            sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'modifying'),
-                          ),
-                        ),
-                      ),
-                      sfn.Condition.and(
-                        sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
-                          sfn.Condition.or(
-                            sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'modifying'),
-                            sfn.Condition.stringEquals('$.Result.DBInstance.CurrentStatus', 'stopping'),
-                          ),
-                        ),
-                      ),
-                    ),
-                    dbInstanceStatusChangeWait,
-                  )
-                  .otherwise(new sfn.Fail(this, 'DBInstanceStatusFail', {
-                    cause: 'db instance status fail.',
-                  })),
-              ),
-            ))),
+        sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+        describeDBInstancesTask,
       )
       .when(
-        sfn.Condition.stringEquals('$.Params.Type', 'Cluster'),
-        getDBClusterResources.next(
-          new sfn.Map(this, 'ClustersMap', {
-            itemsPath: sfn.JsonPath.stringAt('$.Result.TargetResources'),
-            parameters: {
-              TargetResource: sfn.JsonPath.stringAt('$$.Map.Item.Value'),
-              params: sfn.JsonPath.stringAt('$.Params'),
-            },
-            maxConcurrency: 10,
-          }).itemProcessor(
-            new sfn.Pass(this, 'GetDBClusterIdentifier', {
-              resultPath: '$.Result',
-              parameters: {
-                TargetDBClusterIdentifier: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 6),
-              },
-            }).next(
-              describeDBClustersTask.next(
-                new sfn.Choice(this, 'DBClusterStatusChoice')
-                  // start on status.stopped
-                  .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopped')),
-                    startDBClusterTask,
-                  )
-                  // stop on status.available
-                  .when(
-                    sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'available')),
-                    stopDBClusterTask,
-                  )
-                  .when(
-                    sfn.Condition.or(
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Start'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'available')),
-                      sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'), sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopped')),
-                    ),
-                    dbClusterStateChangeSucceed,
-                  )
-                  .when(
-                    // start & on state.starting/configuring-enhanced-monitoring/backing-up or stop modifying/stopping
-                    sfn.Condition.or(
-                      sfn.Condition.and(
-                        sfn.Condition.and(
-                          sfn.Condition.stringEquals('$.params.Mode', 'Start'),
-                          sfn.Condition.or(
-                            sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'starting'),
-                            sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'configuring-enhanced-monitoring'),
-                            sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'backing-up'),
-                            sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'modifying'),
-                          ),
-                        ),
-                      ),
-                      sfn.Condition.and(
-                        sfn.Condition.and(sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
-                          sfn.Condition.or(
-                            sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'modifying'),
-                            sfn.Condition.stringEquals('$.Result.DBCluster.CurrentStatus', 'stopping'),
-                          ),
-                        ),
-                      ),
-                    ),
-                    dbClusterStatusChangeWait,
-                  )
-                  .otherwise(new sfn.Fail(this, 'DBClusterStatusFail', {
-                    cause: 'db clusater status fail.',
-                  })),
-              ),
-            ))),
+        sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+        describeDBClustersTask,
       )
-      .otherwise(new sfn.Fail(this, 'TypeChoiceFail', {
-        cause: 'input Params Type is unmatch.',
+      .otherwise(new sfn.Fail(this, 'UnknownType'));
+
+    const statusChangeWait = new sfn.Wait(this, 'StatusChangeWait', {
+      time: sfn.WaitTime.duration(cdk.Duration.minutes(1)),
+    });
+    statusChangeWait.next(describeTypeChoice);
+
+    startDBInstanceTask.next(statusChangeWait);
+    stopDBInstanceTask.next(statusChangeWait);
+
+    startDBClusterTask.next(statusChangeWait);
+    stopDBClusterTask.next(statusChangeWait);
+
+    const statusChoice = new sfn.Choice(this, 'StatusChoice')
+      // db instance start on status.stopped
+      .when(
+        sfn.Condition.and(
+          sfn.Condition.stringEquals('$.params.Mode', 'Start'),
+          sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+          sfn.Condition.stringEquals('$.Result.status.current', 'stopped'),
+        ),
+        startDBInstanceTask,
+      )
+      // db instance stop on status.available
+      .when(
+        sfn.Condition.and(
+          sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
+          sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+          sfn.Condition.stringEquals('$.Result.status.current', 'available'),
+        ),
+        stopDBInstanceTask,
+      )
+      // start on status.stopped
+      .when(
+        sfn.Condition.and(
+          sfn.Condition.stringEquals('$.params.Mode', 'Start'),
+          sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+          sfn.Condition.stringEquals('$.Result.status.current', 'stopped'),
+        ),
+        startDBClusterTask,
+      )
+      // stop on status.available
+      .when(
+        sfn.Condition.and(
+          sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
+          sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+          sfn.Condition.stringEquals('$.Result.status.current', 'available'),
+        ),
+        stopDBClusterTask,
+      )
+      // status change succeed, generate topic
+      .when(
+        sfn.Condition.or(
+          sfn.Condition.and(
+            sfn.Condition.stringEquals('$.params.Mode', 'Start'),
+            sfn.Condition.or(
+              sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+              sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+            ),
+            sfn.Condition.stringEquals('$.Result.status.current', 'available'),
+          ),
+          sfn.Condition.and(
+            sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
+            sfn.Condition.or(
+              sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+              sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+            ),
+            sfn.Condition.stringEquals('$.Result.status.current', 'stopped'),
+          ),
+        ),
+        prepareTopicValue,
+      )
+      .when(
+        // start & starting/configuring-enhanced-monitoring/backing-up or stop modifying/stopping
+        sfn.Condition.or(
+          sfn.Condition.and(
+            sfn.Condition.and(
+              sfn.Condition.stringEquals('$.params.Mode', 'Start'),
+              sfn.Condition.or(
+                sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+                sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+              ),
+              sfn.Condition.or(
+                sfn.Condition.stringEquals('$.Result.status.current', 'starting'),
+                sfn.Condition.stringEquals('$.Result.status.current', 'configuring-enhanced-monitoring'),
+                sfn.Condition.stringEquals('$.Result.status.current', 'backing-up'),
+                sfn.Condition.stringEquals('$.Result.status.current', 'modifying'),
+              ),
+            ),
+          ),
+          sfn.Condition.and(
+            sfn.Condition.and(
+              sfn.Condition.stringEquals('$.params.Mode', 'Stop'),
+              sfn.Condition.or(
+                sfn.Condition.stringEquals('$.Result.target.type', 'db'),
+                sfn.Condition.stringEquals('$.Result.target.type', 'cluster'),
+              ),
+              sfn.Condition.or(
+                sfn.Condition.stringEquals('$.Result.status.current', 'modifying'),
+                sfn.Condition.stringEquals('$.Result.status.current', 'stopping'),
+              ),
+            ),
+          ),
+        ),
+        statusChangeWait,
+      )
+      .otherwise(new sfn.Fail(this, 'StatusFail', {
+        cause: 'db instance or cluster status fail.',
       }));
 
-    initStateListDefinition.next(modeChoice);
+    getResources.next(
+      new sfn.Map(this, 'ResourceProcessingMap', {
+        itemsPath: sfn.JsonPath.stringAt('$.Result.TargetResources'),
+        parameters: {
+          TargetResource: sfn.JsonPath.stringAt('$$.Map.Item.Value'),
+          params: sfn.JsonPath.stringAt('$.Params'),
+          definition: sfn.JsonPath.stringAt('$.definition'),
+        },
+        maxConcurrency: 10,
+      }).itemProcessor(
+        new sfn.Pass(this, 'GetIdentifier', {
+          resultPath: '$.Result.target',
+          parameters: {
+            identifier: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 6),
+            type: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringSplit(sfn.JsonPath.stringAt('$.TargetResource'), ':'), 5), // db or cluster
+          },
+        }).next(describeTypeChoice)));
+
+    describeDBInstancesTask.next(statusChoice);
+    describeDBClustersTask.next(statusChoice);
 
     // 👇 StepFunctions State Machine
     const stateMachine = new sfn.StateMachine(this, 'StateMachine', {
@@ -451,10 +417,10 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       return `cron(${minute} ${hour} ? * ${week} *)`;
     })();
 
-    // 👇 Stop DB Instance schedule
-    new DBRuningSchedule(this, 'StopDBInstanceSchedule', {
-      name: `rds-db-instance-stop-${random}-schedule`,
-      description: 'stop db instance schedule.',
+    // 👇 Stop DB schedule
+    new DBRuningSchedule(this, 'StopDatabaseRunningSchedule', {
+      name: `rds-database-running-stop-${random}-schedule`,
+      description: 'stop database(instance/cluster) running stop schedule.',
       sheduleState,
       timezone: props.stopSchedule?.timezone ?? 'UTC',
       expression: stopScheduleExpression,
@@ -465,13 +431,13 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
           key: props.targetResource.tagKey,
           values: props.targetResource.tagValues,
         },
-        input: { type: 'Instance', mode: 'Stop' },
+        input: { mode: 'Stop' },
       },
     });
 
-    // 👇 Start DB Instance schedule
-    new DBRuningSchedule(this, 'StartDBInstanceSchedule', {
-      name: `rds-db-instance-start-${random}-schedule`,
+    // 👇 Start DB schedule
+    new DBRuningSchedule(this, 'StartDatabaseRunningSchedule', {
+      name: `rds-database-running-start-${random}-schedule`,
       description: 'start db instance schedule.',
       sheduleState,
       timezone: props.startSchedule?.timezone ?? 'UTC',
@@ -483,43 +449,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
           key: props.targetResource.tagKey,
           values: props.targetResource.tagValues,
         },
-        input: { type: 'Instance', mode: 'Start' },
-      },
-    });
-
-    // 👇 Stop DB Cluster schedule
-    new DBRuningSchedule(this, 'StopDBClusterSchedule', {
-      name: `rds-db-cluster-stop-${random}-schedule`,
-      description: 'stop db cluster schedule.',
-      sheduleState,
-      timezone: props.stopSchedule?.timezone ?? 'UTC',
-      expression: stopScheduleExpression,
-      target: {
-        stateMachineArn: stateMachine.stateMachineArn,
-        roleArn: schedulerExecRole.roleArn,
-        resourceTag: {
-          key: props.targetResource.tagKey,
-          values: props.targetResource.tagValues,
-        },
-        input: { type: 'Cluster', mode: 'Stop' },
-      },
-    });
-
-    // 👇 Start DB Cluster schedule
-    new DBRuningSchedule(this, 'StartDBClusterSchedule', {
-      name: `rds-db-cluster-start-${random}-schedule`,
-      description: 'start db cluster schedule.',
-      sheduleState,
-      timezone: props.startSchedule?.timezone ?? 'UTC',
-      expression: startScheduleExpression,
-      target: {
-        stateMachineArn: stateMachine.stateMachineArn,
-        roleArn: schedulerExecRole.roleArn,
-        resourceTag: {
-          key: props.targetResource.tagKey,
-          values: props.targetResource.tagValues,
-        },
-        input: { type: 'Cluster', mode: 'Start' },
+        input: { mode: 'Start' },
       },
     });
 
@@ -541,7 +471,6 @@ interface DBRuningScheduleProps {
     };
     input: {
       mode: string;
-      type: string;
     };
   };
 }
@@ -566,7 +495,6 @@ class DBRuningSchedule extends scheduler.CfnSchedule {
             TagKey: props.target.resourceTag.key,
             TagValues: props.target.resourceTag.values,
             Mode: props.target.input.mode,
-            Type: props.target.input.type,
           },
         }),
         retryPolicy: {
