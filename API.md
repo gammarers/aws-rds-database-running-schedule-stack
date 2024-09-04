@@ -879,6 +879,34 @@ Whether termination protection is enabled for this stack.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
+### NotificationsProperty <a name="NotificationsProperty" id="@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty"></a>
+
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.Initializer"></a>
+
+```typescript
+import { NotificationsProperty } from '@gammarers/aws-rds-database-running-schedule-stack'
+
+const notificationsProperty: NotificationsProperty = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.property.emails">emails</a></code> | <code>string[]</code> | *No description.* |
+
+---
+
+##### `emails`<sup>Optional</sup> <a name="emails" id="@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.property.emails"></a>
+
+```typescript
+public readonly emails: string[];
+```
+
+- *Type:* string[]
+
+---
+
 ### RDSDatabaseRunningScheduleStackProps <a name="RDSDatabaseRunningScheduleStackProps" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps"></a>
 
 #### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.Initializer"></a>
@@ -905,6 +933,7 @@ const rDSDatabaseRunningScheduleStackProps: RDSDatabaseRunningScheduleStackProps
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.targetResource">targetResource</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty">TargetResourceProperty</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.enableScheduling">enableScheduling</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.notifications">notifications</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty">NotificationsProperty</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
 
@@ -1137,6 +1166,16 @@ public readonly enableScheduling: boolean;
 ```
 
 - *Type:* boolean
+
+---
+
+##### `notifications`<sup>Optional</sup> <a name="notifications" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.notifications"></a>
+
+```typescript
+public readonly notifications: NotificationsProperty;
+```
+
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty">NotificationsProperty</a>
 
 ---
 
