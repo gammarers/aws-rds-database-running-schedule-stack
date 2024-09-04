@@ -53,8 +53,8 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
       }));
     });
 
-    it('Should have Schedule 4 exist', async () => {
-      template.resourceCountIs('AWS::Scheduler::Schedule', 4);
+    it('Should have Schedule 2 exist', async () => {
+      template.resourceCountIs('AWS::Scheduler::Schedule', 2);
     });
 
     // Stop Instance Schedule testing
