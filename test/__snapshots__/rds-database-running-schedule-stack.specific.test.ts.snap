@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should match snapshot 1`] = `
+exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should match snapshot 1`] = `
 {
   "Mappings": {
     "ServiceprincipalMap": {
@@ -119,6 +119,13 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
     },
   },
   "Resources": {
+    "NotificationTopicEB7A0DF1": {
+      "Properties": {
+        "DisplayName": "RDS DB Running Schedule Notification Topic",
+        "TopicName": "rds-db-running-schedule-notification-313cb41a-topic",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
     "SchedulerExecutionRole0AF092B7": {
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -155,50 +162,21 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
       },
       "Type": "AWS::IAM::Role",
     },
-    "StartDBClusterSchedule": {
-      "Properties": {
-        "Description": "start db cluster schedule.",
-        "FlexibleTimeWindow": {
-          "Mode": "OFF",
-        },
-        "Name": "rds-db-cluster-start-313cb41a-schedule",
-        "ScheduleExpression": "cron(50 7 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "UTC",
-        "State": "ENABLED",
-        "Target": {
-          "Arn": {
-            "Ref": "StateMachine2E01A3A5",
-          },
-          "Input": "{"Params":{"TagKey":"WorkHoursRunning","TagValues":["YES"],"Mode":"Start","Type":"Cluster"}}",
-          "RetryPolicy": {
-            "MaximumEventAgeInSeconds": 60,
-            "MaximumRetryAttempts": 0,
-          },
-          "RoleArn": {
-            "Fn::GetAtt": [
-              "SchedulerExecutionRole0AF092B7",
-              "Arn",
-            ],
-          },
-        },
-      },
-      "Type": "AWS::Scheduler::Schedule",
-    },
-    "StartDBInstanceSchedule": {
+    "StartDatabaseRunningSchedule": {
       "Properties": {
         "Description": "start db instance schedule.",
         "FlexibleTimeWindow": {
           "Mode": "OFF",
         },
-        "Name": "rds-db-instance-start-313cb41a-schedule",
-        "ScheduleExpression": "cron(50 7 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "UTC",
+        "Name": "rds-database-running-start-313cb41a-schedule",
+        "ScheduleExpression": "cron(55 8 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "Asia/Tokyo",
         "State": "ENABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
           },
-          "Input": "{"Params":{"TagKey":"WorkHoursRunning","TagValues":["YES"],"Mode":"Start","Type":"Instance"}}",
+          "Input": "{"Params":{"TagKey":"WorkHoursRunning","TagValues":["YES"],"Mode":"Start"}}",
           "RetryPolicy": {
             "MaximumEventAgeInSeconds": 60,
             "MaximumRetryAttempts": 0,
@@ -224,39 +202,43 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
           "Fn::Join": [
             "",
             [
-              "{"StartAt":"ModeChoice","States":{"ModeChoice":{"Type":"Choice","Choices":[{"Variable":"$.Params.Type","StringEquals":"Instance","Next":"GetDBInstanceResources"},{"Variable":"$.Params.Type","StringEquals":"Cluster","Next":"GetDBClusterResources"}],"Default":"TypeChoiceFail"},"TypeChoiceFail":{"Type":"Fail","Cause":"input Params Type is unmatch."},"GetDBInstanceResources":{"Next":"InstancesMap","Type":"Task","ResultPath":"$.Result","ResultSelector":{"TargetResources.$":"$..ResourceTagMappingList[*].ResourceARN"},"Resource":"arn:",
+              "{"StartAt":"InitStateListDefinition","States":{"InitStateListDefinition":{"Type":"Pass","Result":[{"name":"AVAILABLE","emoji":"🤩","state":"available"},{"name":"STOPPED","emoji":"😴","state":"stopped"}],"ResultPath":"$.definition.stateList","Next":"GetResources"},"GetResources":{"Next":"ResourceProcessingMap","Type":"Task","ResultPath":"$.Result","ResultSelector":{"TargetResources.$":"$..ResourceTagMappingList[*].ResourceARN"},"Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:resourcegroupstaggingapi:getResources","Parameters":{"ResourceTypeFilters":["rds:db"],"TagFilters":[{"Key.$":"$.Params.TagKey","Values.$":"$.Params.TagValues"}]}},"InstancesMap":{"Type":"Map","End":true,"Parameters":{"TargetResource.$":"$$.Map.Item.Value","InputParams.$":"$.Params"},"ItemsPath":"$.Result.TargetResources","ItemProcessor":{"ProcessorConfig":{"Mode":"INLINE"},"StartAt":"GetDBInstanceIdentifier","States":{"GetDBInstanceIdentifier":{"Type":"Pass","ResultPath":"$.Result","Parameters":{"TargetDBInstanceIdentifier.$":"States.ArrayGetItem(States.StringSplit($.TargetResource, ':'), 6)"},"Next":"DescribeDBInstances"},"DescribeDBInstances":{"Next":"DBInstanceStatusChoice","Type":"Task","ResultPath":"$.Result.DBInstance","ResultSelector":{"CurrentStatus.$":"$.DbInstances[0].DbInstanceStatus"},"Resource":"arn:",
+              ":states:::aws-sdk:resourcegroupstaggingapi:getResources","Parameters":{"ResourceTypeFilters":["rds:db","rds:cluster"],"TagFilters":[{"Key.$":"$.Params.TagKey","Values.$":"$.Params.TagValues"}]}},"ResourceProcessingMap":{"Type":"Map","End":true,"Parameters":{"TargetResource.$":"$$.Map.Item.Value","params.$":"$.Params","definition.$":"$.definition"},"ItemsPath":"$.Result.TargetResources","ItemProcessor":{"ProcessorConfig":{"Mode":"INLINE"},"StartAt":"GetIdentifier","States":{"GetIdentifier":{"Type":"Pass","ResultPath":"$.Result.target","Parameters":{"identifier.$":"States.ArrayGetItem(States.StringSplit($.TargetResource, ':'), 6)","type.$":"States.ArrayGetItem(States.StringSplit($.TargetResource, ':'), 5)"},"Next":"DescribeTypeChoice"},"DescribeTypeChoice":{"Type":"Choice","Choices":[{"Variable":"$.Result.target.type","StringEquals":"db","Next":"DescribeDBInstances"},{"Variable":"$.Result.target.type","StringEquals":"cluster","Next":"DescribeDBClusters"}],"Default":"UnknownType"},"StatusChangeWait":{"Type":"Wait","Seconds":60,"Next":"DescribeTypeChoice"},"StartDBInstance":{"Next":"StatusChangeWait","Type":"Task","ResultPath":"$.Result.StartDBInstance","Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:describeDBInstances","Parameters":{"DbInstanceIdentifier.$":"$.Result.TargetDBInstanceIdentifier"}},"DBInstanceStatusChangeWait":{"Type":"Wait","Seconds":60,"Next":"DescribeDBInstances"},"StartDBInstance":{"Next":"DBInstanceStatusChangeWait","Type":"Task","ResultPath":"$.Result.StartDBInstance","Resource":"arn:",
+              ":states:::aws-sdk:rds:startDBInstance","Parameters":{"DbInstanceIdentifier.$":"$.Result.target.identifier"}},"StatusChoice":{"Type":"Choice","Choices":[{"And":[{"Variable":"$.params.Mode","StringEquals":"Start"},{"Variable":"$.Result.target.type","StringEquals":"db"},{"Variable":"$.Result.status.current","StringEquals":"stopped"}],"Next":"StartDBInstance"},{"And":[{"Variable":"$.params.Mode","StringEquals":"Stop"},{"Variable":"$.Result.target.type","StringEquals":"db"},{"Variable":"$.Result.status.current","StringEquals":"available"}],"Next":"StopDBInstance"},{"And":[{"Variable":"$.params.Mode","StringEquals":"Start"},{"Variable":"$.Result.target.type","StringEquals":"cluster"},{"Variable":"$.Result.status.current","StringEquals":"stopped"}],"Next":"StartDBCluster"},{"And":[{"Variable":"$.params.Mode","StringEquals":"Stop"},{"Variable":"$.Result.target.type","StringEquals":"cluster"},{"Variable":"$.Result.status.current","StringEquals":"available"}],"Next":"StopDBCluster"},{"Or":[{"And":[{"Variable":"$.params.Mode","StringEquals":"Start"},{"Or":[{"Variable":"$.Result.target.type","StringEquals":"db"},{"Variable":"$.Result.target.type","StringEquals":"cluster"}]},{"Variable":"$.Result.status.current","StringEquals":"available"}]},{"And":[{"Variable":"$.params.Mode","StringEquals":"Stop"},{"Or":[{"Variable":"$.Result.target.type","StringEquals":"db"},{"Variable":"$.Result.target.type","StringEquals":"cluster"}]},{"Variable":"$.Result.status.current","StringEquals":"stopped"}]}],"Next":"PrepareTopicValue"},{"Or":[{"And":[{"And":[{"Variable":"$.params.Mode","StringEquals":"Start"},{"Or":[{"Variable":"$.Result.target.type","StringEquals":"db"},{"Variable":"$.Result.target.type","StringEquals":"cluster"}]},{"Or":[{"Variable":"$.Result.status.current","StringEquals":"starting"},{"Variable":"$.Result.status.current","StringEquals":"configuring-enhanced-monitoring"},{"Variable":"$.Result.status.current","StringEquals":"backing-up"},{"Variable":"$.Result.status.current","StringEquals":"modifying"}]}]}]},{"And":[{"And":[{"Variable":"$.params.Mode","StringEquals":"Stop"},{"Or":[{"Variable":"$.Result.target.type","StringEquals":"db"},{"Variable":"$.Result.target.type","StringEquals":"cluster"}]},{"Or":[{"Variable":"$.Result.status.current","StringEquals":"modifying"},{"Variable":"$.Result.status.current","StringEquals":"stopping"}]}]}]}],"Next":"StatusChangeWait"}],"Default":"StatusFail"},"StatusFail":{"Type":"Fail","Cause":"db instance or cluster status fail."},"StopDBInstance":{"Next":"StatusChangeWait","Type":"Task","ResultPath":"$.Result.StopDBInstance","Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:startDBInstance","Parameters":{"DbInstanceIdentifier.$":"$.Result.TargetDBInstanceIdentifier"}},"DBInstanceStatusChoice":{"Type":"Choice","Choices":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Start"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"stopped"}],"Next":"StartDBInstance"},{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Stop"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"available"}],"Next":"StopDBInstance"},{"Or":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Start"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"available"}]},{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Stop"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"stopped"}]}],"Next":"DBInstanceStateChangeSucceed"},{"Or":[{"And":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Start"},{"Or":[{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"starting"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"configuring-enhanced-monitoring"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"backing-up"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"modifying"}]}]}]},{"And":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Stop"},{"Or":[{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"modifying"},{"Variable":"$.Result.DBInstance.CurrentStatus","StringEquals":"stopping"}]}]}]}],"Next":"DBInstanceStatusChangeWait"}],"Default":"DBInstanceStatusFail"},"DBInstanceStatusFail":{"Type":"Fail","Cause":"db instance status fail."},"StopDBInstance":{"Next":"DBInstanceStatusChangeWait","Type":"Task","ResultPath":"$.Result.StopDBInstance","Resource":"arn:",
+              ":states:::aws-sdk:rds:stopDBInstance","Parameters":{"DbInstanceIdentifier.$":"$.Result.target.identifier"}},"StartDBCluster":{"Next":"StatusChangeWait","Type":"Task","ResultPath":"$.Result.StartDBCluster","Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:stopDBInstance","Parameters":{"DbInstanceIdentifier.$":"$.Result.TargetDBInstanceIdentifier"}},"DBInstanceStateChangeSucceed":{"Type":"Succeed"}}},"MaxConcurrency":10},"GetDBClusterResources":{"Next":"ClustersMap","Type":"Task","ResultPath":"$.Result","ResultSelector":{"TargetResources.$":"$..ResourceTagMappingList[*].ResourceARN"},"Resource":"arn:",
+              ":states:::aws-sdk:rds:startDBCluster","Parameters":{"DbClusterIdentifier.$":"$.Result.target.identifier"}},"StopDBCluster":{"Next":"StatusChangeWait","Type":"Task","ResultPath":"$.Result.StopDBCluster","Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:resourcegroupstaggingapi:getResources","Parameters":{"ResourceTypeFilters":["rds:cluster"],"TagFilters":[{"Key.$":"$.Params.TagKey","Values.$":"$.Params.TagValues"}]}},"ClustersMap":{"Type":"Map","End":true,"Parameters":{"TargetResource.$":"$$.Map.Item.Value","InputParams.$":"$.Params"},"ItemsPath":"$.Result.TargetResources","ItemProcessor":{"ProcessorConfig":{"Mode":"INLINE"},"StartAt":"GetDBClusterIdentifier","States":{"GetDBClusterIdentifier":{"Type":"Pass","ResultPath":"$.Result","Parameters":{"TargetDBClusterIdentifier.$":"States.ArrayGetItem(States.StringSplit($.TargetResource, ':'), 6)"},"Next":"DescribeDBClusters"},"DescribeDBClusters":{"Next":"DBClusterStatusChoice","Catch":[{"ErrorEquals":["Rds.DbClusterNotFoundException"],"Next":"HandleDbClusterNotFound"}],"Type":"Task","ResultPath":"$.Result.DBCluster","ResultSelector":{"CurrentStatus.$":"$.DbClusters[0].Status"},"Resource":"arn:",
+              ":states:::aws-sdk:rds:stopDBCluster","Parameters":{"DbClusterIdentifier.$":"$.Result.target.identifier"}},"PrepareTopicValue":{"Type":"Pass","ResultPath":"$.prepare.topic.values","Parameters":{"emoji.$":"States.ArrayGetItem($.definition.stateList[?(@.state == $.Result.status.current)].emoji, 0)","status.$":"States.ArrayGetItem($.definition.stateList[?(@.state == $.Result.status.current)].name, 0)","account.$":"States.ArrayGetItem(States.StringSplit($.TargetResource, ':'), 4)","region.$":"States.ArrayGetItem(States.StringSplit($.TargetResource, ':'), 3)"},"Next":"GenerateTopic"},"GenerateTopic":{"Type":"Pass","ResultPath":"$.Generate.Topic","Parameters":{"Subject.$":"States.Format('{} [{}] AWS RDS DB {} Running Notification [{}][{}]', $.prepare.topic.values.emoji, $.prepare.topic.values.status, $.params.Mode, $.prepare.topic.values.account, $.prepare.topic.values.region)","TextMessage.$":"States.Format('Account : {}\\nRegion : {}\\nType : {}\\nIdentifier : {}\\nStatus : {}', $.prepare.topic.values.account, $.prepare.topic.values.region, $.Result.target.type, $.Result.target.identifier, $.prepare.topic.values.status)"},"Next":"SendNotification"},"SendNotification":{"Next":"StateChangeSucceed","Type":"Task","ResultPath":"$.snsResult","Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:describeDBClusters","Parameters":{"DbClusterIdentifier.$":"$.Result.TargetDBClusterIdentifier"}},"DBClusterStatusChangeWait":{"Type":"Wait","Seconds":60,"Next":"DescribeDBClusters"},"StartDBCluster":{"Next":"DBClusterStatusChangeWait","Type":"Task","ResultPath":"$.Result.StartDBCluster","Resource":"arn:",
+              ":states:::sns:publish","Parameters":{"TopicArn":"",
+              {
+                "Ref": "NotificationTopicEB7A0DF1",
+              },
+              "","Message.$":"$.Generate.Topic.TextMessage","Subject.$":"$.Generate.Topic.Subject"}},"StateChangeSucceed":{"Type":"Succeed"},"UnknownType":{"Type":"Fail"},"DescribeDBInstances":{"Next":"StatusChoice","Type":"Task","ResultPath":"$.Result.status","ResultSelector":{"current.$":"$.DbInstances[0].DbInstanceStatus"},"Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:startDBCluster","Parameters":{"DbClusterIdentifier.$":"$.Result.TargetDBClusterIdentifier"}},"DBClusterStatusChoice":{"Type":"Choice","Choices":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Start"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"stopped"}],"Next":"StartDBCluster"},{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Stop"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"available"}],"Next":"StopDBCluster"},{"Or":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Start"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"available"}]},{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Stop"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"stopped"}]}],"Next":"DBClusterStateChangeSucceed"},{"Or":[{"And":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Start"},{"Or":[{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"starting"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"configuring-enhanced-monitoring"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"backing-up"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"modifying"}]}]}]},{"And":[{"And":[{"Variable":"$.InputParams.Mode","StringEquals":"Stop"},{"Or":[{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"modifying"},{"Variable":"$.Result.DBCluster.CurrentStatus","StringEquals":"stopping"}]}]}]}],"Next":"DBClusterStatusChangeWait"}],"Default":"DBClusterStatusFail"},"DBClusterStatusFail":{"Type":"Fail","Cause":"db clusater status fail."},"StopDBCluster":{"Next":"DBClusterStatusChangeWait","Type":"Task","ResultPath":"$.Result.StopDBCluster","Resource":"arn:",
+              ":states:::aws-sdk:rds:describeDBInstances","Parameters":{"DbInstanceIdentifier.$":"$.Result.target.identifier"}},"DescribeDBClusters":{"Next":"StatusChoice","Catch":[{"ErrorEquals":["Rds.DbClusterNotFoundException"],"Next":"HandleDbClusterNotFound"}],"Type":"Task","ResultPath":"$.Result.status","ResultSelector":{"current.$":"$.DbClusters[0].Status"},"Resource":"arn:",
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:stopDBCluster","Parameters":{"DbClusterIdentifier.$":"$.Result.TargetDBClusterIdentifier"}},"DBClusterStateChangeSucceed":{"Type":"Succeed"},"HandleDbClusterNotFound":{"Type":"Pass","Result":{"message":"DB Cluster not found, but continuing..."},"End":true}}},"MaxConcurrency":10}}}",
+              ":states:::aws-sdk:rds:describeDBClusters","Parameters":{"DbClusterIdentifier.$":"$.Result.target.identifier"}},"HandleDbClusterNotFound":{"Type":"Pass","Result":{"message":"DB Cluster not found, but continuing..."},"End":true}}},"MaxConcurrency":10}}}",
             ],
           ],
         },
@@ -308,22 +290,6 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
               "Resource": "*",
             },
             {
-              "Action": "rds:describeDBInstances",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:rds:*:",
-                    {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":db:*",
-                  ],
-                ],
-              },
-            },
-            {
               "Action": "rds:startDBInstance",
               "Effect": "Allow",
               "Resource": {
@@ -351,22 +317,6 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
                       "Ref": "AWS::AccountId",
                     },
                     ":db:*",
-                  ],
-                ],
-              },
-            },
-            {
-              "Action": "rds:describeDBClusters",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:rds:*:",
-                    {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":cluster:*",
                   ],
                 ],
               },
@@ -403,6 +353,45 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
                 ],
               },
             },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "NotificationTopicEB7A0DF1",
+              },
+            },
+            {
+              "Action": "rds:describeDBInstances",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:rds:*:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":db:*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "rds:describeDBClusters",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:rds:*:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":cluster:*",
+                  ],
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -415,50 +404,21 @@ exports[`RdsDatabaseRunningScheduler Default Testing default schedule Should mat
       },
       "Type": "AWS::IAM::Policy",
     },
-    "StopDBClusterSchedule": {
+    "StopDatabaseRunningSchedule": {
       "Properties": {
-        "Description": "stop db cluster schedule.",
+        "Description": "stop database(instance/cluster) running stop schedule.",
         "FlexibleTimeWindow": {
           "Mode": "OFF",
         },
-        "Name": "rds-db-cluster-stop-313cb41a-schedule",
-        "ScheduleExpression": "cron(10 21 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "UTC",
+        "Name": "rds-database-running-stop-313cb41a-schedule",
+        "ScheduleExpression": "cron(5 19 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "Asia/Tokyo",
         "State": "ENABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
           },
-          "Input": "{"Params":{"TagKey":"WorkHoursRunning","TagValues":["YES"],"Mode":"Stop","Type":"Cluster"}}",
-          "RetryPolicy": {
-            "MaximumEventAgeInSeconds": 60,
-            "MaximumRetryAttempts": 0,
-          },
-          "RoleArn": {
-            "Fn::GetAtt": [
-              "SchedulerExecutionRole0AF092B7",
-              "Arn",
-            ],
-          },
-        },
-      },
-      "Type": "AWS::Scheduler::Schedule",
-    },
-    "StopDBInstanceSchedule": {
-      "Properties": {
-        "Description": "stop db instance schedule.",
-        "FlexibleTimeWindow": {
-          "Mode": "OFF",
-        },
-        "Name": "rds-db-instance-stop-313cb41a-schedule",
-        "ScheduleExpression": "cron(10 21 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "UTC",
-        "State": "ENABLED",
-        "Target": {
-          "Arn": {
-            "Ref": "StateMachine2E01A3A5",
-          },
-          "Input": "{"Params":{"TagKey":"WorkHoursRunning","TagValues":["YES"],"Mode":"Stop","Type":"Instance"}}",
+          "Input": "{"Params":{"TagKey":"WorkHoursRunning","TagValues":["YES"],"Mode":"Stop"}}",
           "RetryPolicy": {
             "MaximumEventAgeInSeconds": 60,
             "MaximumRetryAttempts": 0,
