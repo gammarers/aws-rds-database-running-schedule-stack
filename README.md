@@ -11,6 +11,24 @@
 
 This AWS CDK Construct Stack controls the starting and stopping of RDS DB instances and clusters based on specified tags, ensuring they only run during working hours. It uses EventBridge Scheduler to trigger a StepFunctions State Machine at the start and end of the working hours(default 07:50(UTC) - 21:10(UTC)), which then starts or stops the databases depending on the mode.
 
+> [!WARNING]
+> v2.3.0:
+> Stack props add option resourceNamingOption
+> default ResourceNamingType.DEFAULT is cdk generated name
+> f you want to maintain compatibility with versions below `v2.3.0`, please include the following settings (ResourceNamingType.AUTO).
+> ```typescript
+> new RDSDatabaseRunningScheduleStack(app, 'RDSDatabaseRunningScheduleStack', {
+>   targetResource: {
+>     tagKey: 'WorkHoursRunning',
+>     tagValues: ['YES'],
+>   },
+>   resourceNamingOption: {
+>     type: ResourceNamingType.AUTO, // HERE
+>   },
+> });
+> ```
+
+
 ## Fixed
 
 - RDS Aurora Cluster
@@ -87,6 +105,9 @@ new RDSDatabaseRunningScheduleStack(app, 'RDSDatabaseRunningScheduleStack', {
     minute: '5',
     hour: '19',
     week: 'MON-FRI',
+  },
+  resourceNamingOption: {
+    type: ResourceNamingType.AUTO, // DEFAULT or AUTO or CUSTOM
   },
 });
 
