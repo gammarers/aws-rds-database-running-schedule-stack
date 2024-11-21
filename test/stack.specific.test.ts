@@ -1,3 +1,4 @@
+import { ResourceNamingType } from '@gammarers/aws-resource-naming';
 import { App } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { RDSDatabaseRunningScheduleStack } from '../src';
@@ -24,6 +25,15 @@ describe('RdsDatabaseRunningScheduler Specific Testing', () => {
         minute: '5',
         hour: '19',
         week: 'MON-FRI',
+      },
+      notifications: {
+        emails: [
+          'foo@example.com',
+          'bar@example.net',
+        ],
+      },
+      resourceNamingOption: {
+        type: ResourceNamingType.AUTO,
       },
     });
 

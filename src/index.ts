@@ -1,4 +1,5 @@
-import * as crypto from 'crypto';
+import { ResourceAutoNaming, ResourceDefaultNaming, ResourceNaming, ResourceNamingOptions, ResourceNamingType } from '@gammarers/aws-resource-naming';
+export { ResourceAutoNaming, ResourceDefaultNaming, ResourceNaming, ResourceNamingOptions, ResourceNamingType } from '@gammarers/aws-resource-naming';
 import * as cdk from 'aws-cdk-lib';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -7,6 +8,19 @@ import * as sns from 'aws-cdk-lib/aws-sns';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
+
+export interface CustomNaming {
+  readonly type: ResourceNamingType.CUSTOM;
+  readonly notificationTopicName: string;
+  readonly notificationTopicDisplayName: string;
+  readonly stateMachineName: string;
+  readonly stateMachineRoleName: string;
+  readonly schedulerRoleName: string;
+  readonly startScheduleName: string;
+  readonly stopScheduleName: string;
+}
+
+export type ResourceNamingOption = ResourceDefaultNaming | ResourceAutoNaming | CustomNaming;
 
 export interface ScheduleProperty {
   readonly timezone: string;
@@ -30,25 +44,36 @@ export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
   readonly stopSchedule?: ScheduleProperty;
   readonly startSchedule?: ScheduleProperty;
   readonly notifications?: NotificationsProperty;
+  readonly resourceNamingOption?: ResourceNamingOption;
 }
 
 export class RDSDatabaseRunningScheduleStack extends Stack {
   constructor(scope: Construct, id: string, props: RDSDatabaseRunningScheduleStackProps) {
     super(scope, id, props);
 
+    // 👇 Get account
     const account = cdk.Stack.of(this).account;
-    //const stackName: string = cdk.Stack.of(this).stackName;
-    //const region = cdk.Stack.of(this).region;
 
     // 👇 Create random 8 length string
-    const random = crypto.createHash('shake256', { outputLength: 4 })
-      .update(`${cdk.Names.uniqueId(scope)}-${cdk.Names.uniqueId(this)}`)
-      .digest('hex');
+    const random = ResourceNaming.createRandomString(`${cdk.Names.uniqueId(scope)}-${cdk.Names.uniqueId(this)}`);
+    // 👇 Definition auto naming
+    const autoNaming = {
+      notificationTopicName: `rds-db-running-schedule-notification-${random}-topic`,
+      notificationTopicDisplayName: 'RDS DB Running Schedule Notification Topic',
+      stateMachineName: `rds-db-running-schedule-${random}-state-machine`,
+      stateMachineRoleName: `rds-db-running-schedule-${random}-state-machine-role`,
+      schedulerRoleName: `rds-db-running-scheduler-${random}-exec-role`,
+      startScheduleName: `rds-database-running-stop-${random}-schedule`,
+      stopScheduleName: `rds-database-running-start-${random}-schedule`,
+    };
+    // 👇　final naming
+    const names = ResourceNaming.naming(autoNaming, props.resourceNamingOption as ResourceNamingOptions);
+
 
     // 👇 SNS Topic for notifications
     const topic: sns.Topic = new sns.Topic(this, 'NotificationTopic', {
-      topicName: `rds-db-running-schedule-notification-${random}-topic`,
-      displayName: 'RDS DB Running Schedule Notification Topic',
+      topicName: names.notificationTopicName,
+      displayName: names.notificationTopicDisplayName,
     });
 
     // 👇 Subscribe an email endpoint to the topic
@@ -355,23 +380,25 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 StepFunctions State Machine
     const stateMachine = new sfn.StateMachine(this, 'StateMachine', {
-      stateMachineName: `rds-db-running-schedule-${random}-state-machine`,
+      stateMachineName: names.stateMachineName,
       definitionBody: sfn.DefinitionBody.fromChainable(initStateListDefinition),
     });
 
     // 👇 rename role name & description.
-    const role = stateMachine.node.findChild('Role') as iam.Role;
-    const cfnRole = role.node.defaultChild as iam.CfnRole;
-    cfnRole.addPropertyOverride('RoleName', `rds-db-running-schedule-${random}-state-machine-role`);
-    cfnRole.addPropertyOverride('Description', 'RDS DB Running chedule machine role.');
-    const policy = role.node.findChild('DefaultPolicy') as iam.Policy;
-    const cfnPolicy = policy.node.defaultChild as iam.CfnPolicy;
-    cfnPolicy.addPropertyOverride('PolicyName', 'default-policy');
+    if (names.stateMachineRoleName) {
+      const role = stateMachine.node.findChild('Role') as iam.Role;
+      const cfnRole = role.node.defaultChild as iam.CfnRole;
+      cfnRole.addPropertyOverride('RoleName', names.stateMachineRoleName);
+      cfnRole.addPropertyOverride('Description', 'RDS DB Running machine role.');
+      const policy = role.node.findChild('DefaultPolicy') as iam.Policy;
+      const cfnPolicy = policy.node.defaultChild as iam.CfnPolicy;
+      cfnPolicy.addPropertyOverride('PolicyName', `rds-db-running-schedule-${random}-state-machine-policy`);
+    }
 
     // 👇 StateMachine Exec Role of Scheduler
     const schedulerExecRole = new iam.Role(this, 'SchedulerExecutionRole', {
-      roleName: `rds-db-running-scheduler-${random}-exec-role`,
-      description: 'RDS DB Running scheduler execution role',
+      roleName: names.schedulerRoleName,
+      description: 'RDS DB Running scheduler role',
       assumedBy: new iam.ServicePrincipal('scheduler.amazonaws.com'),
       inlinePolicies: {
         'state-machine-exec-policy': new iam.PolicyDocument({
@@ -419,7 +446,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 Stop DB schedule
     new DBRuningSchedule(this, 'StopDatabaseRunningSchedule', {
-      name: `rds-database-running-stop-${random}-schedule`,
+      name: names.startScheduleName,
       description: 'stop database(instance/cluster) running stop schedule.',
       sheduleState,
       timezone: props.stopSchedule?.timezone ?? 'UTC',
@@ -437,7 +464,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 
     // 👇 Start DB schedule
     new DBRuningSchedule(this, 'StartDatabaseRunningSchedule', {
-      name: `rds-database-running-start-${random}-schedule`,
+      name: names.stopScheduleName,
       description: 'start db instance schedule.',
       sheduleState,
       timezone: props.startSchedule?.timezone ?? 'UTC',
@@ -457,7 +484,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
 }
 
 interface DBRuningScheduleProps {
-  name: string;
+  name?: string;
   description: string;
   sheduleState: string;
   timezone: string;

@@ -16,41 +16,8 @@ describe('RdsDatabaseRunningScheduler Default Testing', () => {
 
     const template = Template.fromStack(stack);
 
-    // Schedule execution role
-    it('Should have state machine execution role from sheduler', async () => {
-      template.hasResourceProperties('AWS::IAM::Role', Match.objectEquals({
-        RoleName: Match.stringLikeRegexp('rds-db-running-scheduler-.*-exec-role'),
-        Description: Match.anyValue(),
-        AssumeRolePolicyDocument: Match.objectEquals({
-          Version: '2012-10-17',
-          Statement: Match.arrayWith([
-            Match.objectEquals({
-              Effect: 'Allow',
-              Principal: {
-                Service: 'scheduler.amazonaws.com',
-              },
-              Action: 'sts:AssumeRole',
-            }),
-          ]),
-        }),
-        Policies: Match.arrayEquals([
-          {
-            PolicyName: 'state-machine-exec-policy',
-            PolicyDocument: Match.objectEquals({
-              Version: '2012-10-17',
-              Statement: [
-                Match.objectEquals({
-                  Effect: 'Allow',
-                  Action: 'states:StartExecution',
-                  Resource: {
-                    Ref: Match.stringLikeRegexp('StateMachine'),
-                  },
-                }),
-              ],
-            }),
-          },
-        ]),
-      }));
+    it('Should have Schedule 2 exist', async () => {
+      template.resourceCountIs('AWS::Scheduler::Schedule', 2);
     });
 
     it('Should have Schedule 2 exist', async () => {

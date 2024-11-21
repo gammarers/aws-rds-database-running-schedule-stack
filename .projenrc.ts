@@ -4,7 +4,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorAddress: 'yicr@users.noreply.github.com',
   authorOrganization: true,
   cdkVersion: '2.120.0',
-  constructsVersion: '10.0.5',
   typescriptVersion: '5.5.x',
   jsiiVersion: '5.5.x',
   defaultReleaseBranch: 'main',
@@ -13,6 +12,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
   keywords: ['aws', 'cdk', 'aws-cdk', 'rds', 'scheduler', 'cost', 'saving'],
   projenrcTs: true,
   repositoryUrl: 'https://github.com/gammarers/aws-rds-database-running-schedule-stack.git',
+  deps: [
+    '@gammarers/aws-resource-naming@^0.8.2',
+  ],
   releaseToNpm: true,
   npmAccess: javascript.NpmAccess.PUBLIC,
   majorVersion: 2,
@@ -21,7 +23,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   depsUpgradeOptions: {
     workflowOptions: {
       labels: ['auto-approve', 'auto-merge'],
-      schedule: javascript.UpgradeDependenciesSchedule.expressions(['0 16 * * 3']), // every wednesday 16:00 (JST/THU:0100)
+      schedule: javascript.UpgradeDependenciesSchedule.expressions(['2 20 * * 3']),
     },
   },
   autoApproveOptions: {
