@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should match snapshot 1`] = `
+exports[`RdsDatabaseRunningScheduler disabled Testing Should match snapshot 1`] = `
 {
   "Mappings": {
     "ServiceprincipalMap": {
@@ -120,10 +120,6 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
   },
   "Resources": {
     "NotificationTopicEB7A0DF1": {
-      "Properties": {
-        "DisplayName": "RDS DB Running Schedule Notification Topic",
-        "TopicName": "rds-db-running-schedule-notification-313cb41a-topic",
-      },
       "Type": "AWS::SNS::Topic",
     },
     "SchedulerExecutionRole0AF092B7": {
@@ -140,7 +136,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           ],
           "Version": "2012-10-17",
         },
-        "Description": "RDS DB Running scheduler execution role",
+        "Description": "RDS DB Running scheduler role",
         "Policies": [
           {
             "PolicyDocument": {
@@ -158,7 +154,6 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
             "PolicyName": "state-machine-exec-policy",
           },
         ],
-        "RoleName": "rds-db-running-scheduler-313cb41a-exec-role",
       },
       "Type": "AWS::IAM::Role",
     },
@@ -168,10 +163,9 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
         "FlexibleTimeWindow": {
           "Mode": "OFF",
         },
-        "Name": "rds-database-running-start-313cb41a-schedule",
-        "ScheduleExpression": "cron(55 8 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "Asia/Tokyo",
-        "State": "ENABLED",
+        "ScheduleExpression": "cron(50 7 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "DISABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
@@ -248,7 +242,6 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
             "Arn",
           ],
         },
-        "StateMachineName": "rds-db-running-schedule-313cb41a-state-machine",
       },
       "Type": "AWS::StepFunctions::StateMachine",
       "UpdateReplacePolicy": "Delete",
@@ -275,8 +268,6 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           ],
           "Version": "2012-10-17",
         },
-        "Description": "RDS DB Running chedule machine role.",
-        "RoleName": "rds-db-running-schedule-313cb41a-state-machine-role",
       },
       "Type": "AWS::IAM::Role",
     },
@@ -395,7 +386,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "default-policy",
+        "PolicyName": "StateMachineRoleDefaultPolicyDF1E6607",
         "Roles": [
           {
             "Ref": "StateMachineRoleB840431D",
@@ -410,10 +401,9 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
         "FlexibleTimeWindow": {
           "Mode": "OFF",
         },
-        "Name": "rds-database-running-stop-313cb41a-schedule",
-        "ScheduleExpression": "cron(5 19 ? * MON-FRI *)",
-        "ScheduleExpressionTimezone": "Asia/Tokyo",
-        "State": "ENABLED",
+        "ScheduleExpression": "cron(10 21 ? * MON-FRI *)",
+        "ScheduleExpressionTimezone": "UTC",
+        "State": "DISABLED",
         "Target": {
           "Arn": {
             "Ref": "StateMachine2E01A3A5",
