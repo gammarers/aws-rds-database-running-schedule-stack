@@ -12,6 +12,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
   keywords: ['aws', 'cdk', 'aws-cdk', 'rds', 'scheduler', 'cost', 'saving'],
   projenrcTs: true,
   repositoryUrl: 'https://github.com/gammarers/aws-rds-database-running-schedule-stack.git',
+  deps: [
+    '@gammarers/aws-resource-naming@^0.8.2',
+  ],
   releaseToNpm: true,
   npmAccess: javascript.NpmAccess.PUBLIC,
   majorVersion: 2,
