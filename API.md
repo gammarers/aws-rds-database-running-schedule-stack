@@ -1315,62 +1315,6 @@ public readonly stopSchedule: ScheduleProperty;
 
 ---
 
-### ResourceAutoNaming <a name="ResourceAutoNaming" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceAutoNaming"></a>
-
-#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceAutoNaming.Initializer"></a>
-
-```typescript
-import { ResourceAutoNaming } from '@gammarers/aws-rds-database-running-schedule-stack'
-
-const resourceAutoNaming: ResourceAutoNaming = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceAutoNaming.property.type">type</a></code> | <code>@gammarers/aws-resource-naming.ResourceNamingType</code> | *No description.* |
-
----
-
-##### `type`<sup>Required</sup> <a name="type" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceAutoNaming.property.type"></a>
-
-```typescript
-public readonly type: ResourceNamingType;
-```
-
-- *Type:* @gammarers/aws-resource-naming.ResourceNamingType
-
----
-
-### ResourceDefaultNaming <a name="ResourceDefaultNaming" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceDefaultNaming"></a>
-
-#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceDefaultNaming.Initializer"></a>
-
-```typescript
-import { ResourceDefaultNaming } from '@gammarers/aws-rds-database-running-schedule-stack'
-
-const resourceDefaultNaming: ResourceDefaultNaming = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceDefaultNaming.property.type">type</a></code> | <code>@gammarers/aws-resource-naming.ResourceNamingType</code> | *No description.* |
-
----
-
-##### `type`<sup>Required</sup> <a name="type" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceDefaultNaming.property.type"></a>
-
-```typescript
-public readonly type: ResourceNamingType;
-```
-
-- *Type:* @gammarers/aws-resource-naming.ResourceNamingType
-
----
-
 ### ScheduleProperty <a name="ScheduleProperty" id="@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty"></a>
 
 #### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty.Initializer"></a>
@@ -1472,32 +1416,4 @@ public readonly tagValues: string[];
 ---
 
 
-
-## Enums <a name="Enums" id="Enums"></a>
-
-### ResourceNamingType <a name="ResourceNamingType" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType"></a>
-
-#### Members <a name="Members" id="Members"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType.DEFAULT">DEFAULT</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType.AUTO">AUTO</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType.CUSTOM">CUSTOM</a></code> | *No description.* |
-
----
-
-##### `DEFAULT` <a name="DEFAULT" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType.DEFAULT"></a>
-
----
-
-
-##### `AUTO` <a name="AUTO" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType.AUTO"></a>
-
----
-
-
-##### `CUSTOM` <a name="CUSTOM" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceNamingType.CUSTOM"></a>
-
----
 
