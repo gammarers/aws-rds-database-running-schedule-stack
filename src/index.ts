@@ -8,6 +8,8 @@ import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
+export { ResourceAutoNaming, ResourceDefaultNaming, ResourceNamingOptions, ResourceNamingType };
+
 export interface CustomNaming {
   readonly type: ResourceNamingType.CUSTOM;
   readonly notificationTopicName: string;
