@@ -1,4 +1,4 @@
-import { ResourceAutoNaming, ResourceDefaultNaming, ResourceNaming, ResourceNamingOptions, ResourceNamingType } from '@gammarers/aws-resource-naming';
+import { ResourceAutoNaming, ResourceDefaultNaming, ResourceNaming, ResourceNamingType } from '@gammarers/aws-resource-naming';
 import * as cdk from 'aws-cdk-lib';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -8,7 +8,7 @@ import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
 
-export { ResourceAutoNaming, ResourceDefaultNaming, ResourceNamingOptions, ResourceNamingType };
+export { ResourceAutoNaming, ResourceDefaultNaming, ResourceNamingType };
 
 export interface CustomNaming {
   readonly type: ResourceNamingType.CUSTOM;
@@ -68,7 +68,7 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
       stopScheduleName: `rds-database-running-start-${random}-schedule`,
     };
     // 👇　final naming
-    const names = ResourceNaming.naming(autoNaming, props.resourceNamingOption as ResourceNamingOptions);
+    const names = ResourceNaming.naming(autoNaming, props.resourceNamingOption as ResourceNaming.ResourceNamingOption);
 
 
     // 👇 SNS Topic for notifications
