@@ -1,4 +1,5 @@
 import { ResourceAutoNaming, ResourceDefaultNaming, ResourceNaming, ResourceNamingType } from '@gammarers/aws-resource-naming';
+import { SNSSlackMessageLambdaSubscription } from '@gammarers/aws-sns-slack-message-lambda-subscription';
 import * as cdk from 'aws-cdk-lib';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -9,7 +10,7 @@ import { RunningControlStateMachine } from './resources/running-control-state-ma
 
 export { ResourceAutoNaming, ResourceDefaultNaming, ResourceNamingType };
 
-export interface CustomNaming {
+export interface ResourceCustomNaming {
   readonly type: ResourceNamingType.CUSTOM;
   readonly notificationTopicName: string;
   readonly notificationTopicDisplayName: string;
@@ -20,7 +21,7 @@ export interface CustomNaming {
   readonly stopScheduleName: string;
 }
 
-export type ResourceNamingOption = ResourceDefaultNaming | ResourceAutoNaming | CustomNaming;
+export type ResourceNamingOption = ResourceDefaultNaming | ResourceAutoNaming | ResourceCustomNaming;
 
 export interface ScheduleProperty {
   readonly timezone: string;
@@ -34,8 +35,13 @@ export interface TargetResourceProperty {
   readonly tagValues: string[];
 }
 
+export interface Slack {
+  readonly webhookSecretName: string;
+}
+
 export interface NotificationsProperty {
   readonly emails?: string[];
+  readonly slack?: Slack;
 }
 
 export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
@@ -82,6 +88,15 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
         endpoint: value,
       });
     }
+
+    // 👇 Subscription slack webhook
+    if (props.notifications?.slack) {
+      new SNSSlackMessageLambdaSubscription(this, 'SNSSlackMessageLambdaSubscription', {
+        topic,
+        slackWebhookSecretName: props.notifications.slack.webhookSecretName,
+      });
+    }
+
 
     // 👇 StepFunctions State Machine
     const stateMachine = new RunningControlStateMachine(this, 'StateMachine', {

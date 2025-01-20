@@ -53,11 +53,55 @@ export class RunningControlStateMachine extends sfn.StateMachine {
               sfn.JsonPath.stringAt('$.Result.target.identifier'),
               sfn.JsonPath.stringAt('$.prepare.topic.values.status'),
             ),
+            SlackJsonMessage: {
+              attachments: [
+                {
+                  color: '#36a64f',
+                  pretext: sfn.JsonPath.format('{} The status of the RDS {} changed to {} due to the schedule.',
+                    sfn.JsonPath.stringAt('$.prepare.topic.values.emoji'),
+                    sfn.JsonPath.stringAt('$.Result.target.type'),
+                    sfn.JsonPath.stringAt('$.prepare.topic.values.status'),
+                  ),
+                  fields: [
+                    {
+                      title: 'Account',
+                      value: sfn.JsonPath.stringAt('$.prepare.topic.values.account'),
+                      short: true,
+                    },
+                    {
+                      title: 'Region',
+                      value: sfn.JsonPath.stringAt('$.prepare.topic.values.region'),
+                      short: true,
+                    },
+                    {
+                      title: 'Type',
+                      value: sfn.JsonPath.stringAt('$.Result.target.type'),
+                      short: true,
+                    },
+                    {
+                      title: 'Identifier',
+                      value: sfn.JsonPath.stringAt('$.Result.target.identifier'),
+                      short: true,
+                    },
+                    {
+                      title: 'Status',
+                      value: sfn.JsonPath.stringAt('$.prepare.topic.values.status'),
+                      short: true,
+                    },
+                  ],
+                },
+              ],
+            },
           },
         }).next(new tasks.SnsPublish(scope, 'SendNotification', {
           topic: props.notificationTopic,
           subject: sfn.JsonPath.stringAt('$.Generate.Topic.Subject'),
-          message: sfn.TaskInput.fromJsonPathAt('$.Generate.Topic.TextMessage'),
+          message: sfn.TaskInput.fromObject({
+            default: sfn.JsonPath.stringAt('$.Generate.Topic.TextMessage'),
+            email: sfn.JsonPath.stringAt('$.Generate.Topic.TextMessage'),
+            lambda: sfn.JsonPath.jsonToString(sfn.JsonPath.objectAt('$.Generate.Topic.SlackJsonMessage')),
+          }),
+          messagePerSubscriptionType: true,
           resultPath: '$.snsResult',
         }).next(stateChangeSucceed)));
 
