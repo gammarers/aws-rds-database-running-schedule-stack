@@ -400,10 +400,22 @@
     "@eslint/core" "^0.10.0"
     levn "^0.4.1"
 
+"@gammarers/aws-resource-naming@0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@gammarers/aws-resource-naming/-/aws-resource-naming-0.10.1.tgz#210fd589c10a86102d589bf0e6ceed236c180f1e"
+  integrity sha512-f7EMSndD3RzbfMmhRWYdPulM127RPSZF2QDa5QM6z8rvzoLX+X3ldyDZ0QmOPlmEjkxRN2UXWzeFnDj/onkdpg==
+
 "@gammarers/aws-resource-naming@^0.10.1":
   version "0.10.8"
   resolved "https://registry.yarnpkg.com/@gammarers/aws-resource-naming/-/aws-resource-naming-0.10.8.tgz#3c3ba46816d1f5ea26012149e108bb688d47a291"
   integrity sha512-QHA0chtBRJK5mYZ3GRL3hk97LdiZeKxHFI6WCoJ6sh6BobWQxDWDcBFUUYqTzuAZqAfCGaT/JXWKvH7YCyjtng==
+
+"@gammarers/aws-sns-slack-message-lambda-subscription@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@gammarers/aws-sns-slack-message-lambda-subscription/-/aws-sns-slack-message-lambda-subscription-0.2.1.tgz#82c27037a0c04585f235773fc3786ae5bc86b719"
+  integrity sha512-kRn9FDRb6hfMrVX6V4tLUYDsDo0Ev3MF4u5fgDTgtTU7L0hNVhtwMCniZdomS4W5Cv5C70WDS+yKJKdzHbrA8g==
+  dependencies:
+    "@gammarers/aws-resource-naming" "0.10.1"
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
