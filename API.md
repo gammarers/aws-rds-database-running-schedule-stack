@@ -879,111 +879,6 @@ Whether termination protection is enabled for this stack.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### CustomNaming <a name="CustomNaming" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming"></a>
-
-#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.Initializer"></a>
-
-```typescript
-import { CustomNaming } from '@gammarers/aws-rds-database-running-schedule-stack'
-
-const customNaming: CustomNaming = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.notificationTopicDisplayName">notificationTopicDisplayName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.notificationTopicName">notificationTopicName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.schedulerRoleName">schedulerRoleName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.startScheduleName">startScheduleName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.stateMachineName">stateMachineName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.stateMachineRoleName">stateMachineRoleName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.stopScheduleName">stopScheduleName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.type">type</a></code> | <code>@gammarers/aws-resource-naming.ResourceNamingType</code> | *No description.* |
-
----
-
-##### `notificationTopicDisplayName`<sup>Required</sup> <a name="notificationTopicDisplayName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.notificationTopicDisplayName"></a>
-
-```typescript
-public readonly notificationTopicDisplayName: string;
-```
-
-- *Type:* string
-
----
-
-##### `notificationTopicName`<sup>Required</sup> <a name="notificationTopicName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.notificationTopicName"></a>
-
-```typescript
-public readonly notificationTopicName: string;
-```
-
-- *Type:* string
-
----
-
-##### `schedulerRoleName`<sup>Required</sup> <a name="schedulerRoleName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.schedulerRoleName"></a>
-
-```typescript
-public readonly schedulerRoleName: string;
-```
-
-- *Type:* string
-
----
-
-##### `startScheduleName`<sup>Required</sup> <a name="startScheduleName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.startScheduleName"></a>
-
-```typescript
-public readonly startScheduleName: string;
-```
-
-- *Type:* string
-
----
-
-##### `stateMachineName`<sup>Required</sup> <a name="stateMachineName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.stateMachineName"></a>
-
-```typescript
-public readonly stateMachineName: string;
-```
-
-- *Type:* string
-
----
-
-##### `stateMachineRoleName`<sup>Required</sup> <a name="stateMachineRoleName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.stateMachineRoleName"></a>
-
-```typescript
-public readonly stateMachineRoleName: string;
-```
-
-- *Type:* string
-
----
-
-##### `stopScheduleName`<sup>Required</sup> <a name="stopScheduleName" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.stopScheduleName"></a>
-
-```typescript
-public readonly stopScheduleName: string;
-```
-
-- *Type:* string
-
----
-
-##### `type`<sup>Required</sup> <a name="type" id="@gammarers/aws-rds-database-running-schedule-stack.CustomNaming.property.type"></a>
-
-```typescript
-public readonly type: ResourceNamingType;
-```
-
-- *Type:* @gammarers/aws-resource-naming.ResourceNamingType
-
----
-
 ### NotificationsProperty <a name="NotificationsProperty" id="@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty"></a>
 
 #### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.Initializer"></a>
@@ -999,6 +894,7 @@ const notificationsProperty: NotificationsProperty = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.property.emails">emails</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.property.slack">slack</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.Slack">Slack</a></code> | *No description.* |
 
 ---
 
@@ -1009,6 +905,16 @@ public readonly emails: string[];
 ```
 
 - *Type:* string[]
+
+---
+
+##### `slack`<sup>Optional</sup> <a name="slack" id="@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty.property.slack"></a>
+
+```typescript
+public readonly slack: Slack;
+```
+
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.Slack">Slack</a>
 
 ---
 
@@ -1039,7 +945,7 @@ const rDSDatabaseRunningScheduleStackProps: RDSDatabaseRunningScheduleStackProps
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.targetResource">targetResource</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResourceProperty">TargetResourceProperty</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.enableScheduling">enableScheduling</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.notifications">notifications</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.NotificationsProperty">NotificationsProperty</a></code> | *No description.* |
-| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.resourceNamingOption">resourceNamingOption</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming">CustomNaming</a> \| @gammarers/aws-resource-naming.ResourceDefaultNaming \| @gammarers/aws-resource-naming.ResourceAutoNaming</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.resourceNamingOption">resourceNamingOption</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming">ResourceCustomNaming</a> \| @gammarers/aws-resource-naming.ResourceDefaultNaming \| @gammarers/aws-resource-naming.ResourceAutoNaming</code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a></code> | *No description.* |
 
@@ -1288,10 +1194,10 @@ public readonly notifications: NotificationsProperty;
 ##### `resourceNamingOption`<sup>Optional</sup> <a name="resourceNamingOption" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.resourceNamingOption"></a>
 
 ```typescript
-public readonly resourceNamingOption: CustomNaming | ResourceDefaultNaming | ResourceAutoNaming;
+public readonly resourceNamingOption: ResourceCustomNaming | ResourceDefaultNaming | ResourceAutoNaming;
 ```
 
-- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.CustomNaming">CustomNaming</a> | @gammarers/aws-resource-naming.ResourceDefaultNaming | @gammarers/aws-resource-naming.ResourceAutoNaming
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming">ResourceCustomNaming</a> | @gammarers/aws-resource-naming.ResourceDefaultNaming | @gammarers/aws-resource-naming.ResourceAutoNaming
 
 ---
 
@@ -1312,6 +1218,111 @@ public readonly stopSchedule: ScheduleProperty;
 ```
 
 - *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.ScheduleProperty">ScheduleProperty</a>
+
+---
+
+### ResourceCustomNaming <a name="ResourceCustomNaming" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming"></a>
+
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.Initializer"></a>
+
+```typescript
+import { ResourceCustomNaming } from '@gammarers/aws-rds-database-running-schedule-stack'
+
+const resourceCustomNaming: ResourceCustomNaming = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.notificationTopicDisplayName">notificationTopicDisplayName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.notificationTopicName">notificationTopicName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.schedulerRoleName">schedulerRoleName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.startScheduleName">startScheduleName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.stateMachineName">stateMachineName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.stateMachineRoleName">stateMachineRoleName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.stopScheduleName">stopScheduleName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.type">type</a></code> | <code>@gammarers/aws-resource-naming.ResourceNamingType</code> | *No description.* |
+
+---
+
+##### `notificationTopicDisplayName`<sup>Required</sup> <a name="notificationTopicDisplayName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.notificationTopicDisplayName"></a>
+
+```typescript
+public readonly notificationTopicDisplayName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `notificationTopicName`<sup>Required</sup> <a name="notificationTopicName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.notificationTopicName"></a>
+
+```typescript
+public readonly notificationTopicName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `schedulerRoleName`<sup>Required</sup> <a name="schedulerRoleName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.schedulerRoleName"></a>
+
+```typescript
+public readonly schedulerRoleName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `startScheduleName`<sup>Required</sup> <a name="startScheduleName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.startScheduleName"></a>
+
+```typescript
+public readonly startScheduleName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `stateMachineName`<sup>Required</sup> <a name="stateMachineName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.stateMachineName"></a>
+
+```typescript
+public readonly stateMachineName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `stateMachineRoleName`<sup>Required</sup> <a name="stateMachineRoleName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.stateMachineRoleName"></a>
+
+```typescript
+public readonly stateMachineRoleName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `stopScheduleName`<sup>Required</sup> <a name="stopScheduleName" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.stopScheduleName"></a>
+
+```typescript
+public readonly stopScheduleName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `type`<sup>Required</sup> <a name="type" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.property.type"></a>
+
+```typescript
+public readonly type: ResourceNamingType;
+```
+
+- *Type:* @gammarers/aws-resource-naming.ResourceNamingType
 
 ---
 
@@ -1370,6 +1381,34 @@ public readonly minute: string;
 
 ```typescript
 public readonly week: string;
+```
+
+- *Type:* string
+
+---
+
+### Slack <a name="Slack" id="@gammarers/aws-rds-database-running-schedule-stack.Slack"></a>
+
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.Slack.Initializer"></a>
+
+```typescript
+import { Slack } from '@gammarers/aws-rds-database-running-schedule-stack'
+
+const slack: Slack = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.Slack.property.webhookSecretName">webhookSecretName</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `webhookSecretName`<sup>Required</sup> <a name="webhookSecretName" id="@gammarers/aws-rds-database-running-schedule-stack.Slack.property.webhookSecretName"></a>
+
+```typescript
+public readonly webhookSecretName: string;
 ```
 
 - *Type:* string
