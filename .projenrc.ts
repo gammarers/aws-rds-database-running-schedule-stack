@@ -14,11 +14,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/gammarers/aws-rds-database-running-schedule-stack.git',
   deps: [
     '@gammarers/aws-resource-naming@^0.10.1',
-    '@gammarers/aws-sns-slack-message-lambda-subscription@^0.2.1',
+    '@gammarers/aws-sns-slack-message-lambda-subscription@^0.2.4',
   ],
   peerDeps: [
     '@gammarers/aws-resource-naming@^0.10.1',
-    '@gammarers/aws-sns-slack-message-lambda-subscription@^0.2.1',
+    '@gammarers/aws-sns-slack-message-lambda-subscription@^0.2.4',
   ],
   releaseToNpm: true,
   npmAccess: javascript.NpmAccess.PUBLIC,

@@ -98,7 +98,7 @@
     },
     {
       "name": "@gammarers/aws-sns-slack-message-lambda-subscription",
-      "version": "^0.2.1",
+      "version": "^0.2.4",
       "type": "peer"
     },
     {
@@ -118,7 +118,7 @@
     },
     {
       "name": "@gammarers/aws-sns-slack-message-lambda-subscription",
-      "version": "^0.2.1",
+      "version": "^0.2.4",
       "type": "runtime"
     }
   ],
