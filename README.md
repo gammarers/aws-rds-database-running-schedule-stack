@@ -86,7 +86,7 @@ dotnet add package Gammarers.CDK.AWS.RdsDatabaseRunningScheduleStack
 ## Example
 
 ```typescript
-import { RdsDatabaseRunningScheduler, DatabaseType } from '@gammarer/aws-rds-database-running-schedule-stack';
+import { RDSDatabaseRunningScheduleStack, ResourceNamingType } from '@gammarer/aws-rds-database-running-schedule-stack';
 
 new RDSDatabaseRunningScheduleStack(app, 'RDSDatabaseRunningScheduleStack', {
   targetResource: {
@@ -109,9 +109,27 @@ new RDSDatabaseRunningScheduleStack(app, 'RDSDatabaseRunningScheduleStack', {
   resourceNamingOption: {
     type: ResourceNamingType.AUTO, // DEFAULT or AUTO or CUSTOM
   },
+  notifications: {
+    emails: [ // "Incoming Sample Message - EMAIL"
+      'foo@example.com',
+      'bar@example.net',
+    ],
+    slack: { // "Incoming Sample Message - EMAIL"
+      webhookSecretName: 'example/slack/webhook',
+    },
+  },
 });
-
 ```
+
+## Incoming Sample Message
+
+### EMAIL
+
+![](./images/example-email.png)
+
+### Slack
+
+![](./images/example-slack.png)
 
 ## License
 
