@@ -31,6 +31,9 @@ describe('RdsDatabaseRunningScheduler Specific Testing', () => {
           'foo@example.com',
           'bar@example.net',
         ],
+        slack: {
+          webhookSecretName: 'example/slack/webhook',
+        },
       },
       resourceNamingOption: {
         type: ResourceNamingType.AUTO,
