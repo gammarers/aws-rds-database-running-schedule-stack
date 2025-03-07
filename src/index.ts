@@ -1,4 +1,10 @@
-import { ResourceAutoNaming, ResourceDefaultNaming, ResourceNaming, ResourceNamingType } from '@gammarers/aws-resource-naming';
+import {
+  ResourceAutoNaming,
+  ResourceDefaultNaming,
+  ResourceNaming,
+  ResourceNamingType as RDSDatabaseRunningScheduleStackResourceNamingType,
+}
+  from '@gammarers/aws-resource-naming';
 import { SNSSlackMessageLambdaSubscription } from '@gammarers/aws-sns-slack-message-lambda-subscription';
 import * as cdk from 'aws-cdk-lib';
 import { Stack, StackProps } from 'aws-cdk-lib';
@@ -8,10 +14,10 @@ import * as sns from 'aws-cdk-lib/aws-sns';
 import { Construct } from 'constructs';
 import { RunningControlStateMachine } from './resources/running-control-state-machine';
 
-export { ResourceAutoNaming, ResourceDefaultNaming, ResourceNamingType };
+export { RDSDatabaseRunningScheduleStackResourceNamingType };
 
 export interface ResourceCustomNaming {
-  readonly type: ResourceNamingType.CUSTOM;
+  readonly type: RDSDatabaseRunningScheduleStackResourceNamingType.CUSTOM;
   readonly notificationTopicName: string;
   readonly notificationTopicDisplayName: string;
   readonly stateMachineName: string;
@@ -23,14 +29,14 @@ export interface ResourceCustomNaming {
 
 export type ResourceNamingOption = ResourceDefaultNaming | ResourceAutoNaming | ResourceCustomNaming;
 
-export interface ScheduleProperty {
+export interface Schedule {
   readonly timezone: string;
   readonly minute?: string;
   readonly hour?: string;
   readonly week?: string;
 }
 
-export interface TargetResourceProperty {
+export interface TargetResource {
   readonly tagKey: string;
   readonly tagValues: string[];
 }
@@ -39,17 +45,17 @@ export interface Slack {
   readonly webhookSecretName: string;
 }
 
-export interface NotificationsProperty {
+export interface Notifications {
   readonly emails?: string[];
   readonly slack?: Slack;
 }
 
 export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
-  readonly targetResource: TargetResourceProperty;
+  readonly targetResource: TargetResource;
   readonly enableScheduling?: boolean;
-  readonly stopSchedule?: ScheduleProperty;
-  readonly startSchedule?: ScheduleProperty;
-  readonly notifications?: NotificationsProperty;
+  readonly stopSchedule?: Schedule;
+  readonly startSchedule?: Schedule;
+  readonly notifications?: Notifications;
   readonly resourceNamingOption?: ResourceNamingOption;
 }
 
