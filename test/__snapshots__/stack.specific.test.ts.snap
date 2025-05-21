@@ -279,7 +279,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "c1e7fca22fd237179d7f97ee1eceaac01e0c3a3f85443e5c22d7d0b065f0ae50.zip",
+          "S3Key": "666d9a256cfc258172370133af04a09e9979d88893b0710fefc56dbbfd680a52.zip",
         },
         "Description": "Send Slack message function",
         "Environment": {
