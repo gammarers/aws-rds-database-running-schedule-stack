@@ -948,6 +948,7 @@ const rDSDatabaseRunningScheduleStackProps: RDSDatabaseRunningScheduleStackProps
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.resourceNamingOption">resourceNamingOption</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming">ResourceCustomNaming</a> \| @gammarers/aws-resource-naming.ResourceDefaultNaming \| @gammarers/aws-resource-naming.ResourceAutoNaming</code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.Schedule">Schedule</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.stopSchedule">stopSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.Schedule">Schedule</a></code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.timeoutOption">timeoutOption</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TimeoutOption">TimeoutOption</a></code> | *No description.* |
 
 ---
 
@@ -1221,6 +1222,16 @@ public readonly stopSchedule: Schedule;
 
 ---
 
+##### `timeoutOption`<sup>Optional</sup> <a name="timeoutOption" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.timeoutOption"></a>
+
+```typescript
+public readonly timeoutOption: TimeoutOption;
+```
+
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.TimeoutOption">TimeoutOption</a>
+
+---
+
 ### ResourceCustomNaming <a name="ResourceCustomNaming" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming"></a>
 
 #### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming.Initializer"></a>
@@ -1451,6 +1462,34 @@ public readonly tagValues: string[];
 ```
 
 - *Type:* string[]
+
+---
+
+### TimeoutOption <a name="TimeoutOption" id="@gammarers/aws-rds-database-running-schedule-stack.TimeoutOption"></a>
+
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.TimeoutOption.Initializer"></a>
+
+```typescript
+import { TimeoutOption } from '@gammarers/aws-rds-database-running-schedule-stack'
+
+const timeoutOption: TimeoutOption = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TimeoutOption.property.stateMachineTimeout">stateMachineTimeout</a></code> | <code>aws-cdk-lib.Duration</code> | *No description.* |
+
+---
+
+##### `stateMachineTimeout`<sup>Optional</sup> <a name="stateMachineTimeout" id="@gammarers/aws-rds-database-running-schedule-stack.TimeoutOption.property.stateMachineTimeout"></a>
+
+```typescript
+public readonly stateMachineTimeout: Duration;
+```
+
+- *Type:* aws-cdk-lib.Duration
 
 ---
 

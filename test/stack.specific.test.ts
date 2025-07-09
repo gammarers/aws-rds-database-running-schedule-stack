@@ -1,5 +1,5 @@
 import { ResourceNamingType } from '@gammarers/aws-resource-naming';
-import { App } from 'aws-cdk-lib';
+import { App, Duration } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { RDSDatabaseRunningScheduleStack } from '../src';
 
@@ -37,6 +37,9 @@ describe('RdsDatabaseRunningScheduler Specific Testing', () => {
       },
       resourceNamingOption: {
         type: ResourceNamingType.AUTO,
+      },
+      timeoutOption: {
+        stateMachineTimeout: Duration.seconds(30),
       },
     });
 

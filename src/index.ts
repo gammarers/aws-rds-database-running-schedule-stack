@@ -7,7 +7,7 @@ import {
   from '@gammarers/aws-resource-naming';
 import { SNSSlackMessageLambdaSubscription } from '@gammarers/aws-sns-slack-message-lambda-subscription';
 import * as cdk from 'aws-cdk-lib';
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as scheduler from 'aws-cdk-lib/aws-scheduler';
 import * as sns from 'aws-cdk-lib/aws-sns';
@@ -50,6 +50,10 @@ export interface Notifications {
   readonly slack?: Slack;
 }
 
+export interface TimeoutOption {
+  readonly stateMachineTimeout?: Duration;
+}
+
 export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
   readonly targetResource: TargetResource;
   readonly enableScheduling?: boolean;
@@ -57,6 +61,7 @@ export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
   readonly startSchedule?: Schedule;
   readonly notifications?: Notifications;
   readonly resourceNamingOption?: ResourceNamingOption;
+  readonly timeoutOption?: TimeoutOption;
 }
 
 export class RDSDatabaseRunningScheduleStack extends Stack {
@@ -108,6 +113,12 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
     const stateMachine = new RunningControlStateMachine(this, 'StateMachine', {
       stateMachineName: names.stateMachineName,
       notificationTopic: topic,
+      timeout: (() => {
+        if (props.timeoutOption?.stateMachineTimeout) {
+          return props.timeoutOption?.stateMachineTimeout;
+        }
+        return Duration.hours(1);
+      })(),
     });
 
     // 👇 rename role name & description.

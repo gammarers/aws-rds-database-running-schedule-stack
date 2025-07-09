@@ -464,7 +464,7 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
               {
                 "Ref": "AWS::Partition",
               },
-              ":states:::aws-sdk:rds:describeDBClusters","Parameters":{"DbClusterIdentifier.$":"$.Result.target.identifier"}},"HandleDbClusterNotFound":{"Type":"Pass","Result":{"message":"DB Cluster not found, but continuing..."},"End":true}}},"MaxConcurrency":10}}}",
+              ":states:::aws-sdk:rds:describeDBClusters","Parameters":{"DbClusterIdentifier.$":"$.Result.target.identifier"}},"HandleDbClusterNotFound":{"Type":"Pass","Result":{"message":"DB Cluster not found, but continuing..."},"End":true}}},"MaxConcurrency":10}},"TimeoutSeconds":30}",
             ],
           ],
         },
