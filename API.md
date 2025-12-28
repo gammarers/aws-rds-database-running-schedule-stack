@@ -893,6 +893,34 @@ Whether termination protection is enabled for this stack.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
+### LogOption <a name="LogOption" id="@gammarers/aws-rds-database-running-schedule-stack.LogOption"></a>
+
+#### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.LogOption.Initializer"></a>
+
+```typescript
+import { LogOption } from '@gammarers/aws-rds-database-running-schedule-stack'
+
+const logOption: LogOption = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.LogOption.property.machineLogLevel">machineLogLevel</a></code> | <code>aws-cdk-lib.aws_stepfunctions.LogLevel</code> | *No description.* |
+
+---
+
+##### `machineLogLevel`<sup>Optional</sup> <a name="machineLogLevel" id="@gammarers/aws-rds-database-running-schedule-stack.LogOption.property.machineLogLevel"></a>
+
+```typescript
+public readonly machineLogLevel: LogLevel;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.LogLevel
+
+---
+
 ### Notifications <a name="Notifications" id="@gammarers/aws-rds-database-running-schedule-stack.Notifications"></a>
 
 #### Initializer <a name="Initializer" id="@gammarers/aws-rds-database-running-schedule-stack.Notifications.Initializer"></a>
@@ -958,6 +986,7 @@ const rDSDatabaseRunningScheduleStackProps: RDSDatabaseRunningScheduleStackProps
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.terminationProtection">terminationProtection</a></code> | <code>boolean</code> | Whether to enable termination protection for this stack. |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.targetResource">targetResource</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.TargetResource">TargetResource</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.enableScheduling">enableScheduling</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.logOption">logOption</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.LogOption">LogOption</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.notifications">notifications</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.Notifications">Notifications</a></code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.resourceNamingOption">resourceNamingOption</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.ResourceCustomNaming">ResourceCustomNaming</a> \| @gammarers/aws-resource-naming.ResourceDefaultNaming \| @gammarers/aws-resource-naming.ResourceAutoNaming</code> | *No description.* |
 | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.startSchedule">startSchedule</a></code> | <code><a href="#@gammarers/aws-rds-database-running-schedule-stack.Schedule">Schedule</a></code> | *No description.* |
@@ -1193,6 +1222,16 @@ public readonly enableScheduling: boolean;
 ```
 
 - *Type:* boolean
+
+---
+
+##### `logOption`<sup>Optional</sup> <a name="logOption" id="@gammarers/aws-rds-database-running-schedule-stack.RDSDatabaseRunningScheduleStackProps.property.logOption"></a>
+
+```typescript
+public readonly logOption: LogOption;
+```
+
+- *Type:* <a href="#@gammarers/aws-rds-database-running-schedule-stack.LogOption">LogOption</a>
 
 ---
 
