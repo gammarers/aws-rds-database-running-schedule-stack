@@ -1,7 +1,7 @@
 import { ResourceNamingType } from '@gammarers/aws-resource-naming';
 import { App, Duration } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
-import { RDSDatabaseRunningScheduleStack } from '../src';
+import { RDSDatabaseRunningScheduleStack, RDSDatabaseRunningScheduleStackMachineLogLevel } from '../src';
 
 describe('RdsDatabaseRunningScheduler Specific Testing', () => {
 
@@ -38,6 +38,9 @@ describe('RdsDatabaseRunningScheduler Specific Testing', () => {
       resourceNamingOption: {
         type: ResourceNamingType.AUTO,
       },
+      logOption: {
+        machineLogLevel: RDSDatabaseRunningScheduleStackMachineLogLevel.ALL,
+      },
       timeoutOption: {
         stateMachineTimeout: Duration.seconds(30),
       },
@@ -72,6 +75,34 @@ describe('RdsDatabaseRunningScheduler Specific Testing', () => {
           },
         },
       });
+    });
+
+    it('Should match state machine', () => {
+      template.hasResourceProperties('AWS::StepFunctions::StateMachine', Match.objectEquals({
+        StateMachineName: Match.anyValue(),
+        DefinitionString: Match.anyValue(),
+        RoleArn: {
+          'Fn::GetAtt': [
+            Match.stringLikeRegexp('StateMachineRole'),
+            'Arn',
+          ],
+        },
+        LoggingConfiguration: {
+          Destinations: [
+            {
+              CloudWatchLogsLogGroup: {
+                LogGroupArn: {
+                  'Fn::GetAtt': [
+                    Match.stringLikeRegexp('StateMachineLogGroup'),
+                    'Arn',
+                  ],
+                },
+              },
+            },
+          ],
+          Level: 'ALL',
+        },
+      }));
     });
 
     it('Should match snapshot', async () => {
