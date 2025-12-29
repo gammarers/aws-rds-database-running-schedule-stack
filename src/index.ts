@@ -3,18 +3,22 @@ import {
   ResourceDefaultNaming,
   ResourceNaming,
   ResourceNamingType as RDSDatabaseRunningScheduleStackResourceNamingType,
-}
-  from '@gammarers/aws-resource-naming';
+} from '@gammarers/aws-resource-naming';
 import { SNSSlackMessageLambdaSubscription } from '@gammarers/aws-sns-slack-message-lambda-subscription';
 import * as cdk from 'aws-cdk-lib';
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as scheduler from 'aws-cdk-lib/aws-scheduler';
 import * as sns from 'aws-cdk-lib/aws-sns';
+import { LogLevel as RDSDatabaseRunningScheduleStackMachineLogLevel } from 'aws-cdk-lib/aws-stepfunctions';
 import { Construct } from 'constructs';
 import { RunningControlStateMachine } from './resources/running-control-state-machine';
 
-export { RDSDatabaseRunningScheduleStackResourceNamingType };
+export {
+  RDSDatabaseRunningScheduleStackResourceNamingType,
+  RDSDatabaseRunningScheduleStackMachineLogLevel,
+};
 
 export interface ResourceCustomNaming {
   readonly type: RDSDatabaseRunningScheduleStackResourceNamingType.CUSTOM;
@@ -50,6 +54,10 @@ export interface Notifications {
   readonly slack?: Slack;
 }
 
+export interface LogOption {
+  readonly machineLogLevel?: RDSDatabaseRunningScheduleStackMachineLogLevel;
+}
+
 export interface TimeoutOption {
   readonly stateMachineTimeout?: Duration;
 }
@@ -62,6 +70,7 @@ export interface RDSDatabaseRunningScheduleStackProps extends StackProps {
   readonly notifications?: Notifications;
   readonly resourceNamingOption?: ResourceNamingOption;
   readonly timeoutOption?: TimeoutOption;
+  readonly logOption?: LogOption;
 }
 
 export class RDSDatabaseRunningScheduleStack extends Stack {
@@ -82,7 +91,6 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
     };
     // 👇　final naming
     const names = ResourceNaming.naming(autoNaming, props.resourceNamingOption as ResourceNaming.ResourceNamingOption);
-
 
     // 👇 SNS Topic for notifications
     const topic: sns.Topic = new sns.Topic(this, 'NotificationTopic', {
@@ -118,6 +126,22 @@ export class RDSDatabaseRunningScheduleStack extends Stack {
           return props.timeoutOption?.stateMachineTimeout;
         }
         return Duration.hours(1);
+      })(),
+      logs: (() => {
+        if (props.logOption?.machineLogLevel) {
+          return {
+            destination: new logs.LogGroup(this, 'StateMachineLogGroup', {
+              logGroupName: (() => {
+                if (names.stateMachineName) {
+                  return `/aws/states/${names.stateMachineName}`;
+                }
+                return undefined;
+              })(),
+            }),
+            level: props.logOption.machineLogLevel,
+          };
+        }
+        return undefined;
       })(),
     });
 
