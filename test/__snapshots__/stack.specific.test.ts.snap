@@ -468,6 +468,21 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
             ],
           ],
         },
+        "LoggingConfiguration": {
+          "Destinations": [
+            {
+              "CloudWatchLogsLogGroup": {
+                "LogGroupArn": {
+                  "Fn::GetAtt": [
+                    "StateMachineLogGroup15B91BCB",
+                    "Arn",
+                  ],
+                },
+              },
+            },
+          ],
+          "Level": "ALL",
+        },
         "RoleArn": {
           "Fn::GetAtt": [
             "StateMachineRoleB840431D",
@@ -478,6 +493,15 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
       },
       "Type": "AWS::StepFunctions::StateMachine",
       "UpdateReplacePolicy": "Delete",
+    },
+    "StateMachineLogGroup15B91BCB": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "LogGroupName": "/aws/states/rds-db-running-schedule-313cb41a-state-machine",
+        "RetentionInDays": 731,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
     },
     "StateMachineRoleB840431D": {
       "Properties": {
@@ -510,6 +534,20 @@ exports[`RdsDatabaseRunningScheduler Specific Testing specify schedule Should ma
       "Properties": {
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogDelivery",
+                "logs:GetLogDelivery",
+                "logs:UpdateLogDelivery",
+                "logs:DeleteLogDelivery",
+                "logs:ListLogDeliveries",
+                "logs:PutResourcePolicy",
+                "logs:DescribeResourcePolicies",
+                "logs:DescribeLogGroups",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
             {
               "Action": "tag:GetResources",
               "Effect": "Allow",
